@@ -1,0 +1,83 @@
+package com.ekz.ekzweb.shiro;
+
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import java.util.LinkedHashMap;
+/**
+ * @Description:shiro配置类
+ */
+@Configuration
+public class ShiroConfig {
+
+    @Autowired
+    private UserRealm userRealm;
+
+    /**
+     * 创建ShiroFilterFactoryBean
+     */
+    @Bean
+    public ShiroFilterFactoryBean getShiroFilterFactoryBean(DefaultWebSecurityManager securityManager){
+        ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
+
+        //设置安全管理器
+        shiroFilterFactoryBean.setSecurityManager(securityManager);
+
+        // 设置登录页面
+        shiroFilterFactoryBean.setLoginUrl("/users/login");
+
+
+        // 设置未授权页面
+        shiroFilterFactoryBean.setUnauthorizedUrl("403");
+
+        //添加Shiro内置过滤器
+        /**
+         * Shiro内置过滤器，可以实现权限相关的拦截器
+         *    常用的过滤器：
+         *       anon: 无需认证（登录）可以访问
+         *       authc: 必须认证才可以访问
+         *       user: 如果使用rememberMe的功能可以直接访问
+         *       perms： 该资源必须得到资源权限才可以访问
+         *       role: 该资源必须得到角色权限才可以访问
+         */
+        LinkedHashMap<String, String> filterMap = new LinkedHashMap<>();
+//        filterMap.put("/users/login", "anon");
+//        filterMap.put("/doc.html/**", "anon");
+        filterMap.put("/**", "anon");
+        filterMap.put("/users/logout", "logout");
+//        filterMap.put("/shiro/hello", "anon");
+//
+//        filterMap.put("/login", "anon");
+
+//        filterMap.put("/**", "authc");
+
+        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterMap);
+        return shiroFilterFactoryBean;
+    }
+
+    /**
+     * 创建DefaultWebSecurityManager
+     */
+    @Bean
+    public DefaultWebSecurityManager defaultWebSecurityManager(){
+        //1 创建 defaultWebSecurityManager 对象
+        DefaultWebSecurityManager defaultWebSecurityManager = new DefaultWebSecurityManager();
+        //2 创建加密对象，并设置相关属性
+        HashedCredentialsMatcher matcher = new HashedCredentialsMatcher();
+        //2.1 采用 md5 加密
+        matcher.setHashAlgorithmName("md5");
+        //2.2 迭代加密次数
+        matcher.setHashIterations(3);
+        //3 将加密对象存储到 myRealm 中
+        userRealm.setCredentialsMatcher(matcher);
+        //4 将 myRealm 存入 defaultWebSecurityManager 对象
+        defaultWebSecurityManager.setRealm(userRealm);
+        //5 返回
+        return defaultWebSecurityManager;
+    }
+
+}
