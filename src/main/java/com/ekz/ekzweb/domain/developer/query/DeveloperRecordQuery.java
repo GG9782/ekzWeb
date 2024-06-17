@@ -9,11 +9,11 @@ import java.time.LocalDate;
 public class DeveloperRecordQuery {
 
     private String layer;
-    private String sublayer;
+    private String subLayer;
     private String description;
-    @Schema(description = "earliestFinishDate和latestFinishDate要么都有，要么都没有，不能单有其中一个")
+    @Schema(description = "'earliestFinishDate'and 'latestFinishDate' should be both summited or neither")
     private LocalDate earliestFinishDate;
-    @Schema(description = "earliestCreateDate和latestCreateDate要么都有，要么都没有，不能单有其中一个")
+    @Schema(description = "'earliestFinishDate'and 'latestFinishDate' should be both summited or neither")
     private LocalDate latestFinishDate;
 
 }

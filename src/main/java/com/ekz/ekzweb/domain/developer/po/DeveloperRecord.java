@@ -12,7 +12,7 @@ public class DeveloperRecord {
     @TableId(type = IdType.AUTO)
     private Integer id;
     private String layer;
-    private String sublayer;
+    private String subLayer;
     private String description;
     private LocalDate finishDate;
     private String creator;

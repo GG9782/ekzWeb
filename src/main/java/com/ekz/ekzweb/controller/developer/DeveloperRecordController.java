@@ -43,7 +43,7 @@ public class DeveloperRecordController {
     public List<DeveloperRecord> query(DeveloperRecordQuery query ) {
         return service.lambdaQuery()
                 .eq(query.getLayer() != null,DeveloperRecord::getLayer ,query.getLayer())
-                .eq(query.getSublayer() != null,DeveloperRecord::getSublayer ,query.getSublayer())
+                .eq(query.getSubLayer() != null,DeveloperRecord::getSubLayer,query.getSubLayer())
                 .like(query.getDescription() != null,DeveloperRecord::getDescription ,query.getDescription())
                 .between(query.getEarliestFinishDate() != null, DeveloperRecord::getFinishDate, query.getEarliestFinishDate(), query.getLatestFinishDate())
                 .list();
