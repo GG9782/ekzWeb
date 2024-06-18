@@ -99,7 +99,7 @@ public class UserController {
 //        List<User> users = userService.listByIds(ids);
 //        return BeanUtil.copyToList(users,UserVO.class);
 //    }
-//
+
     @Operation(summary = "根据id修改用户接口")
     @PutMapping
     public void updateUser(@RequestBody User user){
