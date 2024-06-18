@@ -64,20 +64,12 @@ public class ShiroConfig {
      */
     @Bean
     public DefaultWebSecurityManager defaultWebSecurityManager(){
-        //1 创建 defaultWebSecurityManager 对象
-        DefaultWebSecurityManager defaultWebSecurityManager = new DefaultWebSecurityManager();
-        //2 创建加密对象，并设置相关属性
-        HashedCredentialsMatcher matcher = new HashedCredentialsMatcher();
-        //2.1 采用 md5 加密
-//        matcher.setHashAlgorithmName("md5");
-        //2.2 迭代加密次数
-//        matcher.setHashIterations(3);
-        //3 将加密对象存储到 myRealm 中
-        userRealm.setCredentialsMatcher(matcher);
-        //4 将 myRealm 存入 defaultWebSecurityManager 对象
-        defaultWebSecurityManager.setRealm(userRealm);
-        //5 返回
-        return defaultWebSecurityManager;
+        //1 创建 securityManager 对象
+        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+        //2 将 myRealm 存入 securityManager 对象
+        securityManager.setRealm(userRealm);
+        //3 返回
+        return securityManager;
     }
 
 }

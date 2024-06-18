@@ -26,17 +26,22 @@ public class UserController {
     @Autowired
     private IUserService userService;
 
-    /**
-     * 登录逻辑处理
-     */
-    @GetMapping("/login")
+    @Operation(summary = "adLogin")
+    @GetMapping("/adLogin")
     @ResponseBody
-    public String userLogin(String id,String pwd){
+    public String adLogin(String username, String password){
+        if(!username.contains("@")){
+            User user = userService.getById(username);
+            if(user == null){
+                return "id "+username+" is not recorded by ekzWeb system.";
+            }
+            username = user.getEmail();
+        }
         //1 获取 Subject 对象
         Subject subject = SecurityUtils.getSubject();
         //2 封装请求数据到 token 对象中
         AuthenticationToken token = new
-                UsernamePasswordToken(id,pwd);
+                UsernamePasswordToken(username,password);
         //3 调用 login 方法进行登录认证
         try {
             subject.login(token);
@@ -46,17 +51,6 @@ public class UserController {
             System.out.println("login fail");
             return "登录失败";
         }
-    }
-
-    @Operation(summary = "adLogin")
-    @GetMapping("/adLogin")
-    @ResponseBody
-    public String adLogin(String email, String password){
-        if(email.contains("@")){
-            User user = userService.getById(email);
-            email = user.getEmail();
-        }
-        return userService.adLogin(email,password);
     }
 
     @GetMapping("/logout")
@@ -99,7 +93,6 @@ public class UserController {
     }
 
 
-//
 //    @Operation(summary = "根据id批量查询用户接口")
 //    @GetMapping
 //    public List<UserVO> queryUserByIds(@Parameter(name ="用户id集合") @RequestParam("ids") List<Long> ids){
@@ -113,36 +106,4 @@ public class UserController {
         user.setPwd(null);
         userService.updateById(user);
     }
-
-    @Operation(summary = "修改当前用户密码")
-    @PutMapping("/{pwd}")
-    public ResponseEntity<String> updatePwd(@PathVariable String pwd){
-        try {
-            Subject subject = SecurityUtils.getSubject();
-            String principals = subject.getPrincipals().toString();
-        } catch (Exception e) {
-            // 在这里处理异常
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("用户未认证");
-        }
-
-        Subject subject = SecurityUtils.getSubject();
-        String principals = subject.getPrincipals().toString();
-        String encryptedPassword = new SimpleHash("MD5", pwd, "salt", 3).toString();
-
-        userService.lambdaUpdate()
-                .eq(User::getId,principals)
-                .set(User::getPwd,encryptedPassword)
-                .update();
-        return  ResponseEntity.status(HttpStatus.OK).body("OK");
-
-    }
-//
-//    @Operation(summary = "根据id修改用户接口")
-//    @PutMapping("/lambdaUpdate")
-//    public void lambdaUpdateUser(@RequestBody User user){
-//
-//        userService.save(user);
-//    }
-
 }
