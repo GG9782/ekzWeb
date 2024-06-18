@@ -15,7 +15,9 @@ spring:
             enabled: true  #设置开启热部署
             additional-paths: src/main/java #重启目录
             exclude: WEB-INF/**
-
+ldap:
+    host: 10.41.20.20
+    port: 389
 #    thymeleaf:
 #        check-template : false
 #        check-template-location : false
@@ -26,7 +28,7 @@ spring:
 #            max-request-size: 100MB
 
 shiro:
-    loginUrl:/users/login
+    loginUrl:/users/adLogin
 
 mybatis-plus:
     type-aliases-package: com.ekz.ekzwebmp.domain.po

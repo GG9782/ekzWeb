@@ -48,6 +48,17 @@ public class UserController {
         }
     }
 
+    @Operation(summary = "adLogin")
+    @GetMapping("/adLogin")
+    @ResponseBody
+    public String adLogin(String email, String password){
+        if(email.contains("@")){
+            User user = userService.getById(email);
+            email = user.getEmail();
+        }
+        return userService.adLogin(email,password);
+    }
+
     @GetMapping("/logout")
     @ResponseBody
     public ResponseEntity<String> userLogout(){

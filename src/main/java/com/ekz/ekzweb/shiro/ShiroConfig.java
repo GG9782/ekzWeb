@@ -28,7 +28,7 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setSecurityManager(securityManager);
 
         // 设置登录页面
-        shiroFilterFactoryBean.setLoginUrl("/users/login");
+        shiroFilterFactoryBean.setLoginUrl("/users/adLogin");
 
 
         // 设置未授权页面
@@ -69,9 +69,9 @@ public class ShiroConfig {
         //2 创建加密对象，并设置相关属性
         HashedCredentialsMatcher matcher = new HashedCredentialsMatcher();
         //2.1 采用 md5 加密
-        matcher.setHashAlgorithmName("md5");
+//        matcher.setHashAlgorithmName("md5");
         //2.2 迭代加密次数
-        matcher.setHashIterations(3);
+//        matcher.setHashIterations(3);
         //3 将加密对象存储到 myRealm 中
         userRealm.setCredentialsMatcher(matcher);
         //4 将 myRealm 存入 defaultWebSecurityManager 对象

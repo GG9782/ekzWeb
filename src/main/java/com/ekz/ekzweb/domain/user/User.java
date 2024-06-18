@@ -18,7 +18,6 @@ public class User {
 
     @TableId(type = IdType.INPUT)
     private String id;
-
     // @TableField("`username`")
     private String name;
 
@@ -27,7 +26,6 @@ public class User {
 
     private Integer rid;
 
-    private LocalDateTime time;
+    private String email;
 
-    private LocalDate date;
 }
