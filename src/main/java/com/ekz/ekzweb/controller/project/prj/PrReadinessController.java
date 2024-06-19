@@ -38,14 +38,8 @@ public class PrReadinessController {
     public ResponseEntity<String> updatePrjReadiness(@RequestBody PrjReadinessDTO dto){
         //  把DTO拷贝到PO
         PrjReadinessPO po = BeanUtil.copyProperties(dto,PrjReadinessPO.class);
-        try {
-            Subject subject = SecurityUtils.getSubject();
-            po.setPrjReadinessUpdater(subject.getPrincipals().toString());
-        } catch (Exception e) {
-            // 在这里处理异常
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("用户未认证");
-        }
+        Subject subject = SecurityUtils.getSubject();
+        po.setPrjReadinessUpdater(subject.getPrincipals().toString());
         po.setPrjReadinessUpdateTime(LocalDateTime.now());
         // 新增
         prjReadinessService.updateById(po);

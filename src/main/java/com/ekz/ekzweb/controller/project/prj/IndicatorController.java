@@ -41,14 +41,8 @@ public class IndicatorController {
     public ResponseEntity<String> updateIndicator( @RequestBody IndicatorDTO dto){
         //  把DTO拷贝到PO
         IndicatorPO po = BeanUtil.copyProperties(dto,IndicatorPO.class);
-        try {
-            Subject subject = SecurityUtils.getSubject();
-            po.setIndicatorUpdater(subject.getPrincipals().toString());
-        } catch (Exception e) {
-            // 在这里处理异常
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("用户未认证");
-        }
+        Subject subject = SecurityUtils.getSubject();
+        po.setIndicatorUpdater(subject.getPrincipals().toString());
         po.setIndicatorUpdateTime(LocalDateTime.now());
         // 新增
         indicatorService.updateById(po);

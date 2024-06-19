@@ -53,15 +53,6 @@ public class DeveloperRecordController {
     @Operation(summary = "增 单个")
     @PostMapping
     public ResponseEntity<String> save(@RequestBody DeveloperRecord po){
-
-        try {
-            Subject subject = SecurityUtils.getSubject();
-            String principals = subject.getPrincipals().toString();
-        } catch (Exception e) {
-            // 在这里处理异常
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("用户未认证");
-        }
         po.setId(null);
         po.setCreateTime(LocalDateTime.now());
         Subject subject = SecurityUtils.getSubject();
@@ -74,15 +65,6 @@ public class DeveloperRecordController {
     @Operation(summary = "改 单个")
     @PutMapping
     public ResponseEntity<String> updateById(@RequestBody DeveloperRecord po){
-        try {
-            Subject subject = SecurityUtils.getSubject();
-            String principals = subject.getPrincipals().toString();
-        } catch (Exception e) {
-            // 在这里处理异常
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("用户未认证");
-        }
-
         Subject subject = SecurityUtils.getSubject();
         String principals = subject.getPrincipals().toString();
         po.setCreator(principals);

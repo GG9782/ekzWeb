@@ -43,6 +43,10 @@ public class OverviewVO {
         LocalDate latestEndDate = null;
 
         for (ScheduleJsonType stage : schedule) {
+            if( stage.getStartDate() == null || stage.getEndDate() == null ){
+                continue;
+            }
+
             LocalDate startDate = LocalDate.parse(stage.getStartDate());
             LocalDate endDate = LocalDate.parse(stage.getEndDate());
 

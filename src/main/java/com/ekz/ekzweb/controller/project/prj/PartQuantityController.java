@@ -38,14 +38,8 @@ public class PartQuantityController {
     public ResponseEntity<String> updatePartQuantity(@RequestBody PartQuantityDTO dto){
         //  把DTO拷贝到PO
         PartQuantityPO po = BeanUtil.copyProperties(dto,PartQuantityPO.class);
-        try {
-            Subject subject = SecurityUtils.getSubject();
-            po.setPartQuantityUpdater(subject.getPrincipals().toString());
-        } catch (Exception e) {
-            // 在这里处理异常
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("用户未认证");
-        }
+        Subject subject = SecurityUtils.getSubject();
+        po.setPartQuantityUpdater(subject.getPrincipals().toString());
         po.setPartQuantityUpdateTime(LocalDateTime.now());
         // 新增
         partQuantityService.updateById(po);

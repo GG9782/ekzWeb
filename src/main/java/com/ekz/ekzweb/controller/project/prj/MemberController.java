@@ -39,14 +39,8 @@ public class MemberController {
     public ResponseEntity<String> updateMember(@RequestBody MemberDTO dto){
         //  把DTO拷贝到PO
         MemberPO po = BeanUtil.copyProperties(dto,MemberPO.class);
-        try {
-            Subject subject = SecurityUtils.getSubject();
-            po.setMemberUpdater(subject.getPrincipals().toString());
-        } catch (Exception e) {
-            // 在这里处理异常
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("用户未认证");
-        }
+        Subject subject = SecurityUtils.getSubject();
+        po.setMemberUpdater(subject.getPrincipals().toString());
         po.setMemberUpdateTime(LocalDateTime.now());
         // 新增
         memberService.updateById(po);

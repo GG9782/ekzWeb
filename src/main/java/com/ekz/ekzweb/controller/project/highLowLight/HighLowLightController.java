@@ -45,15 +45,6 @@ public class HighLowLightController {
     @Operation(summary = "增 单个")
     @PostMapping
     public ResponseEntity<String> save(@RequestBody HighLowLight highLowLight){
-        try {
-            Subject subject = SecurityUtils.getSubject();
-            String principals = subject.getPrincipals().toString();
-        } catch (Exception e) {
-            // 在这里处理异常
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("用户未认证");
-        }
-
         Subject subject = SecurityUtils.getSubject();
         String principals = subject.getPrincipals().toString();
         highLowLight.setCreator(principals);
@@ -66,15 +57,6 @@ public class HighLowLightController {
     @Operation(summary = "改 单个")
     @PutMapping
     public ResponseEntity<String> updateById(@RequestBody HighLowLight highLowLight){
-        try {
-            Subject subject = SecurityUtils.getSubject();
-            String principals = subject.getPrincipals().toString();
-        } catch (Exception e) {
-            // 在这里处理异常
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("用户未认证");
-        }
-
         Subject subject = SecurityUtils.getSubject();
         String principals = subject.getPrincipals().toString();
         highLowLight.setCreator(principals);
@@ -87,15 +69,6 @@ public class HighLowLightController {
     @Operation(summary = "增  批量")
     @PostMapping("/list")
     public ResponseEntity<String> save(@RequestBody List<HighLowLight> highLowLightList){
-        try {
-            Subject subject = SecurityUtils.getSubject();
-            String principals = subject.getPrincipals().toString();
-        } catch (Exception e) {
-            // 在这里处理异常
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("用户未认证");
-        }
-
         Subject subject = SecurityUtils.getSubject();
         String principals = subject.getPrincipals().toString();
         for (HighLowLight highLowLight : highLowLightList) {

@@ -66,14 +66,8 @@ public class ScheduleController {
 
         //  把DTO拷贝到PO
         SchedulePO po = BeanUtil.copyProperties(dto,SchedulePO.class);
-        try {
-            Subject subject = SecurityUtils.getSubject();
-            po.setScheduleUpdater(subject.getPrincipals().toString());
-        } catch (Exception e) {
-            // 在这里处理异常
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("用户未认证");
-        }
+        Subject subject = SecurityUtils.getSubject();
+        po.setScheduleUpdater(subject.getPrincipals().toString());
         po.setScheduleUpdateTime(LocalDateTime.now());
         // 新增
         scheduleService.updateById(po);

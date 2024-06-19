@@ -39,14 +39,8 @@ public class ApprovalController {
     public ResponseEntity<String> updateApproval(@RequestBody ApprovalDTO dto){
         //  把DTO拷贝到PO
         ApprovalPO po = BeanUtil.copyProperties(dto,ApprovalPO.class);
-        try {
-            Subject subject = SecurityUtils.getSubject();
-            po.setApprovalUpdater(subject.getPrincipals().toString());
-        } catch (Exception e) {
-            // 在这里处理异常
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("用户未认证");
-        }
+        Subject subject = SecurityUtils.getSubject();
+        po.setApprovalUpdater(subject.getPrincipals().toString());
         po.setApprovalUpdateTime(LocalDateTime.now());
         // 新增
         approvalService.updateById(po);

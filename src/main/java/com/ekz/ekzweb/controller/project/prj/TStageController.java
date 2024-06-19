@@ -38,14 +38,8 @@ public class TStageController {
     public ResponseEntity<String> updateTStage(@RequestBody TStageDTO dto){
         //  把DTO拷贝到PO
         TStagePO po = BeanUtil.copyProperties(dto,TStagePO.class);
-        try {
-            Subject subject = SecurityUtils.getSubject();
-            po.setTStageUpdater(subject.getPrincipals().toString());
-        } catch (Exception e) {
-            // 在这里处理异常
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("用户未认证");
-        }
+        Subject subject = SecurityUtils.getSubject();
+        po.setTStageUpdater(subject.getPrincipals().toString());
         po.setTStageUpdateTime(LocalDateTime.now());
         // 新增
         tStageService.updateById(po);

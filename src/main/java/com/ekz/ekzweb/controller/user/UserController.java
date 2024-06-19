@@ -17,6 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.CommunicationException;
+
 
 @Tag(name = "用户管理接口")
 @RestController
@@ -46,10 +48,8 @@ public class UserController {
         try {
             subject.login(token);
             return "login success " + subject.getPrincipals().toString();
-        } catch (AuthenticationException e) {
-            e.printStackTrace();
-            System.out.println("login fail");
-            return "登录失败";
+        }catch (AuthenticationException e) {
+            return "Login fail！Incorrect username or password.";
         }
     }
 

@@ -32,7 +32,7 @@ public class ShiroConfig {
 
 
         // 设置未授权页面
-        shiroFilterFactoryBean.setUnauthorizedUrl("403");
+        shiroFilterFactoryBean.setUnauthorizedUrl("/users/adLogin");
 
         //添加Shiro内置过滤器
         /**
@@ -45,15 +45,17 @@ public class ShiroConfig {
          *       role: 该资源必须得到角色权限才可以访问
          */
         LinkedHashMap<String, String> filterMap = new LinkedHashMap<>();
-//        filterMap.put("/users/login", "anon");
-//        filterMap.put("/doc.html/**", "anon");
-        filterMap.put("/**", "anon");
         filterMap.put("/users/logout", "logout");
+        filterMap.put("/users/logout", "anon");
+        filterMap.put("/users/adLogin", "anon");
+        filterMap.put("/doc.html/**", "anon");
+//        filterMap.put("/**", "anon");
+
 //        filterMap.put("/shiro/hello", "anon");
 //
 //        filterMap.put("/login", "anon");
 
-//        filterMap.put("/**", "authc");
+        filterMap.put("/**", "authc");
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterMap);
         return shiroFilterFactoryBean;

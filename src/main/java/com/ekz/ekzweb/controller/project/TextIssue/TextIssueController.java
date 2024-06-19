@@ -60,15 +60,6 @@ public class TextIssueController {
     @PostMapping
     public ResponseEntity<String> save(@RequestBody TextIssue textIssue){
 
-        try {
-            Subject subject = SecurityUtils.getSubject();
-            String principals = subject.getPrincipals().toString();
-        } catch (Exception e) {
-            // 在这里处理异常
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("用户未认证");
-        }
-
         Subject subject = SecurityUtils.getSubject();
         String principals = subject.getPrincipals().toString();
         textIssue.setCreator(principals);
@@ -81,14 +72,6 @@ public class TextIssueController {
     @Operation(summary = "改 单个")
     @PutMapping
     public ResponseEntity<String> updateById(@RequestBody TextIssue textIssue){
-        try {
-            Subject subject = SecurityUtils.getSubject();
-            String principals = subject.getPrincipals().toString();
-        } catch (Exception e) {
-            // 在这里处理异常
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("用户未认证");
-        }
 
         Subject subject = SecurityUtils.getSubject();
         String principals = subject.getPrincipals().toString();
@@ -102,14 +85,6 @@ public class TextIssueController {
     @Operation(summary = "增  批量")
     @PostMapping("/list")
     public ResponseEntity<String> save(@RequestBody List<TextIssue> textIssueList){
-        try {
-            Subject subject = SecurityUtils.getSubject();
-            String principals = subject.getPrincipals().toString();
-        } catch (Exception e) {
-            // 在这里处理异常
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("用户未认证");
-        }
 
         Subject subject = SecurityUtils.getSubject();
         String principals = subject.getPrincipals().toString();
