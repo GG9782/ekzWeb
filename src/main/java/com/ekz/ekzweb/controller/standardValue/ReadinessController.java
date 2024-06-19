@@ -36,12 +36,6 @@ public class ReadinessController {
     public List<Readiness> getByProject(@PathVariable("prjCode") String prjCode) {
         AttributePO attributePO = attributeService.getById(prjCode);
         return service.getByProject(prjCode,attributePO);
-//        return service.lambdaQuery()
-//                .eq(attributePO.getBu() != null,Readiness::getBu,attributePO.getBu())
-//                .eq(attributePO.getCustomer() != null,Readiness::getCustomer,attributePO.getCustomer())
-//                .eq(attributePO.getProductType() != null,Readiness::getProductType,attributePO.getProductType())
-//                .orderByAsc(Readiness::getItem)
-//                .list();
     }
 
     /** 全查 Object*/
@@ -63,14 +57,6 @@ public class ReadinessController {
     @Operation(summary = "增 单个")
     @PostMapping
     public ResponseEntity<String> save(@RequestBody Readiness readiness){
-        try {
-            Subject subject = SecurityUtils.getSubject();
-            String principals = subject.getPrincipals().toString();
-        } catch (Exception e) {
-            // 在这里处理异常
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("用户未认证");
-        }
 
         Subject subject = SecurityUtils.getSubject();
         String principals = subject.getPrincipals().toString();
@@ -85,15 +71,6 @@ public class ReadinessController {
     @PutMapping
     public ResponseEntity<String> updateById(@RequestBody Readiness readiness){
 
-        try {
-            Subject subject = SecurityUtils.getSubject();
-            String principals = subject.getPrincipals().toString();
-        } catch (Exception e) {
-            // 在这里处理异常
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("用户未认证");
-        }
-
         Subject subject = SecurityUtils.getSubject();
         String principals = subject.getPrincipals().toString();
         readiness.setCreator(principals);
@@ -106,14 +83,6 @@ public class ReadinessController {
     @Operation(summary = "增  批量")
     @PostMapping("/list")
     public ResponseEntity<String> save(@RequestBody List<Readiness> readinessList){
-        try {
-            Subject subject = SecurityUtils.getSubject();
-            String principals = subject.getPrincipals().toString();
-        } catch (Exception e) {
-            // 在这里处理异常
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("用户未认证");
-        }
 
         Subject subject = SecurityUtils.getSubject();
         String principals = subject.getPrincipals().toString();

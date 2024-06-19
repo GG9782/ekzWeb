@@ -53,15 +53,6 @@ public class CustomerController {
     @PostMapping("/{customer}/{bu}")
     public ResponseEntity<String> save(@PathVariable("customer") String customer,@PathVariable("bu") String bu){
 
-        try {
-            Subject subject = SecurityUtils.getSubject();
-            String principals = subject.getPrincipals().toString();
-        } catch (Exception e) {
-            // 在这里处理异常
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("用户未认证");
-        }
-
         Customer dto = new Customer();
         customer = customer.trim().substring(0, 1).toUpperCase() + customer.trim().substring(1).toLowerCase();
         dto.setCustomer(customer);
@@ -78,15 +69,6 @@ public class CustomerController {
     @Operation(summary = "改 单个")
     @PutMapping("/{currentCustomer}/{newCustomer}")
     public ResponseEntity<String> update(@PathVariable("currentCustomer") String currentCustomer, @PathVariable("newCustomer") String newCustomer) {
-
-        try {
-            Subject subject = SecurityUtils.getSubject();
-            String principals = subject.getPrincipals().toString();
-        } catch (Exception e) {
-            // 在这里处理异常
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("用户未认证");
-        }
 
         Customer dto = new Customer();
         dto.setCustomer(newCustomer.trim().toUpperCase());

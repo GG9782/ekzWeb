@@ -55,15 +55,7 @@ public class ProductTypeController {
         ProductType dto = new ProductType();
         productType = productType.trim().substring(0, 1).toUpperCase() + productType.trim().substring(1).toLowerCase();
         dto.setProductType(productType);
-        try {
-            Subject subject = SecurityUtils.getSubject();
-            String principals = subject.getPrincipals().toString();
-            dto.setCreator(principals);
-        } catch (Exception e) {
-            // 在这里处理异常
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("用户未认证");
-        }
+
         dto.setCreateTime(LocalDateTime.now());
         service.save(dto);
         return ResponseEntity.status(HttpStatus.OK).body("OK");
@@ -73,14 +65,7 @@ public class ProductTypeController {
     @Operation(summary = "改 单个")
     @PutMapping("/{currentProductType}/{newProductType}")
     public ResponseEntity<String> update(@PathVariable("currentProductType") String currentProductType, @PathVariable("newProductType") String newProductType){
-        try {
-            Subject subject = SecurityUtils.getSubject();
-            String principals = subject.getPrincipals().toString();
-        } catch (Exception e) {
-            // 在这里处理异常
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("用户未认证");
-        }
+
 
         ProductType dto = new ProductType();
         dto.setProductType(newProductType);

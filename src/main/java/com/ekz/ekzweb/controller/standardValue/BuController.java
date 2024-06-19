@@ -54,16 +54,6 @@ public class BuController {
     @Operation(summary = "增 单个")
     @PostMapping("/{bu}")
     public ResponseEntity<String> save(@PathVariable("bu") String bu){
-
-        try {
-            Subject subject = SecurityUtils.getSubject();
-            String principals = subject.getPrincipals().toString();
-        } catch (Exception e) {
-            // 在这里处理异常
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("用户未认证");
-        }
-
         Bu dto = new Bu();
         dto.setBu(bu.trim().toUpperCase());
         Subject subject = SecurityUtils.getSubject();
@@ -79,15 +69,6 @@ public class BuController {
     @Operation(summary = "改 单个")
     @PutMapping("/{currentBu}/{newBu}")
     public ResponseEntity<String> update(@PathVariable("currentBu") String currentBu, @PathVariable("newBu") String newBu){
-
-        try {
-            Subject subject = SecurityUtils.getSubject();
-            String principals = subject.getPrincipals().toString();
-        } catch (Exception e) {
-            // 在这里处理异常
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("用户未认证");
-        }
 
         Bu dto = new Bu();
         dto.setBu(newBu.trim().toUpperCase());

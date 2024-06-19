@@ -52,14 +52,7 @@ public class VendorController {
     @Operation(summary = "增 单个")
     @PostMapping("/{vendor}")
     public ResponseEntity<String> save(@PathVariable("vendor") String vendor){
-        try {
-            Subject subject = SecurityUtils.getSubject();
-            String principals = subject.getPrincipals().toString();
-        } catch (Exception e) {
-            // 在这里处理异常
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("用户未认证");
-        }
+
         Vendor dto = new Vendor();
         dto.setVendor(vendor.trim());
 
@@ -85,15 +78,6 @@ public class VendorController {
     @PostMapping("/vendors")
     public ResponseEntity<String> save(@RequestBody List<String> vendors) {
 
-        try {
-            Subject subject = SecurityUtils.getSubject();
-            String principals = subject.getPrincipals().toString();
-        } catch (Exception e) {
-            // 在这里处理异常
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("用户未认证");
-        }
-
         Subject subject = SecurityUtils.getSubject();
         List<Vendor> dtos = new ArrayList<>();
         String principals = subject.getPrincipals().toString();
@@ -115,14 +99,6 @@ public class VendorController {
     @Operation(summary = "改 单个")
     @PutMapping("/{currentVendor}/{newVendor}")
     public ResponseEntity<String> update(@PathVariable("currentVendor") String currentVendor, @PathVariable("newVendor") String newVendor){
-
-        try {
-            Subject subject = SecurityUtils.getSubject();
-        } catch (Exception e) {
-            // 在这里处理异常
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("用户未认证");
-        }
 
         Subject subject = SecurityUtils.getSubject();
         Vendor dto = new Vendor();

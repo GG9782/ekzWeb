@@ -80,15 +80,6 @@ public class StageController {
     @PostMapping("/{customer}")
     public ResponseEntity<String> save(@PathVariable("customer") String customer,@RequestBody List<String> stage){
 
-        try {
-            Subject subject = SecurityUtils.getSubject();
-            String principals = subject.getPrincipals().toString();
-        } catch (Exception e) {
-            // 在这里处理异常
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("用户未认证");
-        }
-
         Stage dto = new Stage();
         dto.setStage(stage);
         dto.setCustomer(customer);
@@ -107,14 +98,6 @@ public class StageController {
     @Operation(summary = "改 单个（根据id）")
     @PutMapping
     public ResponseEntity<String> update(@RequestBody Stage dto){
-        try {
-            Subject subject = SecurityUtils.getSubject();
-            String principals = subject.getPrincipals().toString();
-        } catch (Exception e) {
-            // 在这里处理异常
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("用户未认证");
-        }
 
         Subject subject = SecurityUtils.getSubject();
         String principals = subject.getPrincipals().toString();

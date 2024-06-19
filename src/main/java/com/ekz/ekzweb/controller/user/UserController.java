@@ -10,14 +10,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
-import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.naming.CommunicationException;
 
 
 @Tag(name = "用户管理接口")
@@ -52,7 +49,7 @@ public class UserController {
             return "Login fail！Incorrect username or password.";
         }
     }
-
+    @Operation(summary = "logout")
     @GetMapping("/logout")
     @ResponseBody
     public ResponseEntity<String> userLogout(){
@@ -60,15 +57,21 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body("Logout OK");
     }
 
+    @Operation(summary = "获取当前用户")
     @GetMapping("/getPrincipals")
     @ResponseBody
     public ResponseEntity<String> getPrincipals(){
         Subject subject = SecurityUtils.getSubject();
         if( subject.getPrincipals() == null ){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("用户未认证");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("UNAUTHORIZED");
         }
         String principals = subject.getPrincipals().toString();
         return ResponseEntity.status(HttpStatus.OK).body(principals);
+    }
+    @GetMapping("/unauthorized")
+    @ResponseBody
+    public ResponseEntity<String> unauthorized(){
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("UNAUTHORIZED");
     }
 //    @Operation(summary = "新增用户接口")
 //    @PostMapping
@@ -85,7 +88,7 @@ public class UserController {
 //        userService.removeById(id);
 //    }
 
-    @Operation(summary = "根据id查询用户接口")
+    @Operation(summary = "根据id查询用户")
     @GetMapping("{id}")
     public User queryUserById(@Parameter(name = "用户id") @PathVariable("id") String id){
         User userPO = userService.getById(id);
@@ -100,7 +103,7 @@ public class UserController {
 //        return BeanUtil.copyToList(users,UserVO.class);
 //    }
 
-    @Operation(summary = "根据id修改用户接口")
+    @Operation(summary = "根据id修改用户")
     @PutMapping
     public void updateUser(@RequestBody User user){
         user.setPwd(null);

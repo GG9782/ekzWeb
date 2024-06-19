@@ -52,14 +52,6 @@ public class BusinessModelController {
     @PostMapping("/{businessModel}")
     public ResponseEntity<String> save(@PathVariable("businessModel") String businessModel){
 
-        try {
-            Subject subject = SecurityUtils.getSubject();
-            String principals = subject.getPrincipals().toString();
-        } catch (Exception e) {
-            // 在这里处理异常
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("用户未认证");
-        }
         BusinessModel dto = new BusinessModel();
         dto.setBusinessModel(businessModel.trim().toUpperCase());
         Subject subject = SecurityUtils.getSubject();
@@ -75,15 +67,6 @@ public class BusinessModelController {
     @Operation(summary = "改 单个")
     @PutMapping("/{currentBusinessModel}/{newBusinessModel}")
     public ResponseEntity<String> update(@PathVariable("currentBusinessModel") String currentBusinessModel, @PathVariable("newBusinessModel") String newBusinessModel){
-
-        try {
-            Subject subject = SecurityUtils.getSubject();
-            String principals = subject.getPrincipals().toString();
-        } catch (Exception e) {
-            // 在这里处理异常
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("用户未认证");
-        }
 
         BusinessModel dto = new BusinessModel();
         dto.setBusinessModel(newBusinessModel.trim().toUpperCase());

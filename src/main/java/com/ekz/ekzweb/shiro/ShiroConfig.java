@@ -32,7 +32,7 @@ public class ShiroConfig {
 
 
         // 设置未授权页面
-        shiroFilterFactoryBean.setUnauthorizedUrl("/users/adLogin");
+        shiroFilterFactoryBean.setUnauthorizedUrl("/users/unauthorized");
 
         //添加Shiro内置过滤器
         /**
@@ -48,6 +48,7 @@ public class ShiroConfig {
         filterMap.put("/users/logout", "logout");
         filterMap.put("/users/logout", "anon");
         filterMap.put("/users/adLogin", "anon");
+        filterMap.put("/users/unauthorized", "anon");
         filterMap.put("/doc.html/**", "anon");
 //        filterMap.put("/**", "anon");
 
