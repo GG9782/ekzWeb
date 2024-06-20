@@ -2,6 +2,7 @@ package com.ekz.ekzweb.controller.project.prj;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.ekz.ekzweb.domain.project.prj.dto.ScheduleDTO;
+import com.ekz.ekzweb.domain.project.prj.jsonType.EventAndDay;
 import com.ekz.ekzweb.domain.project.prj.jsonType.ScheduleJsonType;
 import com.ekz.ekzweb.domain.project.prj.po.SchedulePO;
 import com.ekz.ekzweb.domain.project.prj.vo.ScheduleVO;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Tag(name = "Project schedule接口")
 @RestController
@@ -36,7 +38,7 @@ public class ScheduleController {
     }
 
     /** 01.06.2改 单个 Project Schedule*/
-    @Operation(summary = "01.06.2 改 单个 Schedule")
+    @Operation(summary = "改 单个 Schedule")
     @PutMapping
     public ResponseEntity<String> updateSchedule(@RequestBody ScheduleDTO dto){
 
@@ -47,20 +49,48 @@ public class ScheduleController {
             ScheduleJsonType scheduleStage = dto.getSchedule().get(i);
             String startDate = scheduleStage.getStartDate();
 
-            // 在这里验证日期先后关系
+            // 在这里验证Stage日期先后关系
             if( (scheduleStage.getEndDate() != null && LocalDate.parse(scheduleStage.getEndDate()).isBefore(LocalDate.parse(startDate)) ) ||
                     ( nextStartDate != null && startDate != null && ! LocalDate.parse(startDate).isBefore(nextStartDate) )
             ){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(scheduleStage.getName() + " 阶段日期先后关系错误");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body( "Wrong date order at stage: "+ scheduleStage.getName() );
             }
 
-            // 在这里补全每个阶段的endDat，如果startDate为null则跳过。
+            // 在这里补全每个阶段的endDate，如果startDate为null则跳过。
             if(startDate != null){
+                // 在这里补全每个阶段的endDat。
                 if(previousEndDate != null){
                     scheduleStage.setEndDate(previousEndDate);
                 }
                 previousEndDate = LocalDate.parse(startDate).minusDays(1).toString();
                 nextStartDate = LocalDate.parse(startDate);
+            }
+
+            if(startDate != null) {
+                // 验证事件日期合法性
+                List<EventAndDay> events = scheduleStage.getEvents();
+                boolean isStartEvent = false;
+                for (EventAndDay event : events) {
+                    LocalDate eventDate = LocalDate.parse(event.getEventDay());
+                    if (eventDate.isBefore(LocalDate.parse(startDate)) || eventDate.isAfter(LocalDate.parse(scheduleStage.getEndDate()))) {
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Event: " + event.getEventName() + " is out of the date range of stage:" + scheduleStage.getName() + " !");
+                    }
+                    if (eventDate == LocalDate.parse(startDate)) {
+                        isStartEvent = true;
+                    }
+                }
+                if (isStartEvent == false) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Stage: " + scheduleStage.getName() + " is missing a start event !");
+                }
+
+                // 验证子事件日期合法性
+                List<EventAndDay> subEvents = scheduleStage.getSubEvents();
+                for (EventAndDay subEvent : subEvents) {
+                    LocalDate subEventDate = LocalDate.parse(subEvent.getEventDay());
+                    if (subEventDate.isBefore(LocalDate.parse(startDate)) || subEventDate.isAfter(LocalDate.parse(scheduleStage.getEndDate()))) {
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("SubEvent: " + subEvent.getEventName() + " is out of the date range of stage:" + scheduleStage.getName() + " !");
+                    }
+                }
             }
         }
 

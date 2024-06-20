@@ -27,11 +27,10 @@ public class ShiroConfig {
         //设置安全管理器
         shiroFilterFactoryBean.setSecurityManager(securityManager);
 
-        // 设置登录页面
-        shiroFilterFactoryBean.setLoginUrl("/users/adLogin");
+        // 设置未登录跳转页面
+        shiroFilterFactoryBean.setLoginUrl("/users/unauthorized");
 
-
-        // 设置未授权页面
+        // 设置未授权跳转页面
         shiroFilterFactoryBean.setUnauthorizedUrl("/users/unauthorized");
 
         //添加Shiro内置过滤器
@@ -46,16 +45,10 @@ public class ShiroConfig {
          */
         LinkedHashMap<String, String> filterMap = new LinkedHashMap<>();
         filterMap.put("/users/logout", "logout");
-        filterMap.put("/users/logout", "anon");
+
         filterMap.put("/users/adLogin", "anon");
         filterMap.put("/users/unauthorized", "anon");
         filterMap.put("/doc.html/**", "anon");
-//        filterMap.put("/**", "anon");
-
-//        filterMap.put("/shiro/hello", "anon");
-//
-//        filterMap.put("/login", "anon");
-
         filterMap.put("/**", "authc");
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterMap);

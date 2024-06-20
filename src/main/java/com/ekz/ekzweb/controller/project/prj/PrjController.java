@@ -63,7 +63,7 @@ public class PrjController {
 
     /** 逻辑删除 单个 Project*/
     @Operation(summary = "逻辑删除 单个 Project")
-    @DeleteMapping("/attribute/logicDelete/{prjCode}")
+    @DeleteMapping("/logicDelete/{prjCode}")
     public ResponseEntity<String>  logicDeleteById(@PathVariable("prjCode") String prjCode){
         prjService.removeById(prjCode);
         return ResponseEntity.status(HttpStatus.OK).body("OK");
@@ -71,7 +71,7 @@ public class PrjController {
 
     /** 01.03.5 逻辑删除撤销 单个 Project*/
     @Operation(summary = "逻辑删除撤销 单个 Projecte")
-    @DeleteMapping("/attribute/cancelLogicDelete/{prjCode}")
+    @DeleteMapping("/cancelLogicDelete/{prjCode}")
     public ResponseEntity<String>  cancelLogicDeleteById(@PathVariable("prjCode") String prjCode){
         prjService.cancelLogicDeleteById(prjCode);
         return ResponseEntity.status(HttpStatus.OK).body("OK");
@@ -79,7 +79,7 @@ public class PrjController {
 
     /** 01.03.6 物理删除 单个 Project*/
     @Operation(summary = "物理删除 单个 Project")
-    @DeleteMapping("/attribute/physicsDelete/{prjCode}")
+    @DeleteMapping("/physicsDelete/{prjCode}")
     public ResponseEntity<String> physicsDeleteById(@PathVariable("prjCode") String prjCode){
         prjService.physicsDeleteById(prjCode);
         return ResponseEntity.status(HttpStatus.OK).body("OK");
