@@ -31,7 +31,7 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setLoginUrl("/users/unauthorized");
 
         // 设置未授权跳转页面
-        shiroFilterFactoryBean.setUnauthorizedUrl("/users/unauthorized");
+        shiroFilterFactoryBean.setUnauthorizedUrl("/users/getPrincipals");
 
         //添加Shiro内置过滤器
         /**

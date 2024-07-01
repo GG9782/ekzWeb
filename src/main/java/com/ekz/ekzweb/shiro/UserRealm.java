@@ -1,11 +1,22 @@
 package com.ekz.ekzweb.shiro;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.ekz.ekzweb.domain.perms.PermsRolePermission;
+import com.ekz.ekzweb.domain.perms.PermsUserRole;
+import com.ekz.ekzweb.domain.standardValue.StdCustomer;
+import com.ekz.ekzweb.domain.standardValue.StdProductType;
 import com.ekz.ekzweb.domain.user.User;
+import com.ekz.ekzweb.service.perms.IRolePermissionService;
+import com.ekz.ekzweb.service.perms.IRoleService;
+import com.ekz.ekzweb.service.perms.IUserRoleService;
 import com.ekz.ekzweb.service.user.IUserService;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,12 +27,17 @@ import javax.naming.Context;
 import javax.naming.ldap.InitialLdapContext;
 import javax.naming.ldap.LdapContext;
 import java.util.Hashtable;
+import java.util.List;
 
 @Component
 public class UserRealm extends AuthorizingRealm{
 
     @Autowired
     private IUserService userService;
+    @Autowired
+    private IUserRoleService userRoleService;
+    @Autowired
+    private IRolePermissionService rolePermissionService;
 
     /**
      * 执行授权逻辑
@@ -29,38 +45,30 @@ public class UserRealm extends AuthorizingRealm{
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         System.out.println("star Authorization");
-        return null;
+        //获取当前用户身份信息
+        String principal = principalCollection.getPrimaryPrincipal().toString();
+        //调用接口方法获取用户的角色信息
+        List<String> roles = userRoleService.listObjs(new LambdaQueryWrapper<PermsUserRole>().select(PermsUserRole::getRole).eq(PermsUserRole::getUser,principal));
+        System.out.println("当前用户角色信息："+roles);
+        //调用接口方法获取用户角色的权限信息
+        List<String> permissions = rolePermissionService.getPermissionsByRoles(roles);
+        System.out.println("当前用户权限信息："+permissions);
+        //创建对象，存储当前登录的用户的权限和角色
+        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+        //存储角色
+        info.addRoles(roles);
+        //存储权限信息
+        info.addStringPermissions(permissions);
+        //返回
+        return info;
     }
+
     /**
      * 执行认证逻辑
      */
-//    @Override
-//    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-//
-//        System.out.println("star Authentication");
-//
-//        //1 获取用户身份信息
-//        String name = token.getPrincipal().toString();
-//        System.out.println(name);
-//        //2 调用业务层获取用户信息（数据库中）
-//        User user = userService.getUserInfoByName(name);
-//        //3 判断并将数据完成封装
-//        if(user!=null){
-//            AuthenticationInfo info = new SimpleAuthenticationInfo(
-//                    token.getPrincipal(),
-//                    user.getPwd(),
-//                    ByteSource.Util.bytes("salt"),
-//                    token.getPrincipal().toString()
-//            );
-//            return info;
-//        }
-//
-//        return null;
-//    }
-
-
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+        System.out.println("star Authentication");
 
         //获取用户身份信息
         UsernamePasswordToken upToken = (UsernamePasswordToken) token;
@@ -94,6 +102,5 @@ public class UserRealm extends AuthorizingRealm{
             throw new AuthenticationException("Login fail！Please check network or password.");
         }
     }
-
 }
 

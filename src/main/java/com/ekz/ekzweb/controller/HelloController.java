@@ -1,6 +1,8 @@
 package com.ekz.ekzweb.controller;
 
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,6 +28,9 @@ public class HelloController {
      * 测试方法
      */
 
+
+
+    @RequiresRoles("admin")
     @GetMapping("/Authenticate")
     @ResponseBody
     public String helloAuthenticated(){

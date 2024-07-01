@@ -7,9 +7,9 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class BusinessModel {
+public class StdBu {
     @TableId(type = IdType.INPUT)
-    private String businessModel;
+    private String bu;
     private String creator;
     private LocalDateTime createTime;
 }

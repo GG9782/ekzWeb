@@ -80,7 +80,7 @@ public class ScheduleController {
                     }
                 }
                 if (isStartEvent == false) {
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Stage: " + scheduleStage.getName() + " is missing a start event !");
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("StdStage: " + scheduleStage.getName() + " is missing a start event !");
                 }
 
                 // 验证子事件日期合法性

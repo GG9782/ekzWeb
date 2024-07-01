@@ -4,7 +4,7 @@ import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.ekz.ekzweb.domain.project.prj.po.AttributePO;
-import com.ekz.ekzweb.domain.standardValue.Stage;
+import com.ekz.ekzweb.domain.standardValue.StdStage;
 import com.ekz.ekzweb.service.project.prj.IAttributeService;
 import com.ekz.ekzweb.service.standardValue.IStageService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,9 +20,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Tag(name = "StandardValue Stage 接口")
+@Tag(name = "StandardValue StdStage 接口")
 @RestController
-@RequestMapping("/Stage")
+@RequestMapping("/StdStage")
 public class StageController {
 
     @Autowired
@@ -35,9 +35,9 @@ public class StageController {
     @Operation(summary = "全查 List")
     @GetMapping("/allList")
     public List<List<String>> getAllList() {
-//        return service.listObjs(new LambdaQueryWrapper<Stage>().select(Stage::getStage));
+//        return service.listObjs(new LambdaQueryWrapper<StdStage>().select(StdStage::getStage));
 
-        List<Object> resultList = service.listObjs(new LambdaQueryWrapper<Stage>().select(Stage::getStage));
+        List<Object> resultList = service.listObjs(new LambdaQueryWrapper<StdStage>().select(StdStage::getStage));
         List<List<String>> result = new ArrayList<>();
 
         for (Object obj : resultList) {
@@ -53,17 +53,17 @@ public class StageController {
     /** 全查 Object*/
     @Operation(summary = "全查 Object")
     @GetMapping("/allObject")
-    public List<Stage> getAllObject() {
-        return service.lambdaQuery().orderByAsc(Stage::getCustomer).list();
+    public List<StdStage> getAllObject() {
+        return service.lambdaQuery().orderByAsc(StdStage::getCustomer).list();
     }
 
     /** 依prjCode 查 可用Stage*/
     @Operation(summary = "依prjCode 查 可用Stage")
     @GetMapping("/getByPrjCode/{prjCode}")
-    public List<Stage> getByPrjCode(@PathVariable("prjCode") String prjCode) {
+    public List<StdStage> getByPrjCode(@PathVariable("prjCode") String prjCode) {
         AttributePO attributePO = attributeService.getById(prjCode);
         return service.lambdaQuery()
-                .eq(Stage::getCustomer,attributePO.getCustomer())
+                .eq(StdStage::getCustomer,attributePO.getCustomer())
                 .list();
     }
 
@@ -80,7 +80,7 @@ public class StageController {
     @PostMapping("/{customer}")
     public ResponseEntity<String> save(@PathVariable("customer") String customer,@RequestBody List<String> stage){
 
-        Stage dto = new Stage();
+        StdStage dto = new StdStage();
         dto.setStage(stage);
         dto.setCustomer(customer);
 
@@ -97,7 +97,7 @@ public class StageController {
     /** 改 单个*/
     @Operation(summary = "改 单个（根据id）")
     @PutMapping
-    public ResponseEntity<String> update(@RequestBody Stage dto){
+    public ResponseEntity<String> update(@RequestBody StdStage dto){
 
         Subject subject = SecurityUtils.getSubject();
         String principals = subject.getPrincipals().toString();

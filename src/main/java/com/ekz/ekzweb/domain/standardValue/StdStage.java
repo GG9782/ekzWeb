@@ -13,7 +13,7 @@ import java.util.List;
 
 @Data
 @TableName(autoResultMap = true)
-public class Stage {
+public class StdStage {
     @TableId(type = IdType.AUTO)
     @Schema(description = "自增id，新增时不要有此参数")
     private Integer id;

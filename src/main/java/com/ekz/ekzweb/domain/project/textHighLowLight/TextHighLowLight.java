@@ -1,4 +1,4 @@
-package com.ekz.ekzweb.domain.project.highLowLight;
+package com.ekz.ekzweb.domain.project.textHighLowLight;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -7,7 +7,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class HighLowLight {
+public class TextHighLowLight {
 
     @TableId(type = IdType.AUTO)
     private Integer id;

@@ -7,7 +7,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class Customer {
+public class StdCustomer {
     @TableId(type = IdType.INPUT)
     private String customer;
     private String bu;

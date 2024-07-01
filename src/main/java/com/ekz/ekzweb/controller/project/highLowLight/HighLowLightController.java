@@ -1,6 +1,6 @@
 package com.ekz.ekzweb.controller.project.highLowLight;
 
-import com.ekz.ekzweb.domain.project.highLowLight.HighLowLight;
+import com.ekz.ekzweb.domain.project.textHighLowLight.TextHighLowLight;
 import com.ekz.ekzweb.service.project.highLowLight.IHighLowLightService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,9 +27,9 @@ public class HighLowLightController {
     /** 查 单个*/
     @Operation(summary = "依 prjCode 查")
     @GetMapping("/{prjCode}")
-    public List<HighLowLight> getByPrjCode(@PathVariable("prjCode") String prjCode) {
+    public List<TextHighLowLight> getByPrjCode(@PathVariable("prjCode") String prjCode) {
         return service.lambdaQuery()
-                .eq(HighLowLight::getPrjCode,prjCode)
+                .eq(TextHighLowLight::getPrjCode,prjCode)
                 .list();
     }
 
@@ -44,38 +44,38 @@ public class HighLowLightController {
     /** 增 单个 */
     @Operation(summary = "增 单个")
     @PostMapping
-    public ResponseEntity<String> save(@RequestBody HighLowLight highLowLight){
+    public ResponseEntity<String> save(@RequestBody TextHighLowLight textHighLowLight){
         Subject subject = SecurityUtils.getSubject();
         String principals = subject.getPrincipals().toString();
-        highLowLight.setCreator(principals);
-        highLowLight.setCreateTime(LocalDateTime.now());
-        service.save(highLowLight);
+        textHighLowLight.setCreator(principals);
+        textHighLowLight.setCreateTime(LocalDateTime.now());
+        service.save(textHighLowLight);
         return ResponseEntity.status(HttpStatus.OK).body("OK");
     }
 
     /** 改 单个*/
     @Operation(summary = "改 单个")
     @PutMapping
-    public ResponseEntity<String> updateById(@RequestBody HighLowLight highLowLight){
+    public ResponseEntity<String> updateById(@RequestBody TextHighLowLight textHighLowLight){
         Subject subject = SecurityUtils.getSubject();
         String principals = subject.getPrincipals().toString();
-        highLowLight.setCreator(principals);
-        highLowLight.setCreateTime(LocalDateTime.now());
-        service.updateById(highLowLight);
+        textHighLowLight.setCreator(principals);
+        textHighLowLight.setCreateTime(LocalDateTime.now());
+        service.updateById(textHighLowLight);
         return ResponseEntity.status(HttpStatus.OK).body("OK");
     }
 
     /** 增  批量*/
     @Operation(summary = "增  批量")
     @PostMapping("/list")
-    public ResponseEntity<String> save(@RequestBody List<HighLowLight> highLowLightList){
+    public ResponseEntity<String> save(@RequestBody List<TextHighLowLight> textHighLowLightList){
         Subject subject = SecurityUtils.getSubject();
         String principals = subject.getPrincipals().toString();
-        for (HighLowLight highLowLight : highLowLightList) {
-            highLowLight.setCreator(principals);
-            highLowLight.setCreateTime(LocalDateTime.now());
+        for (TextHighLowLight textHighLowLight : textHighLowLightList) {
+            textHighLowLight.setCreator(principals);
+            textHighLowLight.setCreateTime(LocalDateTime.now());
         }
-        service.saveBatch(highLowLightList);
+        service.saveBatch(textHighLowLightList);
         return ResponseEntity.status(HttpStatus.OK).body("OK");
     }
 

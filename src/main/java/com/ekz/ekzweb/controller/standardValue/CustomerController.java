@@ -2,7 +2,7 @@ package com.ekz.ekzweb.controller.standardValue;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.ekz.ekzweb.domain.standardValue.Customer;
+import com.ekz.ekzweb.domain.standardValue.StdCustomer;
 import com.ekz.ekzweb.service.standardValue.ICustomerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Tag(name = "StandardValue Customer 接口")
+@Tag(name = "StandardValue StdCustomer 接口")
 @RestController
 @RequestMapping("/customer")
 public class CustomerController {
@@ -30,13 +30,13 @@ public class CustomerController {
     @Operation(summary = "全查 List")
     @GetMapping("/allList")
     public List<String> getAllList() {
-        return service.listObjs(new LambdaQueryWrapper<Customer>().select(Customer::getCustomer));
+        return service.listObjs(new LambdaQueryWrapper<StdCustomer>().select(StdCustomer::getCustomer));
     }
 
     /** 全查 Object*/
     @Operation(summary = "全查 Object")
     @GetMapping("/allObject")
-    public List<Customer> getAllObject() {
+    public List<StdCustomer> getAllObject() {
         return service.list();
     }
 
@@ -53,7 +53,7 @@ public class CustomerController {
     @PostMapping("/{customer}/{bu}")
     public ResponseEntity<String> save(@PathVariable("customer") String customer,@PathVariable("bu") String bu){
 
-        Customer dto = new Customer();
+        StdCustomer dto = new StdCustomer();
         customer = customer.trim().substring(0, 1).toUpperCase() + customer.trim().substring(1).toLowerCase();
         dto.setCustomer(customer);
         dto.setBu(bu);
@@ -70,14 +70,14 @@ public class CustomerController {
     @PutMapping("/{currentCustomer}/{newCustomer}")
     public ResponseEntity<String> update(@PathVariable("currentCustomer") String currentCustomer, @PathVariable("newCustomer") String newCustomer) {
 
-        Customer dto = new Customer();
+        StdCustomer dto = new StdCustomer();
         dto.setCustomer(newCustomer.trim().toUpperCase());
         Subject subject = SecurityUtils.getSubject();
         String principals = subject.getPrincipals().toString();
         dto.setCreator(principals);
         dto.setCreateTime(LocalDateTime.now());
         service.update(
-                dto,new LambdaUpdateWrapper<Customer>().eq(Customer::getCustomer,currentCustomer)
+                dto,new LambdaUpdateWrapper<StdCustomer>().eq(com.ekz.ekzweb.domain.standardValue.StdCustomer::getCustomer,currentCustomer)
         );
         return ResponseEntity.status(HttpStatus.OK).body("OK");
     }
@@ -103,13 +103,13 @@ public class CustomerController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("用户未认证");
         }
 
-        List<Customer> dtos = new ArrayList<>();
+        List<StdCustomer> dtos = new ArrayList<>();
         Subject subject = SecurityUtils.getSubject();
         String principals = subject.getPrincipals().toString();
         LocalDateTime createTime = LocalDateTime.now();
 
         for (String customer : customers) {
-            Customer dto = new Customer();
+            StdCustomer dto = new StdCustomer();
             dto.setCustomer(customer.trim().toUpperCase());
             dto.setCreator(principals);
             dto.setCreateTime(createTime);

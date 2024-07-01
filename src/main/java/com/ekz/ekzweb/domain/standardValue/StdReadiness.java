@@ -8,7 +8,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class Readiness {
+public class StdReadiness {
 
     @TableId(type = IdType.AUTO)
     @Schema(description = "自增id，新增时不要有此参数")

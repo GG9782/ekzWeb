@@ -4,7 +4,7 @@ package com.ekz.ekzweb.controller.standardValue;
 
 import com.ekz.ekzweb.domain.project.prj.po.AttributePO;
 
-import com.ekz.ekzweb.domain.standardValue.Readiness;
+import com.ekz.ekzweb.domain.standardValue.StdReadiness;
 import com.ekz.ekzweb.service.project.prj.IAttributeService;
 import com.ekz.ekzweb.service.standardValue.IReadinessService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 
-@Tag(name = "StandardValue Readiness 接口")
+@Tag(name = "StandardValue StdReadiness 接口")
 @RestController
 @RequestMapping("/readiness")
 public class ReadinessController {
@@ -33,7 +33,7 @@ public class ReadinessController {
     /** 依project查 Object*/
     @Operation(summary = "依project查 Object")
     @GetMapping("/getByPrjCode/{prjCode}")
-    public List<Readiness> getByProject(@PathVariable("prjCode") String prjCode) {
+    public List<StdReadiness> getByProject(@PathVariable("prjCode") String prjCode) {
         AttributePO attributePO = attributeService.getById(prjCode);
         return service.getByProject(prjCode,attributePO);
     }
@@ -41,7 +41,7 @@ public class ReadinessController {
     /** 全查 Object*/
     @Operation(summary = "全查 Object")
     @GetMapping("/allObject")
-    public List<Readiness> getAllObject() {
+    public List<StdReadiness> getAllObject() {
         return service.list();
     }
 
@@ -56,41 +56,41 @@ public class ReadinessController {
     /** 增 单个 */
     @Operation(summary = "增 单个")
     @PostMapping
-    public ResponseEntity<String> save(@RequestBody Readiness readiness){
+    public ResponseEntity<String> save(@RequestBody StdReadiness stdReadiness){
 
         Subject subject = SecurityUtils.getSubject();
         String principals = subject.getPrincipals().toString();
-        readiness.setCreator(principals);
-        readiness.setCreateTime(LocalDateTime.now());
-        service.save(readiness);
+        stdReadiness.setCreator(principals);
+        stdReadiness.setCreateTime(LocalDateTime.now());
+        service.save(stdReadiness);
         return ResponseEntity.status(HttpStatus.OK).body("OK");
     }
 
     /** 改 单个*/
     @Operation(summary = "改 单个")
     @PutMapping
-    public ResponseEntity<String> updateById(@RequestBody Readiness readiness){
+    public ResponseEntity<String> updateById(@RequestBody StdReadiness stdReadiness){
 
         Subject subject = SecurityUtils.getSubject();
         String principals = subject.getPrincipals().toString();
-        readiness.setCreator(principals);
-        readiness.setCreateTime(LocalDateTime.now());
-        service.updateById(readiness);
+        stdReadiness.setCreator(principals);
+        stdReadiness.setCreateTime(LocalDateTime.now());
+        service.updateById(stdReadiness);
         return ResponseEntity.status(HttpStatus.OK).body("OK");
     }
 
     /** 增  批量*/
     @Operation(summary = "增  批量")
     @PostMapping("/list")
-    public ResponseEntity<String> save(@RequestBody List<Readiness> readinessList){
+    public ResponseEntity<String> save(@RequestBody List<StdReadiness> stdReadinessList){
 
         Subject subject = SecurityUtils.getSubject();
         String principals = subject.getPrincipals().toString();
-        for (Readiness readiness : readinessList) {
-            readiness.setCreator(principals);
-            readiness.setCreateTime(LocalDateTime.now());
+        for (StdReadiness stdReadiness : stdReadinessList) {
+            stdReadiness.setCreator(principals);
+            stdReadiness.setCreateTime(LocalDateTime.now());
         }
-        service.saveBatch(readinessList);
+        service.saveBatch(stdReadinessList);
         return ResponseEntity.status(HttpStatus.OK).body("OK");
     }
 

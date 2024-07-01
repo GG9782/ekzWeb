@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DeveloperRecordServiceImp  extends ServiceImpl<DeveloperRecordMapper, DeveloperRecord> implements IDeveloperRecordService {
+public class DeveloperRecordServiceImp extends ServiceImpl<DeveloperRecordMapper, DeveloperRecord> implements IDeveloperRecordService {
     @Autowired
     private DeveloperRecordMapper developerRecordMapper;
 }

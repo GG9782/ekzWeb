@@ -17,15 +17,14 @@ import java.time.LocalDateTime;
 public class User {
 
     @TableId(type = IdType.INPUT)
-    private String id;
-    // @TableField("`username`")
-    private String name;
-
-    // @TableField(exist = false)
-    private String pwd;
-
-    private Integer rid;
-
     private String email;
-
+    private String userId;
+    private String cnName;
+    private String name;
+    private Integer phone;
+    private String gender;
+    private String mobile;
+    private String function;
+    private String department;
+    private LocalDate entryDate;
 }

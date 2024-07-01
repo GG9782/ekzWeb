@@ -2,7 +2,7 @@ package com.ekz.ekzweb.controller.standardValue;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.ekz.ekzweb.domain.standardValue.ProductType;
+import com.ekz.ekzweb.domain.standardValue.StdProductType;
 import com.ekz.ekzweb.service.standardValue.IProductTypeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 
-@Tag(name = "StandardValue ProductType 接口")
+@Tag(name = "StandardValue StdProductType 接口")
 @RestController
 @RequestMapping("/productType")
 public class ProductTypeController {
@@ -29,13 +29,13 @@ public class ProductTypeController {
     @Operation(summary = "全查 List")
     @GetMapping("/allList")
     public List<String> getAllList() {
-        return service.listObjs(new LambdaQueryWrapper<ProductType>().select(ProductType::getProductType));
+        return service.listObjs(new LambdaQueryWrapper<StdProductType>().select(StdProductType::getProductType));
     }
 
     /** 全查 Object*/
     @Operation(summary = "全查 Object")
     @GetMapping("/allObject")
-    public List<ProductType> getAllObject() {
+    public List<StdProductType> getAllObject() {
         return service.list();
     }
 
@@ -52,7 +52,7 @@ public class ProductTypeController {
     @PostMapping("/{productType}")
     public ResponseEntity<String> save(@PathVariable("productType") String productType){
 
-        ProductType dto = new ProductType();
+        StdProductType dto = new StdProductType();
         productType = productType.trim().substring(0, 1).toUpperCase() + productType.trim().substring(1).toLowerCase();
         dto.setProductType(productType);
 
@@ -67,7 +67,7 @@ public class ProductTypeController {
     public ResponseEntity<String> update(@PathVariable("currentProductType") String currentProductType, @PathVariable("newProductType") String newProductType){
 
 
-        ProductType dto = new ProductType();
+        StdProductType dto = new StdProductType();
         dto.setProductType(newProductType);
 
         Subject subject = SecurityUtils.getSubject();
@@ -75,7 +75,7 @@ public class ProductTypeController {
         dto.setCreator(principals);
         dto.setCreateTime(LocalDateTime.now());
         service.update(
-                dto,new LambdaUpdateWrapper<ProductType>().eq(ProductType::getProductType,currentProductType)
+                dto,new LambdaUpdateWrapper<StdProductType>().eq(StdProductType::getProductType,currentProductType)
         );
         return ResponseEntity.status(HttpStatus.OK).body("OK");
     }

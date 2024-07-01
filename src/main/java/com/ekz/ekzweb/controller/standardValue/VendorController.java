@@ -2,7 +2,7 @@ package com.ekz.ekzweb.controller.standardValue;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.ekz.ekzweb.domain.standardValue.Vendor;
+import com.ekz.ekzweb.domain.standardValue.StdVendor;
 import com.ekz.ekzweb.service.standardValue.IVendorService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Tag(name = "StandardValue Vendor 接口")
+@Tag(name = "StandardValue StdVendor 接口")
 @RestController
 @RequestMapping("/vendor")
 public class VendorController {
@@ -29,13 +29,13 @@ public class VendorController {
     @Operation(summary = "全查 List")
     @GetMapping("/allList")
     public List<String> getAllList() {
-        return service.listObjs(new LambdaQueryWrapper<Vendor>().select(Vendor::getVendor));
+        return service.listObjs(new LambdaQueryWrapper<StdVendor>().select(StdVendor::getVendor));
     }
 
     /** 全查 Object*/
     @Operation(summary = "全查 Object")
     @GetMapping("/allObject")
-    public List<Vendor> getAllObject() {
+    public List<StdVendor> getAllObject() {
         return service.list();
     }
 
@@ -53,7 +53,7 @@ public class VendorController {
     @PostMapping("/{vendor}")
     public ResponseEntity<String> save(@PathVariable("vendor") String vendor){
 
-        Vendor dto = new Vendor();
+        StdVendor dto = new StdVendor();
         dto.setVendor(vendor.trim());
 
         Subject subject = SecurityUtils.getSubject();
@@ -79,11 +79,11 @@ public class VendorController {
     public ResponseEntity<String> save(@RequestBody List<String> vendors) {
 
         Subject subject = SecurityUtils.getSubject();
-        List<Vendor> dtos = new ArrayList<>();
+        List<StdVendor> dtos = new ArrayList<>();
         String principals = subject.getPrincipals().toString();
         LocalDateTime createTime = LocalDateTime.now();
         for (String vendor : vendors) {
-            Vendor dto = new Vendor();
+            StdVendor dto = new StdVendor();
             dto.setVendor(vendor);
             dto.setCreator(principals);
             dto.setCreateTime(createTime);
@@ -101,13 +101,13 @@ public class VendorController {
     public ResponseEntity<String> update(@PathVariable("currentVendor") String currentVendor, @PathVariable("newVendor") String newVendor){
 
         Subject subject = SecurityUtils.getSubject();
-        Vendor dto = new Vendor();
+        StdVendor dto = new StdVendor();
         dto.setVendor(newVendor);
         String principals = subject.getPrincipals().toString();
         dto.setCreator(principals);
         dto.setCreateTime(LocalDateTime.now());
         service.update(
-                dto,new LambdaUpdateWrapper<Vendor>().eq(Vendor::getVendor,currentVendor)
+                dto,new LambdaUpdateWrapper<StdVendor>().eq(StdVendor::getVendor,currentVendor)
         );
         return ResponseEntity.status(HttpStatus.OK).body("OK");
     }

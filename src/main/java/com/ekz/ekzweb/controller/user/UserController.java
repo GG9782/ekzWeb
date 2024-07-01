@@ -10,11 +10,16 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Set;
+
+import static org.apache.shiro.web.filter.mgt.DefaultFilter.roles;
 
 
 @Tag(name = "用户管理接口")
@@ -30,7 +35,7 @@ public class UserController {
     @ResponseBody
     public String adLogin(String username, String password){
         if(!username.contains("@")){
-            User user = userService.getById(username);
+            User user = userService.lambdaQuery().select(User::getEmail).eq(User::getUserId,username).one();
             if(user == null){
                 return "id "+username+" is not recorded by ekzWeb system.";
             }
@@ -57,22 +62,21 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body("Logout OK");
     }
 
+    @RequiresRoles("admin")
     @Operation(summary = "获取当前用户")
     @GetMapping("/getPrincipals")
     @ResponseBody
     public ResponseEntity<String> getPrincipals(){
         Subject subject = SecurityUtils.getSubject();
-        if( subject.getPrincipals() == null ){
+        if(!subject.isAuthenticated()){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("UNAUTHORIZED");
         }
+
         String principals = subject.getPrincipals().toString();
-        return ResponseEntity.status(HttpStatus.OK).body(principals);
+
+        return ResponseEntity.status(HttpStatus.OK).body("principals" + principals + " ,roles: " );
     }
-    @GetMapping("/unauthorized")
-    @ResponseBody
-    public ResponseEntity<String> unauthorized(){
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("UNAUTHORIZED");
-    }
+
 //    @Operation(summary = "新增用户接口")
 //    @PostMapping
 //    public void saveUser(@RequestBody UserFormDTO userDTO){
@@ -88,13 +92,12 @@ public class UserController {
 //        userService.removeById(id);
 //    }
 
-    @Operation(summary = "根据id查询用户")
-    @GetMapping("{id}")
-    public User queryUserById(@Parameter(name = "用户id") @PathVariable("id") String id){
-        User userPO = userService.getById(id);
-        return userPO;
-    }
-
+//    @Operation(summary = "根据id查询用户")
+//    @GetMapping("{id}")
+//    public User queryUserById(@Parameter(name = "用户id") @PathVariable("id") String id){
+//        User userPO = userService.getById(id);
+//        return userPO;
+//    }
 
 //    @Operation(summary = "根据id批量查询用户接口")
 //    @GetMapping
@@ -103,10 +106,10 @@ public class UserController {
 //        return BeanUtil.copyToList(users,UserVO.class);
 //    }
 
-    @Operation(summary = "根据id修改用户")
-    @PutMapping
-    public void updateUser(@RequestBody User user){
-        user.setPwd(null);
-        userService.updateById(user);
-    }
+//    @Operation(summary = "根据id修改用户")
+//    @PutMapping
+//    public void updateUser(@RequestBody User user){
+//        user.setPwd(null);
+//        userService.updateById(user);
+//    }
 }

@@ -4,7 +4,7 @@ package com.ekz.ekzweb.controller.standardValue;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.ekz.ekzweb.domain.standardValue.Bu;
+import com.ekz.ekzweb.domain.standardValue.StdBu;
 import com.ekz.ekzweb.service.standardValue.IBuService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -32,13 +32,13 @@ public class BuController {
     @Operation(summary = "全查 List")
     @GetMapping("/allList")
     public List<String> getAllList() {
-        return service.listObjs(new LambdaQueryWrapper<Bu>().select(Bu::getBu));
+        return service.listObjs(new LambdaQueryWrapper<StdBu>().select(StdBu::getBu));
     }
 
     /** 全查 Object*/
     @Operation(summary = "全查 Object")
     @GetMapping("/allObject")
-    public List<Bu> getAllObject() {
+    public List<StdBu> getAllObject() {
         return service.list();
     }
 
@@ -54,7 +54,7 @@ public class BuController {
     @Operation(summary = "增 单个")
     @PostMapping("/{bu}")
     public ResponseEntity<String> save(@PathVariable("bu") String bu){
-        Bu dto = new Bu();
+        StdBu dto = new StdBu();
         dto.setBu(bu.trim().toUpperCase());
         Subject subject = SecurityUtils.getSubject();
         String principals = subject.getPrincipals().toString();
@@ -70,14 +70,14 @@ public class BuController {
     @PutMapping("/{currentBu}/{newBu}")
     public ResponseEntity<String> update(@PathVariable("currentBu") String currentBu, @PathVariable("newBu") String newBu){
 
-        Bu dto = new Bu();
+        StdBu dto = new StdBu();
         dto.setBu(newBu.trim().toUpperCase());
         Subject subject = SecurityUtils.getSubject();
         String principals = subject.getPrincipals().toString();
         dto.setCreator(principals);
         dto.setCreateTime(LocalDateTime.now());
         service.update(
-                dto,new LambdaUpdateWrapper<Bu>().eq(Bu::getBu,currentBu)
+                dto,new LambdaUpdateWrapper<StdBu>().eq(StdBu::getBu,currentBu)
         );
         return ResponseEntity.status(HttpStatus.OK).body("OK");
     }
