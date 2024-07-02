@@ -1,5 +1,6 @@
 package com.ekz.ekzweb.service.perms.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ekz.ekzweb.domain.perms.PermsUserRole;
 import com.ekz.ekzweb.mapper.perms.UserRoleMapper;
@@ -13,4 +14,9 @@ import java.util.List;
 public class UserRoleServiceImpl extends ServiceImpl<UserRoleMapper, PermsUserRole> implements IUserRoleService {
     @Autowired
     private UserRoleMapper mapper;
+
+    public List<String> getUserRoles(String principal){
+        return listObjs( new LambdaQueryWrapper<PermsUserRole>().select(PermsUserRole::getRole).eq(PermsUserRole::getUser, principal) );
+    }
+
 }

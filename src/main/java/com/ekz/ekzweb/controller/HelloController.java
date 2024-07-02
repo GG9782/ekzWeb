@@ -16,23 +16,22 @@ public class HelloController {
      */
 
     @GetMapping("/hello")
+    @RequiresRoles("admin")
     @ResponseBody
     public String hello(){
         System.out.println("hello");
         String id = SecurityUtils.getSubject().getPrincipal().toString();
         System.out.println(id);
         return "hello";
-
     }
     /**
      * 测试方法
      */
 
 
-
-    @RequiresRoles("admin")
     @GetMapping("/Authenticate")
     @ResponseBody
+    @RequiresRoles("admin")
     public String helloAuthenticated(){
         System.out.println("hello authenticated User");
         return "hello authenticated User";

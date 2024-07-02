@@ -28,7 +28,9 @@ ldap:
 #            max-request-size: 100MB
 
 shiro:
-    loginUrl:/users/adLogin
+    loginUrl: /users/adLogin
+    aop:
+        proxy-target-class: true
 
 mybatis-plus:
     type-aliases-package: com.ekz.ekzwebmp.domain.po

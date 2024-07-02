@@ -48,7 +48,7 @@ public class UserRealm extends AuthorizingRealm{
         //获取当前用户身份信息
         String principal = principalCollection.getPrimaryPrincipal().toString();
         //调用接口方法获取用户的角色信息
-        List<String> roles = userRoleService.listObjs(new LambdaQueryWrapper<PermsUserRole>().select(PermsUserRole::getRole).eq(PermsUserRole::getUser,principal));
+        List<String> roles = userRoleService.getUserRoles(principal);
         System.out.println("当前用户角色信息："+roles);
         //调用接口方法获取用户角色的权限信息
         List<String> permissions = rolePermissionService.getPermissionsByRoles(roles);
