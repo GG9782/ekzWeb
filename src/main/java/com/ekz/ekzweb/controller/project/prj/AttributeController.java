@@ -58,10 +58,12 @@ public class AttributeController {
     @Operation(summary = "改 单个 Attribute")
     @PutMapping("/{prjCode}")
     public ResponseEntity<String> updateAttribute(@PathVariable("prjCode") String prjCode, @RequestBody AttributeDTO dto){
-
-        dto.setPrjCode(dto.getPrjCode().trim().toUpperCase());
-        dto.setPrjName(dto.getPrjName().trim());
-
+        if(dto.getPrjCode() != null){
+            dto.setPrjCode(dto.getPrjCode().trim().toUpperCase());
+        }
+        if(dto.getPrjName() != null){
+            dto.setPrjName(dto.getPrjName().trim());
+        }
         Subject subject = SecurityUtils.getSubject();
         String principals = subject.getPrincipals().toString();
         attributeService.lambdaUpdate()

@@ -16,11 +16,9 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.apache.shiro.subject.Subject;
-import org.apache.shiro.util.ByteSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Component;
 
 import javax.naming.Context;
@@ -49,10 +47,10 @@ public class UserRealm extends AuthorizingRealm{
         String principal = principalCollection.getPrimaryPrincipal().toString();
         //调用接口方法获取用户的角色信息
         List<String> roles = userRoleService.getUserRoles(principal);
-        System.out.println("当前用户角色信息："+roles);
+        System.out.println("roles: "+roles);
         //调用接口方法获取用户角色的权限信息
         List<String> permissions = rolePermissionService.getPermissionsByRoles(roles);
-        System.out.println("当前用户权限信息："+permissions);
+        System.out.println("permissions: "+permissions);
         //创建对象，存储当前登录的用户的权限和角色
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         //存储角色

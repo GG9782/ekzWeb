@@ -5,11 +5,11 @@ import com.ekz.ekzweb.domain.user.User;
 import com.ekz.ekzweb.service.user.IUserService;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
 
-import static org.apache.shiro.web.filter.mgt.DefaultFilter.roles;
 
 
 @Tag(name = "用户管理接口")
@@ -43,6 +41,7 @@ public class UserController {
         }
         //1 获取 Subject 对象
         Subject subject = SecurityUtils.getSubject();
+        System.out.println(subject.toString());
         //2 封装请求数据到 token 对象中
         AuthenticationToken token = new
                 UsernamePasswordToken(username,password);
@@ -62,8 +61,9 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body("Logout OK");
     }
 
-    @RequiresRoles("admin")
+
     @Operation(summary = "获取当前用户")
+    @RequiresRoles("admin")
     @GetMapping("/getPrincipals")
     @ResponseBody
     public ResponseEntity<String> getPrincipals(){

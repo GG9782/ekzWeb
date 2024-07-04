@@ -1,6 +1,7 @@
 package com.ekz.ekzweb.shiro;
 
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.util.ThreadContext;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +20,7 @@ public class ShiroConfig {
     /**
      * 创建ShiroFilterFactoryBean
      */
-    @Bean
+    @Bean(name = "filterShiroFilterRegistrationBean")
     public ShiroFilterFactoryBean getShiroFilterFactoryBean(DefaultWebSecurityManager securityManager){
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
 
@@ -44,11 +45,12 @@ public class ShiroConfig {
          */
         LinkedHashMap<String, String> filterMap = new LinkedHashMap<>();
         filterMap.put("/users/logout", "logout");
-
-        filterMap.put("/users/adLogin", "anon");
-        filterMap.put("/users/unauthorized", "anon");
+        filterMap.put("/users/**", "anon");
+//        filterMap.put("/users/adLogin", "anon");
+//        filterMap.put("/users/unauthorized", "anon");
         filterMap.put("/doc.html/**", "anon");
         filterMap.put("/**", "authc");
+
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterMap);
         return shiroFilterFactoryBean;
@@ -59,10 +61,13 @@ public class ShiroConfig {
      */
     @Bean
     public DefaultWebSecurityManager defaultWebSecurityManager(){
+
         //1 创建 securityManager 对象
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+        ThreadContext.bind(securityManager);
         //2 将 myRealm 存入 securityManager 对象
         securityManager.setRealm(userRealm);
+
         //3 返回
         return securityManager;
     }

@@ -29,8 +29,8 @@ ldap:
 
 shiro:
     loginUrl: /users/adLogin
-    aop:
-        proxy-target-class: true
+        #    aop:
+#        proxy-target-class: true
 
 mybatis-plus:
     type-aliases-package: com.ekz.ekzwebmp.domain.po
