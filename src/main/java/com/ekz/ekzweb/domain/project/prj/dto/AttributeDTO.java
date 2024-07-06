@@ -7,6 +7,7 @@ import lombok.Data;
 public class AttributeDTO {
     private String prjCode;
     private String prjName;
+    private String department;
     private String bu;
     private String customer;
     private String businessModel;

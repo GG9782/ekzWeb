@@ -8,6 +8,7 @@ import com.ekz.ekzweb.domain.standardValue.StdProductType;
 import com.ekz.ekzweb.domain.user.User;
 import com.ekz.ekzweb.service.perms.IRolePermissionService;
 import com.ekz.ekzweb.service.perms.IRoleService;
+import com.ekz.ekzweb.service.perms.IUserProjectPermissionService;
 import com.ekz.ekzweb.service.perms.IUserRoleService;
 import com.ekz.ekzweb.service.user.IUserService;
 import org.apache.shiro.SecurityUtils;
@@ -36,6 +37,8 @@ public class UserRealm extends AuthorizingRealm{
     private IUserRoleService userRoleService;
     @Autowired
     private IRolePermissionService rolePermissionService;
+    @Autowired
+    private IUserProjectPermissionService userProjectPermissionService;
 
     /**
      * 执行授权逻辑
@@ -50,6 +53,8 @@ public class UserRealm extends AuthorizingRealm{
         System.out.println("roles: "+roles);
         //调用接口方法获取用户角色的权限信息
         List<String> permissions = rolePermissionService.getPermissionsByRoles(roles);
+        //调用接口方法获取用户角色的project权限信息
+//        List<String> projectPermissions = userProjectPermissionService.getUserPermissions(principal);
         System.out.println("permissions: "+permissions);
         //创建对象，存储当前登录的用户的权限和角色
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
@@ -57,6 +62,7 @@ public class UserRealm extends AuthorizingRealm{
         info.addRoles(roles);
         //存储权限信息
         info.addStringPermissions(permissions);
+//        info.addStringPermissions(projectPermissions);
         //返回
         return info;
     }
@@ -88,7 +94,6 @@ public class UserRealm extends AuthorizingRealm{
         try {
             // 连接LDAP服务器
             LdapContext ctx = new InitialLdapContext(hashEnv, null);
-
             // 如果连接成功，说明身份验证通过
             ctx.close();
             return new SimpleAuthenticationInfo(username, password, getName());

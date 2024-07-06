@@ -19,6 +19,7 @@ public class AttributePO {
     @TableLogic
     private Integer deleted;
     private String prjName;
+    private String department;
     private String bu;
     private String customer;
     private String businessModel;

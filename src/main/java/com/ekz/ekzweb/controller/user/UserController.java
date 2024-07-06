@@ -41,7 +41,6 @@ public class UserController {
         }
         //1 获取 Subject 对象
         Subject subject = SecurityUtils.getSubject();
-        System.out.println(subject.toString());
         //2 封装请求数据到 token 对象中
         AuthenticationToken token = new
                 UsernamePasswordToken(username,password);
@@ -63,18 +62,17 @@ public class UserController {
 
 
     @Operation(summary = "获取当前用户")
-    @RequiresRoles("admin")
+//    @RequiresRoles("admin")
     @GetMapping("/getPrincipals")
     @ResponseBody
     public ResponseEntity<String> getPrincipals(){
         Subject subject = SecurityUtils.getSubject();
-        if(!subject.isAuthenticated()){
+        if(subject.isAuthenticated()){
+            String principals = subject.getPrincipals().toString();
+            return ResponseEntity.status(HttpStatus.OK).body("principals " + principals );
+        }else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("UNAUTHORIZED");
         }
-
-        String principals = subject.getPrincipals().toString();
-
-        return ResponseEntity.status(HttpStatus.OK).body("principals" + principals + " ,roles: " );
     }
 
 //    @Operation(summary = "新增用户接口")

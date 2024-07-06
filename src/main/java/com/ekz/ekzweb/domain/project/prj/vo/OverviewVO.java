@@ -13,6 +13,7 @@ public class OverviewVO {
 
     private String prjCode;
     private String prjName;
+    private String department;
     private String bu;
     private String customer;
     private String businessModel;

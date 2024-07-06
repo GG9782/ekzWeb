@@ -21,6 +21,8 @@ public class Project {
 
 
     private String prjName;
+
+    private String department;
     @Schema(description = "逻辑删除，0逻辑未删除值，1逻辑已删除值，默认0")
     @TableLogic
     private Integer deleted;

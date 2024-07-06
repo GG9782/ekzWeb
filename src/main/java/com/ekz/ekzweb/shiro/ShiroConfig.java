@@ -1,17 +1,24 @@
 package com.ekz.ekzweb.shiro;
 
+import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.spring.web.config.DefaultShiroFilterChainDefinition;
+import org.apache.shiro.spring.web.config.ShiroFilterChainDefinition;
 import org.apache.shiro.util.ThreadContext;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.Lazy;
 
 import java.util.LinkedHashMap;
 /**
  * @Description:shiro配置类
  */
 @Configuration
+@EnableAspectJAutoProxy
 public class ShiroConfig {
 
     @Autowired
@@ -20,9 +27,11 @@ public class ShiroConfig {
     /**
      * 创建ShiroFilterFactoryBean
      */
-    @Bean(name = "filterShiroFilterRegistrationBean")
+//    @Bean(name = "filterShiroFilterRegistrationBean")
+    @Bean
     public ShiroFilterFactoryBean getShiroFilterFactoryBean(DefaultWebSecurityManager securityManager){
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
+
 
         //设置安全管理器
         shiroFilterFactoryBean.setSecurityManager(securityManager);
@@ -44,30 +53,36 @@ public class ShiroConfig {
          *       role: 该资源必须得到角色权限才可以访问
          */
         LinkedHashMap<String, String> filterMap = new LinkedHashMap<>();
+
         filterMap.put("/users/logout", "logout");
-        filterMap.put("/users/**", "anon");
-//        filterMap.put("/users/adLogin", "anon");
-//        filterMap.put("/users/unauthorized", "anon");
-        filterMap.put("/doc.html/**", "anon");
+        filterMap.put("/users/unauthorized", "anon");
+        filterMap.put("/users/adLogin", "anon");
         filterMap.put("/**", "authc");
-
-
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterMap);
         return shiroFilterFactoryBean;
     }
+//
+//    @Bean(name = "filterShiroFilterRegistrationBean")
+//    public ShiroFilterChainDefinition shiroFilterChainDefinition() {
+//        DefaultShiroFilterChainDefinition chainDefinition = new DefaultShiroFilterChainDefinition();
+//        // need to accept POSTs from the login form
+//        chainDefinition.addPathDefinition("/**", "authc");
+//        chainDefinition.addPathDefinition("/users/logout", "logout");
+//        return chainDefinition;
+//    }
 
     /**
      * 创建DefaultWebSecurityManager
      */
+
     @Bean
     public DefaultWebSecurityManager defaultWebSecurityManager(){
 
         //1 创建 securityManager 对象
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        ThreadContext.bind(securityManager);
         //2 将 myRealm 存入 securityManager 对象
         securityManager.setRealm(userRealm);
-
+//        ThreadContext.bind(securityManager);
         //3 返回
         return securityManager;
     }
