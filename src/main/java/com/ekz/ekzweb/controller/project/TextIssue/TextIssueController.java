@@ -29,6 +29,10 @@ public class TextIssueController {
     @Operation(summary = "依 prjCode 查")
     @GetMapping("/{prjCode}")
     public List<TextIssue> getByPrjCode(@PathVariable("prjCode") String prjCode) {
+        // .checkRole("member");
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("member");
+
         return service.lambdaQuery()
                 .eq(TextIssue::getPrjCode,prjCode)
                 .orderByDesc(TextIssue::getIsTop)
@@ -40,6 +44,10 @@ public class TextIssueController {
     @Operation(summary = "依 prjCode 查top5")
     @GetMapping("/top5/{prjCode}")
     public List<TextIssue> getTop5ByPrjCode(@PathVariable("prjCode") String prjCode) {
+        // .checkRole("member");
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("member");
+
         return service.lambdaQuery()
                 .eq(TextIssue::getPrjCode,prjCode)
                 .eq(TextIssue::getIsTop,true)
@@ -51,6 +59,12 @@ public class TextIssueController {
     @Operation(summary = "删 单个")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> Delete(@PathVariable("id") String id){
+        // checkPermission(prjCode+":member")
+        TextIssue textIssue = service.getById(id);
+        String prjCode = textIssue.getPrjCode();
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkPermission(prjCode+":member");
+
         service.removeById(id);
         return ResponseEntity.status(HttpStatus.OK).body("OK");
     }
@@ -60,7 +74,11 @@ public class TextIssueController {
     @PostMapping
     public ResponseEntity<String> save(@RequestBody TextIssue textIssue){
 
+        // checkPermission(prjCode+":member")
+        String prjCode = textIssue.getPrjCode();
         Subject subject = SecurityUtils.getSubject();
+        subject.checkPermission(prjCode+":member");
+
         String principals = subject.getPrincipals().toString();
         textIssue.setCreator(principals);
         textIssue.setCreateTime(LocalDateTime.now());
@@ -72,8 +90,11 @@ public class TextIssueController {
     @Operation(summary = "改 单个")
     @PutMapping
     public ResponseEntity<String> updateById(@RequestBody TextIssue textIssue){
-
+        // checkPermission(prjCode+":member")
+        String prjCode = textIssue.getPrjCode();
         Subject subject = SecurityUtils.getSubject();
+        subject.checkPermission(prjCode+":member");
+
         String principals = subject.getPrincipals().toString();
         textIssue.setCreator(principals);
         textIssue.setCreateTime(LocalDateTime.now());
@@ -85,8 +106,22 @@ public class TextIssueController {
     @Operation(summary = "增  批量")
     @PostMapping("/list")
     public ResponseEntity<String> save(@RequestBody List<TextIssue> textIssueList){
+        // check prjCodes is equals
+        if (textIssueList == null || textIssueList.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("TextIssueList can't be empty");
+        }
 
+        String prjCode = textIssueList.get(0).getPrjCode();
+        for (TextIssue textIssue : textIssueList) {
+            if (!prjCode.equals(textIssue.getPrjCode())) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("All prjCodes need to be equals");
+            }
+        }
+
+        // checkPermission(prjCode+":member")
         Subject subject = SecurityUtils.getSubject();
+        subject.checkPermission(prjCode+":member");
+
         String principals = subject.getPrincipals().toString();
         for (TextIssue textIssue : textIssueList) {
             textIssue.setCreator(principals);

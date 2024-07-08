@@ -62,7 +62,6 @@ public class UserController {
 
 
     @Operation(summary = "获取当前用户")
-//    @RequiresRoles("admin")
     @GetMapping("/getPrincipals")
     @ResponseBody
     public ResponseEntity<String> getPrincipals(){

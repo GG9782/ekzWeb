@@ -30,17 +30,25 @@ public class ScheduleController {
 
 /** Project Schedule*/
 
-    /** 01.06.1 查 单个 Project Schedule*/
-    @Operation(summary = "01.06.1 查 单个 Schedule")
+    /** 查 单个 Project Schedule*/
+    @Operation(summary = "查 单个 Schedule")
     @GetMapping("/{prjCode}")
     public ScheduleVO getScheduleById(@PathVariable("prjCode") String prjCode) {
+        // .checkRole("member");
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("member");
+
         return BeanUtil.copyProperties( scheduleService.getById(prjCode) ,ScheduleVO.class);
     }
 
-    /** 01.06.2改 单个 Project Schedule*/
+    /** 改 单个 Project Schedule*/
     @Operation(summary = "改 单个 Schedule")
     @PutMapping
     public ResponseEntity<String> updateSchedule(@RequestBody ScheduleDTO dto){
+        // checkPermission(prjCode+":member")
+        String prjCode = dto.getPrjCode();
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkPermission(prjCode+":member");
 
         // 遍历 验证日期先后关系 并 补全每个阶段的endDate。
         String previousEndDate = null;
@@ -96,7 +104,6 @@ public class ScheduleController {
 
         //  把DTO拷贝到PO
         SchedulePO po = BeanUtil.copyProperties(dto,SchedulePO.class);
-        Subject subject = SecurityUtils.getSubject();
         po.setScheduleUpdater(subject.getPrincipals().toString());
         po.setScheduleUpdateTime(LocalDateTime.now());
         // 新增

@@ -25,20 +25,28 @@ public class PrReadinessController {
     private IPrjReadinessService prjReadinessService;
 
 /** Project PrjReadiness */
-    /** 01.11.1 查 单个 PrjReadiness */
-    @Operation(summary = "01.10.1 查 单个 PrjReadiness")
+    /** 查 单个 PrjReadiness */
+    @Operation(summary = "查 单个 PrjReadiness")
     @GetMapping("/{prjCode}")
     public PrjReadinessVO prjReadinessById(@PathVariable("prjCode") String prjCode) {
+        // .checkRole("member");
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("member");
+
         return BeanUtil.copyProperties( prjReadinessService.getById(prjCode) ,PrjReadinessVO.class);
     }
 
-    /** 01.11.2 改 单个 PrjReadiness*/
-    @Operation(summary = "01.10.2 改 单个 PrjReadiness")
+    /** 改 单个 PrjReadiness*/
+    @Operation(summary = "改 单个 PrjReadiness")
     @PutMapping
     public ResponseEntity<String> updatePrjReadiness(@RequestBody PrjReadinessDTO dto){
+        // checkPermission(prjCode+":member")
+        String prjCode = dto.getPrjCode();
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkPermission(prjCode+":member");
+
         //  把DTO拷贝到PO
         PrjReadinessPO po = BeanUtil.copyProperties(dto,PrjReadinessPO.class);
-        Subject subject = SecurityUtils.getSubject();
         po.setPrjReadinessUpdater(subject.getPrincipals().toString());
         po.setPrjReadinessUpdateTime(LocalDateTime.now());
         // 新增

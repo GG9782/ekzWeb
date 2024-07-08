@@ -28,15 +28,15 @@ public class IndicatorController {
 
 /** Project Indicator*/
 
-    /** 01.04.1 查 单个 Project Indicator*/
-    @Operation(summary = "01.04.1 查 单个 Indicator")
+    /** 查 单个 Project Indicator*/
+    @Operation(summary = "查 单个 Indicator")
     @GetMapping("/{prjCode}")
     public IndicatorVO getIndicatorById(@PathVariable("prjCode") String prjCode) {
         return BeanUtil.copyProperties( indicatorService.getById(prjCode) ,IndicatorVO.class);
     }
 
-    /** 01.04.2 改 单个 Project Indicator*/
-    @Operation(summary = "01.04.2 改 单个 Indicator")
+    /** 改 单个 Project Indicator*/
+    @Operation(summary = "改 单个 Indicator")
     @PutMapping
     public ResponseEntity<String> updateIndicator( @RequestBody IndicatorDTO dto){
         //  把DTO拷贝到PO

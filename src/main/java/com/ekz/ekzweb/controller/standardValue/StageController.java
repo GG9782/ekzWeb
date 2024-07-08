@@ -35,7 +35,9 @@ public class StageController {
     @Operation(summary = "全查 List")
     @GetMapping("/allList")
     public List<List<String>> getAllList() {
-//        return service.listObjs(new LambdaQueryWrapper<StdStage>().select(StdStage::getStage));
+        // .checkRole("member");
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("member");
 
         List<Object> resultList = service.listObjs(new LambdaQueryWrapper<StdStage>().select(StdStage::getStage));
         List<List<String>> result = new ArrayList<>();
@@ -54,6 +56,9 @@ public class StageController {
     @Operation(summary = "全查 Object")
     @GetMapping("/allObject")
     public List<StdStage> getAllObject() {
+        // .checkRole("member");
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("member");
         return service.lambdaQuery().orderByAsc(StdStage::getCustomer).list();
     }
 
@@ -61,6 +66,10 @@ public class StageController {
     @Operation(summary = "依prjCode 查 可用Stage")
     @GetMapping("/getByPrjCode/{prjCode}")
     public List<StdStage> getByPrjCode(@PathVariable("prjCode") String prjCode) {
+        // .checkRole("member");
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("member");
+
         AttributePO attributePO = attributeService.getById(prjCode);
         return service.lambdaQuery()
                 .eq(StdStage::getCustomer,attributePO.getCustomer())
@@ -71,6 +80,10 @@ public class StageController {
     @Operation(summary = "删 单个")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> Delete(@PathVariable("id") long id){
+        // checkPermission(projectManager"))
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("projectManager");
+
         service.removeById(id);
         return ResponseEntity.status(HttpStatus.OK).body("OK");
     }
@@ -79,12 +92,15 @@ public class StageController {
     @Operation(summary = "增 单个")
     @PostMapping("/{customer}")
     public ResponseEntity<String> save(@PathVariable("customer") String customer,@RequestBody List<String> stage){
+        // checkPermission(projectManager"))
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("projectManager");
+
 
         StdStage dto = new StdStage();
         dto.setStage(stage);
         dto.setCustomer(customer);
 
-        Subject subject = SecurityUtils.getSubject();
         String principals = subject.getPrincipals().toString();
         dto.setCreator(principals);
 
@@ -98,8 +114,10 @@ public class StageController {
     @Operation(summary = "改 单个（根据id）")
     @PutMapping
     public ResponseEntity<String> update(@RequestBody StdStage dto){
-
+        // checkPermission(projectManager"))
         Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("projectManager");
+
         String principals = subject.getPrincipals().toString();
         dto.setCreator(principals);
 

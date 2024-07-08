@@ -29,6 +29,10 @@ public class ProductTypeController {
     @Operation(summary = "全查 List")
     @GetMapping("/allList")
     public List<String> getAllList() {
+        // .checkRole("member");
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("member");
+
         return service.listObjs(new LambdaQueryWrapper<StdProductType>().select(StdProductType::getProductType));
     }
 
@@ -36,6 +40,10 @@ public class ProductTypeController {
     @Operation(summary = "全查 Object")
     @GetMapping("/allObject")
     public List<StdProductType> getAllObject() {
+        // .checkRole("member");
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("member");
+
         return service.list();
     }
 
@@ -43,6 +51,10 @@ public class ProductTypeController {
     @Operation(summary = "删 单个")
     @DeleteMapping("/{productType}")
     public ResponseEntity<String> Delete(@PathVariable("productType") String productType){
+        // checkPermission(projectManager"))
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("projectManager");
+
         service.removeById(productType);
         return ResponseEntity.status(HttpStatus.OK).body("OK");
     }
@@ -51,6 +63,9 @@ public class ProductTypeController {
     @Operation(summary = "增 单个")
     @PostMapping("/{productType}")
     public ResponseEntity<String> save(@PathVariable("productType") String productType){
+        // checkPermission(projectManager"))
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("projectManager");
 
         StdProductType dto = new StdProductType();
         productType = productType.trim().substring(0, 1).toUpperCase() + productType.trim().substring(1).toLowerCase();
@@ -65,12 +80,13 @@ public class ProductTypeController {
     @Operation(summary = "改 单个")
     @PutMapping("/{currentProductType}/{newProductType}")
     public ResponseEntity<String> update(@PathVariable("currentProductType") String currentProductType, @PathVariable("newProductType") String newProductType){
-
+        // checkPermission(projectManager"))
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("projectManager");
 
         StdProductType dto = new StdProductType();
         dto.setProductType(newProductType);
 
-        Subject subject = SecurityUtils.getSubject();
         String principals = subject.getPrincipals().toString();
         dto.setCreator(principals);
         dto.setCreateTime(LocalDateTime.now());

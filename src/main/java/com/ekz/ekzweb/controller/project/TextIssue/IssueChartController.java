@@ -8,6 +8,8 @@ import com.ekz.ekzweb.service.project.prj.ITStageService;
 import com.ekz.ekzweb.service.project.textIssue.ITextIssueService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +34,9 @@ public class IssueChartController {
     @Operation(summary = "依 prjCode 查 barchart")
     @GetMapping("/{prjCode}")
     public IssueChartVO getChartByPrjCode(@PathVariable("prjCode") String prjCode) {
+        // .checkRole("member");
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("member");
 
         TStagePO tStagePO = tStageService.getById(prjCode);
 

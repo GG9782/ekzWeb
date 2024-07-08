@@ -21,25 +21,33 @@ import java.time.LocalDateTime;
 @RequestMapping("/prj/approval")
 public class ApprovalController {
 
-
     @Autowired
     private IApprovalService approvalService;
 
 /** Project Approval*/
-    /** 01.09.1 查 单个 Approval */
-    @Operation(summary = "01.09.1查 单个 Approval")
+    /** 查 单个 Approval */
+    @Operation(summary = "查 单个 Approval")
     @GetMapping("/{prjCode}")
     public ApprovalVO approvalById(@PathVariable("prjCode") String prjCode) {
+        // .checkRole("member");
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("member");
+
         return BeanUtil.copyProperties( approvalService.getById(prjCode) ,ApprovalVO.class);
     }
 
-    /** 01.09.2 改 单个 Approval*/
-    @Operation(summary = "01.09.2 改 单个 Approval")
+    /** 改 单个 Approval*/
+    @Operation(summary = "改 单个 Approval")
     @PutMapping
     public ResponseEntity<String> updateApproval(@RequestBody ApprovalDTO dto){
-        //  把DTO拷贝到PO
-        ApprovalPO po = BeanUtil.copyProperties(dto,ApprovalPO.class);
+
+        // checkPermission(prjCode+":member")
+        String prjCode = dto.getPrjCode();
         Subject subject = SecurityUtils.getSubject();
+        subject.checkPermission(prjCode+":member");
+
+        //  把DTO拷贝到PO
+        ApprovalPO po = BeanUtil.copyProperties(dto,ApprovalPO.class);;
         po.setApprovalUpdater(subject.getPrincipals().toString());
         po.setApprovalUpdateTime(LocalDateTime.now());
         // 新增

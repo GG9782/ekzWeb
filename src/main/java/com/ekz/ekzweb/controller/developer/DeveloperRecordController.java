@@ -41,6 +41,10 @@ public class DeveloperRecordController {
     @Operation(summary = "多条件 查")
     @GetMapping("/query")
     public List<DeveloperRecord> query(DeveloperRecordQuery query ) {
+        // checkPermission(prjCode+":member")
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("developer");
+
         return service.lambdaQuery()
                 .eq(query.getLayer() != null,DeveloperRecord::getLayer ,query.getLayer())
                 .eq(query.getSubLayer() != null,DeveloperRecord::getSubLayer,query.getSubLayer())
@@ -53,9 +57,12 @@ public class DeveloperRecordController {
     @Operation(summary = "增 单个")
     @PostMapping
     public ResponseEntity<String> save(@RequestBody DeveloperRecord po){
+        // checkRole("developer")
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("developer");
+
         po.setId(null);
         po.setCreateTime(LocalDateTime.now());
-        Subject subject = SecurityUtils.getSubject();
         po.setCreator(subject.getPrincipals().toString());
         service.save(po);
         return ResponseEntity.status(HttpStatus.OK).body("OK");
@@ -65,7 +72,10 @@ public class DeveloperRecordController {
     @Operation(summary = "改 单个")
     @PutMapping
     public ResponseEntity<String> updateById(@RequestBody DeveloperRecord po){
+        // checkRole("developer")
         Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("developer");
+
         String principals = subject.getPrincipals().toString();
         po.setCreator(principals);
         po.setCreateTime(LocalDateTime.now());
@@ -77,6 +87,10 @@ public class DeveloperRecordController {
     @Operation(summary = "删 单个")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable("id") String id){
+        // checkRole("developer")
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("developer");
+
         service.removeById(id);
         return ResponseEntity.status(HttpStatus.OK).body("OK");
     }

@@ -26,20 +26,28 @@ public class MemberController {
 
 /** Project Member*/
 
-    /** 01.05.1 查 单个 Project Member*/
-    @Operation(summary = "01.05.1 查 单个 Member")
+    /** 查 单个 Project Member*/
+    @Operation(summary = "查 单个 Member")
     @GetMapping("/{prjCode}")
     public MemberVO getMemberById(@PathVariable("prjCode") String prjCode) {
+        // checkPermission("member")
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkPermission("member");
+
         return BeanUtil.copyProperties( memberService.getById(prjCode) ,MemberVO.class);
     }
 
-    /** 01.05.2 改 单个 Project Member*/
-    @Operation(summary = "01.05.2 改 单个 Member")
+    /** 改 单个 Project Member*/
+    @Operation(summary = "改 单个 Member")
     @PutMapping
     public ResponseEntity<String> updateMember(@RequestBody MemberDTO dto){
+        // checkPermission(prjCode+":member")
+        String prjCode = dto.getPrjCode();
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkPermission(prjCode+":member");
+
         //  把DTO拷贝到PO
         MemberPO po = BeanUtil.copyProperties(dto,MemberPO.class);
-        Subject subject = SecurityUtils.getSubject();
         po.setMemberUpdater(subject.getPrincipals().toString());
         po.setMemberUpdateTime(LocalDateTime.now());
         // 新增

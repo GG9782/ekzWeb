@@ -25,20 +25,28 @@ public class TStageController {
     private ITStageService tStageService;
 
 /** Project TStage*/
-    /** 01.08.1 查 单个 TStage */
-    @Operation(summary = "01.08.1 查 单个 TStage")
+    /** 查 单个 TStage */
+    @Operation(summary = "查 单个 TStage")
     @GetMapping("/{prjCode}")
     public TStageVO tStageById(@PathVariable("prjCode") String prjCode) {
+        // .checkRole("member");
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("member");
+
         return BeanUtil.copyProperties( tStageService.getById(prjCode) ,TStageVO.class);
     }
 
-    /** 01.08.2 改 单个 TStage*/
-    @Operation(summary = "01.08.2 改 单个 TStage")
+    /** 改 单个 TStage*/
+    @Operation(summary = "改 单个 TStage")
     @PutMapping
     public ResponseEntity<String> updateTStage(@RequestBody TStageDTO dto){
+        // checkPermission(prjCode+":member")
+        String prjCode = dto.getPrjCode();
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkPermission(prjCode+":member");
+
         //  把DTO拷贝到PO
         TStagePO po = BeanUtil.copyProperties(dto,TStagePO.class);
-        Subject subject = SecurityUtils.getSubject();
         po.setTStageUpdater(subject.getPrincipals().toString());
         po.setTStageUpdateTime(LocalDateTime.now());
         // 新增
@@ -50,6 +58,10 @@ public class TStageController {
     @Operation(summary = "查 单个 isTFinal")
     @GetMapping("/isTFinal/{prjCode}")
     public Boolean isTFinalById(@PathVariable("prjCode") String prjCode) {
+        // .checkRole("member");
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("member");
+
         TStagePO po = tStageService.lambdaQuery()
                 .select(TStagePO::getIsTFinal)
                 .eq(TStagePO::getPrjCode,prjCode)

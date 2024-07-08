@@ -25,15 +25,19 @@ public class PartQuantityController {
     private IPartQuantityService partQuantityService;
 
 /** Project PartQuantity*/
-    /** 01.07.1 查 单个 Project PartQuantity*/
-    @Operation(summary = "01.07.1 查 单个 PartQuantity")
+    /** 查 单个 Project PartQuantity*/
+    @Operation(summary = "查 单个 PartQuantity")
     @GetMapping("/{prjCode}")
     public PartQuantityVO partQuantityById(@PathVariable("prjCode") String prjCode) {
+        // .checkRole("member");
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("member");
+
         return BeanUtil.copyProperties( partQuantityService.getById(prjCode) ,PartQuantityVO.class);
     }
 
     /** 01.07.2 改 单个 Project PartQuantity*/
-    @Operation(summary = "01.07.2 改 单个 PartQuantity")
+    @Operation(summary = "改 单个 PartQuantity")
     @PutMapping
     public ResponseEntity<String> updatePartQuantity(@RequestBody PartQuantityDTO dto){
         //  把DTO拷贝到PO

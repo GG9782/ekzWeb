@@ -34,6 +34,10 @@ public class ReadinessController {
     @Operation(summary = "依project查 Object")
     @GetMapping("/getByPrjCode/{prjCode}")
     public List<StdReadiness> getByProject(@PathVariable("prjCode") String prjCode) {
+        // .checkRole("member");
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("member");
+
         AttributePO attributePO = attributeService.getById(prjCode);
         return service.getByProject(prjCode,attributePO);
     }
@@ -42,6 +46,10 @@ public class ReadinessController {
     @Operation(summary = "全查 Object")
     @GetMapping("/allObject")
     public List<StdReadiness> getAllObject() {
+        // .checkRole("member");
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("member");
+
         return service.list();
     }
 
@@ -49,6 +57,10 @@ public class ReadinessController {
     @Operation(summary = "删 单个")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> Delete(@PathVariable("id") String id){
+        // checkPermission(projectManager"))
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("projectManager");
+
         service.removeById(id);
         return ResponseEntity.status(HttpStatus.OK).body("OK");
     }
@@ -57,8 +69,10 @@ public class ReadinessController {
     @Operation(summary = "增 单个")
     @PostMapping
     public ResponseEntity<String> save(@RequestBody StdReadiness stdReadiness){
-
+        // checkPermission(projectManager"))
         Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("projectManager");
+
         String principals = subject.getPrincipals().toString();
         stdReadiness.setCreator(principals);
         stdReadiness.setCreateTime(LocalDateTime.now());
@@ -70,8 +84,10 @@ public class ReadinessController {
     @Operation(summary = "改 单个")
     @PutMapping
     public ResponseEntity<String> updateById(@RequestBody StdReadiness stdReadiness){
-
+        // checkPermission(projectManager"))
         Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("projectManager");
+
         String principals = subject.getPrincipals().toString();
         stdReadiness.setCreator(principals);
         stdReadiness.setCreateTime(LocalDateTime.now());
@@ -83,8 +99,10 @@ public class ReadinessController {
     @Operation(summary = "增  批量")
     @PostMapping("/list")
     public ResponseEntity<String> save(@RequestBody List<StdReadiness> stdReadinessList){
-
+        // checkPermission(projectManager"))
         Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("projectManager");
+
         String principals = subject.getPrincipals().toString();
         for (StdReadiness stdReadiness : stdReadinessList) {
             stdReadiness.setCreator(principals);

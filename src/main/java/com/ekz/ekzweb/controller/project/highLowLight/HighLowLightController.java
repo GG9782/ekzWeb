@@ -1,6 +1,7 @@
 package com.ekz.ekzweb.controller.project.highLowLight;
 
 import com.ekz.ekzweb.domain.project.textHighLowLight.TextHighLowLight;
+import com.ekz.ekzweb.domain.project.textIssue.TextIssue;
 import com.ekz.ekzweb.service.project.highLowLight.IHighLowLightService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -37,6 +38,13 @@ public class HighLowLightController {
     @Operation(summary = "删 单个")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> Delete(@PathVariable("id") String id){
+
+        // checkPermission(prjCode+":member")
+        TextHighLowLight textHighLowLight = service.getById(id);
+        String prjCode = textHighLowLight.getPrjCode();
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkPermission(prjCode+":member");
+
         service.removeById(id);
         return ResponseEntity.status(HttpStatus.OK).body("OK");
     }
@@ -45,7 +53,11 @@ public class HighLowLightController {
     @Operation(summary = "增 单个")
     @PostMapping
     public ResponseEntity<String> save(@RequestBody TextHighLowLight textHighLowLight){
+        // checkPermission(prjCode+":member")
+        String prjCode = textHighLowLight.getPrjCode();
         Subject subject = SecurityUtils.getSubject();
+        subject.checkPermission(prjCode+":member");
+
         String principals = subject.getPrincipals().toString();
         textHighLowLight.setCreator(principals);
         textHighLowLight.setCreateTime(LocalDateTime.now());
@@ -57,7 +69,11 @@ public class HighLowLightController {
     @Operation(summary = "改 单个")
     @PutMapping
     public ResponseEntity<String> updateById(@RequestBody TextHighLowLight textHighLowLight){
+        // checkPermission(prjCode+":member")
+        String prjCode = textHighLowLight.getPrjCode();
         Subject subject = SecurityUtils.getSubject();
+        subject.checkPermission(prjCode+":member");
+
         String principals = subject.getPrincipals().toString();
         textHighLowLight.setCreator(principals);
         textHighLowLight.setCreateTime(LocalDateTime.now());
@@ -69,7 +85,22 @@ public class HighLowLightController {
     @Operation(summary = "增  批量")
     @PostMapping("/list")
     public ResponseEntity<String> save(@RequestBody List<TextHighLowLight> textHighLowLightList){
+        // check prjCodes is equals
+        if (textHighLowLightList == null || textHighLowLightList.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("TextHighLowLightList can't be empty");
+        }
+
+        String prjCode = textHighLowLightList.get(0).getPrjCode();
+        for (TextHighLowLight textHighLowLight : textHighLowLightList) {
+            if (!prjCode.equals(textHighLowLight.getPrjCode())) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("All prjCodes need to be equals");
+            }
+        }
+
+        // checkPermission(prjCode+":member")
         Subject subject = SecurityUtils.getSubject();
+        subject.checkPermission(prjCode+":member");
+
         String principals = subject.getPrincipals().toString();
         for (TextHighLowLight textHighLowLight : textHighLowLightList) {
             textHighLowLight.setCreator(principals);

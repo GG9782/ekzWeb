@@ -29,6 +29,9 @@ public class BusinessModelController {
     @Operation(summary = "全查 List")
     @GetMapping("/allList")
     public List<String> getAllList() {
+        // .checkRole("member");
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("member");
         return service.listObjs(new LambdaQueryWrapper<StdBusinessModel>().select(StdBusinessModel::getBusinessModel));
     }
 
@@ -36,6 +39,10 @@ public class BusinessModelController {
     @Operation(summary = "全查 Object")
     @GetMapping("/allObject")
     public List<StdBusinessModel> getAllObject() {
+        // .checkRole("member");
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("member");
+
         return service.list();
     }
 
@@ -43,6 +50,10 @@ public class BusinessModelController {
     @Operation(summary = "删 单个")
     @DeleteMapping("/{businessModel}")
     public ResponseEntity<String> Delete(@PathVariable("businessModel") String businessModel){
+        // checkPermission(projectManager"))
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("projectManager");
+
         service.removeById(businessModel);
         return ResponseEntity.status(HttpStatus.OK).body("OK");
     }
@@ -51,10 +62,12 @@ public class BusinessModelController {
     @Operation(summary = "增 单个")
     @PostMapping("/{businessModel}")
     public ResponseEntity<String> save(@PathVariable("businessModel") String businessModel){
+        // checkPermission(projectManager"))
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("projectManager");
 
         StdBusinessModel dto = new StdBusinessModel();
         dto.setBusinessModel(businessModel.trim().toUpperCase());
-        Subject subject = SecurityUtils.getSubject();
         String principals = subject.getPrincipals().toString();
         dto.setCreator(principals);
 
@@ -67,11 +80,13 @@ public class BusinessModelController {
     @Operation(summary = "改 单个")
     @PutMapping("/{currentBusinessModel}/{newBusinessModel}")
     public ResponseEntity<String> update(@PathVariable("currentBusinessModel") String currentBusinessModel, @PathVariable("newBusinessModel") String newBusinessModel){
+        // checkPermission(projectManager"))
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("projectManager");
 
         StdBusinessModel dto = new StdBusinessModel();
         dto.setBusinessModel(newBusinessModel.trim().toUpperCase());
 
-        Subject subject = SecurityUtils.getSubject();
         String principals = subject.getPrincipals().toString();
         dto.setCreator(principals);
 

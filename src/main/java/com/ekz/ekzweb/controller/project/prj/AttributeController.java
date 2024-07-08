@@ -34,6 +34,10 @@ public class AttributeController {
     @Operation(summary = "01.03.1 查 单个 Attribute")
     @GetMapping("/{prjCode}")
     public AttributeVO getAttributeById(@PathVariable("prjCode") String prjCode) {
+        // .checkRole("member");
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("member");
+
         return BeanUtil.copyProperties( attributeService.getById(prjCode) ,AttributeVO.class);
     }
 
@@ -41,6 +45,10 @@ public class AttributeController {
     @Operation(summary = "复杂条件 查 多个 Attribute")
     @GetMapping("/list")
     public List<AttributeVO> queryPrjAttributeList(AttributeQuery query) {
+        // .checkRole("member");
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("member");
+
         List<AttributePO> poList = attributeService.lambdaQuery()
                 .eq(query.getPrjCode() != null,AttributePO::getPrjCode,query.getPrjCode())
                 .like(query.getPrjName() != null,AttributePO::getPrjName,query.getPrjName())
@@ -58,13 +66,16 @@ public class AttributeController {
     @Operation(summary = "改 单个 Attribute")
     @PutMapping("/{prjCode}")
     public ResponseEntity<String> updateAttribute(@PathVariable("prjCode") String prjCode, @RequestBody AttributeDTO dto){
+        // checkPermission(prjCode+":member")
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkPermission(prjCode+":member");
+
         if(dto.getPrjCode() != null){
             dto.setPrjCode(dto.getPrjCode().trim().toUpperCase());
         }
         if(dto.getPrjName() != null){
             dto.setPrjName(dto.getPrjName().trim());
         }
-        Subject subject = SecurityUtils.getSubject();
         String principals = subject.getPrincipals().toString();
         attributeService.lambdaUpdate()
                 .eq(AttributePO::getPrjCode,prjCode)

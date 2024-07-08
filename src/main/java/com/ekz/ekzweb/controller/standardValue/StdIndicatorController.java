@@ -1,11 +1,9 @@
 package com.ekz.ekzweb.controller.standardValue;
 
 
-
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.ekz.ekzweb.domain.standardValue.StdBu;
-import com.ekz.ekzweb.service.standardValue.IBuService;
+import com.ekz.ekzweb.domain.standardValue.StdIndicator;
+import com.ekz.ekzweb.service.standardValue.IStdIndicatorService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.shiro.SecurityUtils;
@@ -15,34 +13,33 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
 import java.time.LocalDateTime;
 import java.util.List;
 
 
-@Tag(name = "StandardValue Bu 接口")
+@Tag(name = "StandardValue Indicator 接口")
 @RestController
-@RequestMapping("/bu")
-public class BuController {
+@RequestMapping("/StdIndicator")
+public class StdIndicatorController {
 
     @Autowired
-    private IBuService service;
+    private IStdIndicatorService service;
 
     /** 全查 List*/
     @Operation(summary = "全查 List")
-    @GetMapping("/allList")
-    public List<String> getAllList() {
+    @GetMapping("/getByCustomer/{customer}")
+    public List<String> getByCustomer(@PathVariable String customer) {
         // .checkRole("member");
         Subject subject = SecurityUtils.getSubject();
         subject.checkRole("member");
 
-        return service.listObjs(new LambdaQueryWrapper<StdBu>().select(StdBu::getBu));
+        return service.listObjs(new LambdaQueryWrapper<StdIndicator>().select(StdIndicator::getName).eq(StdIndicator::getCustomer,customer));
     }
 
     /** 全查 Object*/
     @Operation(summary = "全查 Object")
     @GetMapping("/allObject")
-    public List<StdBu> getAllObject() {
+    public List<StdIndicator> getAllObject() {
         // .checkRole("member");
         Subject subject = SecurityUtils.getSubject();
         subject.checkRole("member");
@@ -52,29 +49,27 @@ public class BuController {
 
     /** 删 单个*/
     @Operation(summary = "删 单个")
-    @DeleteMapping("/{bu}")
-    public ResponseEntity<String> Delete(@PathVariable("bu") String bu){
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> Delete(@PathVariable Integer id){
         // checkPermission(projectManager")
         Subject subject = SecurityUtils.getSubject();
         subject.checkRole("projectManager");
 
-        service.removeById(bu);
+        service.removeById(id);
         return ResponseEntity.status(HttpStatus.OK).body("OK");
     }
 
     /** 增 单个 */
     @Operation(summary = "增 单个")
-    @PostMapping("/{bu}")
-    public ResponseEntity<String> save(@PathVariable("bu") String bu){
+    @PostMapping
+    public ResponseEntity<String> save(@RequestBody StdIndicator dto){
         // checkPermission(projectManager"))
         Subject subject = SecurityUtils.getSubject();
         subject.checkRole("projectManager");
 
-        StdBu dto = new StdBu();
-        dto.setBu(bu.trim().toUpperCase());
+        dto.setName(dto.getName().trim());
         String principals = subject.getPrincipals().toString();
         dto.setCreator(principals);
-
         dto.setCreateTime(LocalDateTime.now());
         service.save(dto);
         return ResponseEntity.status(HttpStatus.OK).body("OK");
@@ -82,20 +77,17 @@ public class BuController {
 
     /** 改 单个*/
     @Operation(summary = "改 单个")
-    @PutMapping("/{currentBu}/{newBu}")
-    public ResponseEntity<String> update(@PathVariable("currentBu") String currentBu, @PathVariable("newBu") String newBu){
+    @PutMapping
+    public ResponseEntity<String> update(@RequestBody StdIndicator dto){
         // checkPermission(projectManager"))
         Subject subject = SecurityUtils.getSubject();
         subject.checkRole("projectManager");
 
-        StdBu dto = new StdBu();
-        dto.setBu(newBu.trim().toUpperCase());
+        dto.setName(dto.getName().trim());
         String principals = subject.getPrincipals().toString();
         dto.setCreator(principals);
         dto.setCreateTime(LocalDateTime.now());
-        service.update(
-                dto,new LambdaUpdateWrapper<StdBu>().eq(StdBu::getBu,currentBu)
-        );
+        service.updateById(dto);
         return ResponseEntity.status(HttpStatus.OK).body("OK");
     }
 

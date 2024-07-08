@@ -29,6 +29,10 @@ public class VendorController {
     @Operation(summary = "全查 List")
     @GetMapping("/allList")
     public List<String> getAllList() {
+        // .checkRole("member");
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("member");
+
         return service.listObjs(new LambdaQueryWrapper<StdVendor>().select(StdVendor::getVendor));
     }
 
@@ -36,6 +40,10 @@ public class VendorController {
     @Operation(summary = "全查 Object")
     @GetMapping("/allObject")
     public List<StdVendor> getAllObject() {
+        // .checkRole("member");
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("member");
+
         return service.list();
     }
 
@@ -43,6 +51,10 @@ public class VendorController {
     @Operation(summary = "删 单个")
     @DeleteMapping("/{vendor}")
     public ResponseEntity<String> Delete(@PathVariable("vendor") String vendor){
+        // checkPermission(projectManager"))
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("projectManager");
+
         service.removeById(vendor);
         return ResponseEntity.status(HttpStatus.OK).body("OK");
     }
@@ -52,11 +64,14 @@ public class VendorController {
     @Operation(summary = "增 单个")
     @PostMapping("/{vendor}")
     public ResponseEntity<String> save(@PathVariable("vendor") String vendor){
+        // checkPermission(projectManager"))
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("projectManager");
+
 
         StdVendor dto = new StdVendor();
         dto.setVendor(vendor.trim());
 
-        Subject subject = SecurityUtils.getSubject();
         String principals = subject.getPrincipals().toString();
         dto.setCreator(principals);
 
@@ -69,6 +84,10 @@ public class VendorController {
     @Operation(summary = "删 多个")
     @DeleteMapping("/vendors")
     public ResponseEntity<String> delete(@RequestBody List<String> vendors) {
+        // checkPermission(projectManager"))
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("projectManager");
+
         service.removeByIds(vendors);
         return ResponseEntity.status(HttpStatus.OK).body("OK");
     }
@@ -77,8 +96,10 @@ public class VendorController {
     @Operation(summary = "增 多个")
     @PostMapping("/vendors")
     public ResponseEntity<String> save(@RequestBody List<String> vendors) {
-
+        // checkPermission(projectManager"))
         Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("projectManager");
+
         List<StdVendor> dtos = new ArrayList<>();
         String principals = subject.getPrincipals().toString();
         LocalDateTime createTime = LocalDateTime.now();
@@ -99,8 +120,10 @@ public class VendorController {
     @Operation(summary = "改 单个")
     @PutMapping("/{currentVendor}/{newVendor}")
     public ResponseEntity<String> update(@PathVariable("currentVendor") String currentVendor, @PathVariable("newVendor") String newVendor){
-
+        // checkPermission(projectManager"))
         Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("projectManager");
+
         StdVendor dto = new StdVendor();
         dto.setVendor(newVendor);
         String principals = subject.getPrincipals().toString();

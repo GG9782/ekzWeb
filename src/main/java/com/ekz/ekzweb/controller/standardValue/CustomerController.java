@@ -30,6 +30,10 @@ public class CustomerController {
     @Operation(summary = "全查 List")
     @GetMapping("/allList")
     public List<String> getAllList() {
+        // .checkRole("member");
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("member");
+
         return service.listObjs(new LambdaQueryWrapper<StdCustomer>().select(StdCustomer::getCustomer));
     }
 
@@ -37,6 +41,10 @@ public class CustomerController {
     @Operation(summary = "全查 Object")
     @GetMapping("/allObject")
     public List<StdCustomer> getAllObject() {
+        // .checkRole("member");
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("member");
+
         return service.list();
     }
 
@@ -44,6 +52,9 @@ public class CustomerController {
     @Operation(summary = "删 单个")
     @DeleteMapping("/{customer}")
     public ResponseEntity<String> Delete(@PathVariable("customer") String customer){
+        // checkPermission(projectManager"))
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("projectManager");
         service.removeById(customer);
         return ResponseEntity.status(HttpStatus.OK).body("OK");
     }
@@ -52,12 +63,14 @@ public class CustomerController {
     @Operation(summary = "增 单个")
     @PostMapping("/{customer}/{bu}")
     public ResponseEntity<String> save(@PathVariable("customer") String customer,@PathVariable("bu") String bu){
+        // checkPermission(projectManager"))
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("projectManager");
 
         StdCustomer dto = new StdCustomer();
         customer = customer.trim().substring(0, 1).toUpperCase() + customer.trim().substring(1).toLowerCase();
         dto.setCustomer(customer);
         dto.setBu(bu);
-        Subject subject = SecurityUtils.getSubject();
         String principals = subject.getPrincipals().toString();
         dto.setCreator(principals);
         dto.setCreateTime(LocalDateTime.now());
@@ -69,10 +82,12 @@ public class CustomerController {
     @Operation(summary = "改 单个")
     @PutMapping("/{currentCustomer}/{newCustomer}")
     public ResponseEntity<String> update(@PathVariable("currentCustomer") String currentCustomer, @PathVariable("newCustomer") String newCustomer) {
+        // checkPermission(projectManager"))
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("projectManager");
 
         StdCustomer dto = new StdCustomer();
         dto.setCustomer(newCustomer.trim().toUpperCase());
-        Subject subject = SecurityUtils.getSubject();
         String principals = subject.getPrincipals().toString();
         dto.setCreator(principals);
         dto.setCreateTime(LocalDateTime.now());
@@ -86,6 +101,10 @@ public class CustomerController {
     @Operation(summary = "删 多个")
     @DeleteMapping("/customers")
     public ResponseEntity<String> delete(@RequestBody List<String> customers) {
+        // checkPermission(projectManager"))
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("projectManager");
+
         service.removeByIds(customers);
         return ResponseEntity.status(HttpStatus.OK).body("OK");
     }
@@ -94,17 +113,11 @@ public class CustomerController {
     @Operation(summary = "增 多个")
     @PostMapping("/customers")
     public ResponseEntity<String> save(@RequestBody List<String> customers) {
-        try {
-            Subject subject = SecurityUtils.getSubject();
-            String principals = subject.getPrincipals().toString();
-        } catch (Exception e) {
-            // 在这里处理异常
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("用户未认证");
-        }
+        // checkPermission(projectManager"))
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("projectManager");
 
         List<StdCustomer> dtos = new ArrayList<>();
-        Subject subject = SecurityUtils.getSubject();
         String principals = subject.getPrincipals().toString();
         LocalDateTime createTime = LocalDateTime.now();
 
