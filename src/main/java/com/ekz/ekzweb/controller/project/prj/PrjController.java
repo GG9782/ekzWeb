@@ -78,6 +78,7 @@ public class PrjController {
 
         // save userProjectPermission manager
         userProjectPermissionService.saveOne(po.getCreator(), po.getPrjCode(), "manager");
+        userProjectPermissionService.saveOne(po.getCreator(), po.getPrjCode(), "member");
 
         // return
         return ResponseEntity.status(HttpStatus.OK).body("OK");
@@ -96,13 +97,15 @@ public class PrjController {
         String deleteRemark = "@"+ LocalDateTime.now().toString();
         Project project = prjService.getById(prjCode);
         String prjName= project.getPrjName();
+        System.out.println(prjName);
         prjService.lambdaUpdate()
                 .eq(Project::getPrjCode,prjCode)
                 .set(Project::getPrjCode,prjCode + deleteRemark)
-                .set(Project::getPrjName,prjName + deleteRemark);
-
+                .set(Project::getPrjName,prjName + deleteRemark)
+                .update();
+        System.out.println(prjCode + deleteRemark);
         // logicDelete
-        prjService.removeById(prjCode + deleteRemark);
+        prjService.removeById(prjCode  + deleteRemark);
 
         return ResponseEntity.status(HttpStatus.OK).body("OK");
     }
@@ -123,7 +126,8 @@ public class PrjController {
         prjService.lambdaUpdate()
                 .eq(Project::getPrjCode,prjCode)
                 .set(Project::getPrjCode,originalPrjCode)
-                .set(Project::getPrjName,originalPrjCode);
+                .set(Project::getPrjName,originalPrjCode)
+                .update();
 
         return ResponseEntity.status(HttpStatus.OK).body("OK");
     }

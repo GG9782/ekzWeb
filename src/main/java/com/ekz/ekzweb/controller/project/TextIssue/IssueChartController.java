@@ -1,6 +1,6 @@
 package com.ekz.ekzweb.controller.project.TextIssue;
 
-import com.ekz.ekzweb.domain.project.prj.jsonType.IssueChartJsonType;
+import com.ekz.ekzweb.domain.jsonType.IssueChartJsonType;
 import com.ekz.ekzweb.domain.project.prj.po.TStagePO;
 import com.ekz.ekzweb.domain.project.prj.vo.IssueChartVO;
 import com.ekz.ekzweb.domain.project.textIssue.TextIssue;
@@ -40,7 +40,10 @@ public class IssueChartController {
 
         TStagePO tStagePO = tStageService.getById(prjCode);
 
-        int tStageQuantity = tStagePO.getTStageQuantity();
+        Integer tStageQuantity = tStagePO.getTStageQuantity();
+        if (tStageQuantity == null){
+            return null;
+        }
         List<String> tStages = new ArrayList<>();
         for (int i = 1; i <= tStageQuantity; i++) { tStages.add("T" + i); }
 

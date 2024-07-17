@@ -2,7 +2,7 @@ package com.ekz.ekzweb.domain.project.prj.po;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
-import com.ekz.ekzweb.domain.project.prj.jsonType.*;
+import com.ekz.ekzweb.domain.jsonType.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.apache.ibatis.type.JdbcType;
@@ -106,6 +106,9 @@ public class Project {
     @Schema(description = "Json字段，需要整个一起处理")
     @TableField(typeHandler = JacksonTypeHandler.class)
     private List<PassRateJsonType> fai;
+    @Schema(description = "Json字段，需要整个一起处理")
+    @TableField(typeHandler = JacksonTypeHandler.class)
+    private List<PassRateJsonType> ppap3b;
     @Schema(description = "Json字段，需要整个一起处理")
     @TableField(typeHandler = JacksonTypeHandler.class)
     private List<PassRateJsonType> cpk;

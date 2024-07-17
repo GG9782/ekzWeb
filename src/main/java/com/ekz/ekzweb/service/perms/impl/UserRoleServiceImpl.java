@@ -15,7 +15,7 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleMapper, PermsUserRo
     @Autowired
     private UserRoleMapper mapper;
 
-    public List<String> getUserRoles(String principal){
+    public List<String> getPrincipalRoles(String principal){
         return listObjs( new LambdaQueryWrapper<PermsUserRole>().select(PermsUserRole::getRole).eq(PermsUserRole::getUser, principal) );
     }
 

@@ -1,6 +1,6 @@
 package com.ekz.ekzweb.domain.project.prj.vo;
 
-import com.ekz.ekzweb.domain.project.prj.jsonType.StringAndStyleJsonType;
+import com.ekz.ekzweb.domain.jsonType.StringAndStyleJsonType;
 import lombok.Data;
 
 import java.time.LocalDateTime;

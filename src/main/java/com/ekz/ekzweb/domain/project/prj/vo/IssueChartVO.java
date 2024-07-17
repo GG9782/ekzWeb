@@ -1,7 +1,7 @@
 package com.ekz.ekzweb.domain.project.prj.vo;
 
 
-import com.ekz.ekzweb.domain.project.prj.jsonType.IssueChartJsonType;
+import com.ekz.ekzweb.domain.jsonType.IssueChartJsonType;
 import lombok.Data;
 
 import java.util.List;

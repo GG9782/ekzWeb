@@ -1,7 +1,7 @@
 package com.ekz.ekzweb.domain.project.prj.vo;
 
 
-import com.ekz.ekzweb.domain.project.prj.jsonType.ScheduleJsonType;
+import com.ekz.ekzweb.domain.jsonType.ScheduleJsonType;
 import lombok.Data;
 
 import java.time.LocalDateTime;

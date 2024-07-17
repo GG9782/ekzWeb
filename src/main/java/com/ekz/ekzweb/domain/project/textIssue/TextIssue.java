@@ -22,6 +22,7 @@ public class TextIssue {
     private String stage;
     private Integer severity;
     private String description;
+    private String picture;
     private String action;
     private String solution;
     private String pic;

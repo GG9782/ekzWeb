@@ -34,6 +34,7 @@ public class PrjServiceImpl extends ServiceImpl<PrjMapper, Project> implements I
                         Project::getPrjName,
                         Project::getBu,
                         Project::getCustomer,
+                        Project::getDepartment,
                         Project::getBusinessModel,
                         Project::getCoreInvest,
                         Project::getProductType,

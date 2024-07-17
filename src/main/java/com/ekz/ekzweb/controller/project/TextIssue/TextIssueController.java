@@ -11,9 +11,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
+
+import java.nio.file.Path;
 
 @Tag(name = "Project textIssue 接口")
 @RestController
@@ -130,7 +139,40 @@ public class TextIssueController {
         service.saveBatch(textIssueList);
         return ResponseEntity.status(HttpStatus.OK).body("OK");
     }
+    @Operation(summary = "上传图片")
+    @PostMapping("/uploadPicture/{id}")
+    public ResponseEntity<String> uploadFile(@RequestParam("uploadFile") MultipartFile multipartFile, @PathVariable("id") String id) throws IOException {
+        Path path = Paths.get("D:/0710");
 
+        // 首先判断上传的文件是否为空
+        if (!multipartFile.isEmpty()) {
+            String suffix = ".unknown"; // 初始文件后缀为不知道
+            String name = multipartFile.getOriginalFilename(); // 获取上传的文件名
+
+            // 获取文件的后缀
+            if (name != null && name.contains(".")) {
+                suffix = name.substring(name.lastIndexOf("."));
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid file name!");
+            }
+
+            String dest = UUID.randomUUID() + suffix; // 生成保存的文件名
+
+            // 保存文件到指定位置
+            try (InputStream inputStream = multipartFile.getInputStream()) {
+                Files.copy(inputStream, path.resolve(dest), StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving file!");
+            }
+
+            // 更新数据库中的图片路径
+            service.lambdaUpdate().set(TextIssue::getPicture, path.resolve(dest).toString()).eq(TextIssue::getId, id).update();
+
+            return ResponseEntity.status(HttpStatus.OK).body("OK");
+        }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("File is empty!");
+    }
 
 }
 

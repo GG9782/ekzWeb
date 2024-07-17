@@ -2,7 +2,9 @@ package com.ekz.ekzweb.controller.standardValue;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.ekz.ekzweb.domain.project.prj.po.AttributePO;
 import com.ekz.ekzweb.domain.standardValue.StdIndicator;
+import com.ekz.ekzweb.service.project.prj.IAttributeService;
 import com.ekz.ekzweb.service.standardValue.IStdIndicatorService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,15 +26,28 @@ public class StdIndicatorController {
 
     @Autowired
     private IStdIndicatorService service;
+    @Autowired
+    private IAttributeService attributeService;
 
     /** 全查 List*/
-    @Operation(summary = "全查 List")
+    @Operation(summary = "依Customer 全查 List")
     @GetMapping("/getByCustomer/{customer}")
     public List<String> getByCustomer(@PathVariable String customer) {
         // .checkRole("member");
         Subject subject = SecurityUtils.getSubject();
         subject.checkRole("member");
 
+        return service.listObjs(new LambdaQueryWrapper<StdIndicator>().select(StdIndicator::getName).eq(StdIndicator::getCustomer,customer));
+    }
+
+    @Operation(summary = "依prjCode 全查 List")
+    @GetMapping("/getByPrjCode/{prjCode}")
+    public List<String> getByPrjCode(@PathVariable String prjCode) {
+        // .checkRole("member");
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("member");
+        AttributePO attributePO = attributeService.lambdaQuery().select(AttributePO::getCustomer).eq(AttributePO::getPrjCode,prjCode).one();
+        String customer = attributePO.getCustomer();
         return service.listObjs(new LambdaQueryWrapper<StdIndicator>().select(StdIndicator::getName).eq(StdIndicator::getCustomer,customer));
     }
 

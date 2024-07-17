@@ -30,7 +30,7 @@ public class UserRoleController {
     public List<String> getPrincipalsRoles(){
         Subject subject = SecurityUtils.getSubject();
         String principals = subject.getPrincipals().toString();
-        return service.getUserRoles(principals);
+        return service.getPrincipalRoles(principals);
     }
 
     @Operation(summary = "getPrincipalsPermission")
@@ -38,7 +38,7 @@ public class UserRoleController {
     public List<String> getPrincipalsPermissions(){
         Subject subject = SecurityUtils.getSubject();
         String principals = subject.getPrincipals().toString();
-        return rolePermissionService.getPermissionsByRoles(service.getUserRoles(principals));
+        return rolePermissionService.getPermissionsByRoles(service.getPrincipalRoles(principals));
     }
 
     @Operation(summary = "getRolesByUser")

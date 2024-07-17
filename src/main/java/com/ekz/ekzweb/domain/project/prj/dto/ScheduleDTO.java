@@ -1,7 +1,7 @@
 package com.ekz.ekzweb.domain.project.prj.dto;
 
 
-import com.ekz.ekzweb.domain.project.prj.jsonType.ScheduleJsonType;
+import com.ekz.ekzweb.domain.jsonType.ScheduleJsonType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 

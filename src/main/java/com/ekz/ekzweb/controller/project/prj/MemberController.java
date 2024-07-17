@@ -30,9 +30,9 @@ public class MemberController {
     @Operation(summary = "查 单个 Member")
     @GetMapping("/{prjCode}")
     public MemberVO getMemberById(@PathVariable("prjCode") String prjCode) {
-        // checkPermission("member")
+        // checkRole("member")
         Subject subject = SecurityUtils.getSubject();
-        subject.checkPermission("member");
+        subject.checkRole("member");
 
         return BeanUtil.copyProperties( memberService.getById(prjCode) ,MemberVO.class);
     }

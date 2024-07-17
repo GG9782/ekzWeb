@@ -2,8 +2,8 @@ package com.ekz.ekzweb.controller.project.prj;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.ekz.ekzweb.domain.project.prj.dto.ScheduleDTO;
-import com.ekz.ekzweb.domain.project.prj.jsonType.EventAndDay;
-import com.ekz.ekzweb.domain.project.prj.jsonType.ScheduleJsonType;
+import com.ekz.ekzweb.domain.jsonType.EventAndDay;
+import com.ekz.ekzweb.domain.jsonType.ScheduleJsonType;
 import com.ekz.ekzweb.domain.project.prj.po.SchedulePO;
 import com.ekz.ekzweb.domain.project.prj.vo.ScheduleVO;
 import com.ekz.ekzweb.service.project.prj.IScheduleService;
@@ -80,10 +80,11 @@ public class ScheduleController {
                 boolean isStartEvent = false;
                 for (EventAndDay event : events) {
                     LocalDate eventDate = LocalDate.parse(event.getEventDay());
+
                     if (eventDate.isBefore(LocalDate.parse(startDate)) || eventDate.isAfter(LocalDate.parse(scheduleStage.getEndDate()))) {
                         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Event: " + event.getEventName() + " is out of the date range of stage:" + scheduleStage.getName() + " !");
                     }
-                    if (eventDate == LocalDate.parse(startDate)) {
+                    if (eventDate.isEqual( LocalDate.parse(startDate)) ) {
                         isStartEvent = true;
                     }
                 }

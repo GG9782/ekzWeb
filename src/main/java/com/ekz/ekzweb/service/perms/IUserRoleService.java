@@ -6,5 +6,5 @@ import com.ekz.ekzweb.domain.perms.PermsUserRole;
 import java.util.List;
 
 public interface IUserRoleService extends IService<PermsUserRole> {
-    List<String> getUserRoles(String principal);
+    List<String> getPrincipalRoles(String principal);
 }

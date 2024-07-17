@@ -1,7 +1,6 @@
 package com.ekz.ekzweb.service.perms.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ekz.ekzweb.domain.perms.PermsUserProjectPermission;
 import com.ekz.ekzweb.domain.perms.PermsUserRole;
@@ -20,7 +19,7 @@ public class UserProjectPermissionServiceImpl extends ServiceImpl<UserProjectPer
     @Autowired
     private UserProjectPermissionMapper mapper;
 
-    public List<String> getUserPermissions (String principal){
+    public List<String> getPrincipalPermissions(String principal){
         return listObjs( new LambdaQueryWrapper<PermsUserProjectPermission>().select(PermsUserProjectPermission::getPermission).eq(PermsUserProjectPermission::getUser, principal) );
     }
 

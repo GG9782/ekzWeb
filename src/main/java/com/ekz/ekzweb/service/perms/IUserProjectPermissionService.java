@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface IUserProjectPermissionService extends IService<PermsUserProjectPermission> {
 
-    List<String> getUserPermissions (String principal);
+    List<String> getPrincipalPermissions(String principal);
 
     ResponseEntity<String> saveList (List<String> users, String prjCode, String permission);
 

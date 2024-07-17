@@ -1,17 +1,11 @@
 package com.ekz.ekzweb.shiro;
 
-import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
-import org.apache.shiro.spring.web.config.DefaultShiroFilterChainDefinition;
-import org.apache.shiro.spring.web.config.ShiroFilterChainDefinition;
-import org.apache.shiro.util.ThreadContext;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
-import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.context.annotation.Lazy;
 
 import java.util.LinkedHashMap;
 /**
@@ -37,10 +31,10 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setSecurityManager(securityManager);
 
         // 设置未登录跳转页面
-        shiroFilterFactoryBean.setLoginUrl("/users/unauthorized");
+//        shiroFilterFactoryBean.setLoginUrl("/users/unauthorized");
 
         // 设置未授权跳转页面
-        shiroFilterFactoryBean.setUnauthorizedUrl("/users/getPrincipals");
+//        shiroFilterFactoryBean.setUnauthorizedUrl("/users/getPrincipals");
 
         //添加Shiro内置过滤器
         /**
@@ -57,6 +51,7 @@ public class ShiroConfig {
         filterMap.put("/users/logout", "logout");
         filterMap.put("/users/unauthorized", "anon");
         filterMap.put("/users/adLogin", "anon");
+        filterMap.put("/users/getPrincipals", "anon");
         filterMap.put("/**", "authc");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterMap);
         return shiroFilterFactoryBean;

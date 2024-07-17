@@ -1,6 +1,6 @@
 package com.ekz.ekzweb.domain.project.prj.dto;
 
-import com.ekz.ekzweb.domain.project.prj.jsonType.StringAndStyleJsonType;
+import com.ekz.ekzweb.domain.jsonType.StringAndStyleJsonType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 

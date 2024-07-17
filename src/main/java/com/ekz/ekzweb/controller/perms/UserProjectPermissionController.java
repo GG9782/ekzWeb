@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "UserUserProjectPermission 接口")
+@Tag(name = "UserProjectPermission 接口")
 @RestController
 @RequestMapping("/userProjectPermission")
 public class UserProjectPermissionController {
@@ -23,9 +23,20 @@ public class UserProjectPermissionController {
     @Autowired
     private IUserProjectPermissionService service;
 
-    @Operation(summary = "prjPermsByPrincipals")
-    @GetMapping("/prjPermsByPrincipals/{PrjCode}")
-    public List<String> prjPermsByPrincipals(@PathVariable String prjCode){
+    @Operation(summary = "getPrincipalsPerms")
+    @GetMapping("/getPrincipalsPerms")
+    public List<String> getPrincipalsPerms(){
+
+        Subject subject = SecurityUtils.getSubject();
+        String principals = subject.getPrincipals().toString();
+
+        return service.getPrincipalPermissions(principals);
+    }
+
+
+    @Operation(summary = "principalsPermsByPrjCode")
+    @GetMapping("/principalsPermsByPrjCode/{prjCode}")
+    public List<String> principalsPermsByPrjCode(@PathVariable String prjCode){
         Subject subject = SecurityUtils.getSubject();
         String principals = subject.getPrincipals().toString();
 
@@ -38,13 +49,15 @@ public class UserProjectPermissionController {
 
     }
 
-    @Operation(summary = "getByPrjCode")
-    @GetMapping("/getByPrjCode/{PrjCode}")
-    public List<PermsUserProjectPermission> getUserPrjPermsByProject(@PathVariable String prjCode){
+    @Operation(summary = "getPrjPermsByPrjCode")
+    @GetMapping("/getPrjPermsByPrjCode/{prjCode}")
+    public List<PermsUserProjectPermission> getPrjPermsByProject(@PathVariable String prjCode){
 
         // checkPermission(prjCode+":*")
         Subject subject = SecurityUtils.getSubject();
-        subject.checkPermission(prjCode+":*");
+        if (!( subject.isPermitted(prjCode+":manager") || subject.isPermitted(prjCode+":member") ) ) {
+            subject.checkPermissions(prjCode+"::manager");
+        }
 
         return service.lambdaQuery().eq( PermsUserProjectPermission::getPrjCode, prjCode ).list();
     }

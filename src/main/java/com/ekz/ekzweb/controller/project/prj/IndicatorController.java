@@ -32,6 +32,10 @@ public class IndicatorController {
     @Operation(summary = "查 单个 Indicator")
     @GetMapping("/{prjCode}")
     public IndicatorVO getIndicatorById(@PathVariable("prjCode") String prjCode) {
+        // checkRole("member")
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("member");
+
         return BeanUtil.copyProperties( indicatorService.getById(prjCode) ,IndicatorVO.class);
     }
 

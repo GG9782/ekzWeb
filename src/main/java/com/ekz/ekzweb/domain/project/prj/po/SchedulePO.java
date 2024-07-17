@@ -3,7 +3,7 @@ package com.ekz.ekzweb.domain.project.prj.po;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
-import com.ekz.ekzweb.domain.project.prj.jsonType.ScheduleJsonType;
+import com.ekz.ekzweb.domain.jsonType.ScheduleJsonType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 

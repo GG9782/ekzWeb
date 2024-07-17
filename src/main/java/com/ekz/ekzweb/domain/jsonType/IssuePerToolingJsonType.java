@@ -1,4 +1,4 @@
-package com.ekz.ekzweb.domain.project.prj.jsonType;
+package com.ekz.ekzweb.domain.jsonType;
 
 import lombok.Data;
 

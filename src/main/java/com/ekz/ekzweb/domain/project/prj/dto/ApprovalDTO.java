@@ -1,7 +1,7 @@
 package com.ekz.ekzweb.domain.project.prj.dto;
 
-import com.ekz.ekzweb.domain.project.prj.jsonType.IssuePerToolingJsonType;
-import com.ekz.ekzweb.domain.project.prj.jsonType.PassRateJsonType;
+import com.ekz.ekzweb.domain.jsonType.IssuePerToolingJsonType;
+import com.ekz.ekzweb.domain.jsonType.PassRateJsonType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -19,6 +19,8 @@ public class ApprovalDTO {
     private List<PassRateJsonType> fai;
     @Schema(description = "Json字段，需要整个一起处理")
     private List<PassRateJsonType> cpk;
+    @Schema(description = "Json字段，需要整个一起处理")
+    private List<PassRateJsonType> ppap3b;
     @Schema(description = "Json字段，需要整个一起处理")
     private List<PassRateJsonType> partTest;
     @Schema(description = "Json字段，需要整个一起处理")

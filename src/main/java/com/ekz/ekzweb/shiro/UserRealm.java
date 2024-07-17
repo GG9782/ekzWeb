@@ -1,17 +1,9 @@
 package com.ekz.ekzweb.shiro;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.ekz.ekzweb.domain.perms.PermsRolePermission;
-import com.ekz.ekzweb.domain.perms.PermsUserRole;
-import com.ekz.ekzweb.domain.standardValue.StdCustomer;
-import com.ekz.ekzweb.domain.standardValue.StdProductType;
-import com.ekz.ekzweb.domain.user.User;
 import com.ekz.ekzweb.service.perms.IRolePermissionService;
-import com.ekz.ekzweb.service.perms.IRoleService;
 import com.ekz.ekzweb.service.perms.IUserProjectPermissionService;
 import com.ekz.ekzweb.service.perms.IUserRoleService;
 import com.ekz.ekzweb.service.user.IUserService;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -25,6 +17,7 @@ import org.springframework.stereotype.Component;
 import javax.naming.Context;
 import javax.naming.ldap.InitialLdapContext;
 import javax.naming.ldap.LdapContext;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -45,24 +38,25 @@ public class UserRealm extends AuthorizingRealm{
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        System.out.println("star Authorization");
         //获取当前用户身份信息
         String principal = principalCollection.getPrimaryPrincipal().toString();
         //调用接口方法获取用户的角色信息
-        List<String> roles = userRoleService.getUserRoles(principal);
-        System.out.println("roles: "+roles);
+        List<String> roles = userRoleService.getPrincipalRoles(principal);
         //调用接口方法获取用户角色的权限信息
         List<String> permissions = rolePermissionService.getPermissionsByRoles(roles);
         //调用接口方法获取用户角色的project权限信息
-//        List<String> projectPermissions = userProjectPermissionService.getUserPermissions(principal);
-        System.out.println("permissions: "+permissions);
+        List<String> projectPermissions = userProjectPermissionService.getPrincipalPermissions(principal);
+
+        List<String> mergedPermsList = new ArrayList<>();
+        mergedPermsList.addAll(permissions);
+        mergedPermsList.addAll(projectPermissions);
+
         //创建对象，存储当前登录的用户的权限和角色
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         //存储角色
         info.addRoles(roles);
         //存储权限信息
-        info.addStringPermissions(permissions);
-//        info.addStringPermissions(projectPermissions);
+        info.addStringPermissions(mergedPermsList);
         //返回
         return info;
     }
@@ -72,7 +66,6 @@ public class UserRealm extends AuthorizingRealm{
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-        System.out.println("star Authentication");
 
         //获取用户身份信息
         UsernamePasswordToken upToken = (UsernamePasswordToken) token;
