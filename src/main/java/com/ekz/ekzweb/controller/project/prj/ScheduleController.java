@@ -79,6 +79,10 @@ public class ScheduleController {
                 List<EventAndDay> events = scheduleStage.getEvents();
                 boolean isStartEvent = false;
                 for (EventAndDay event : events) {
+                    if( event.getEventDay() == null){
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("StdStage: " + scheduleStage.getName() + ", event: " + event.getEventName()+ " Date is null!");
+                    }
+
                     LocalDate eventDate = LocalDate.parse(event.getEventDay());
 
                     if (eventDate.isBefore(LocalDate.parse(startDate)) || eventDate.isAfter(LocalDate.parse(scheduleStage.getEndDate()))) {
@@ -88,7 +92,7 @@ public class ScheduleController {
                         isStartEvent = true;
                     }
                 }
-                if (isStartEvent == false) {
+                if (!isStartEvent) {
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("StdStage: " + scheduleStage.getName() + " is missing a start event !");
                 }
 

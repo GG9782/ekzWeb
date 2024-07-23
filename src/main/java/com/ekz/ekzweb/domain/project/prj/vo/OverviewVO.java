@@ -25,11 +25,10 @@ public class OverviewVO {
     private List<String> idMember;
     private List<String> packingMember;
 
-    private Integer indicatorCost;
-    private Integer indicatorSchedule;
-    private Integer indicatorResource;
-    private Integer indicatorQuality;
-
+    private String indicatorCost;
+    private String indicatorSchedule;
+    private String indicatorResource;
+    private String indicatorQuality;
     private String currentStage;
 
     public void setCurrentStage(List<ScheduleJsonType> schedule) {

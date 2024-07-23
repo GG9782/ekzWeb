@@ -9,18 +9,16 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
 
-
-@Tag(name = "用户管理接口")
+@Tag(name = "User 接口")
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -52,6 +50,7 @@ public class UserController {
             return "Login fail！Incorrect username or password.";
         }
     }
+
     @Operation(summary = "logout")
     @GetMapping("/logout")
     @ResponseBody
@@ -74,39 +73,58 @@ public class UserController {
         }
     }
 
-//    @Operation(summary = "新增用户接口")
-//    @PostMapping
-//    public void saveUser(@RequestBody UserFormDTO userDTO){
-//        //  把DTO拷贝到PO
-//        User user = BeanUtil.copyProperties(userDTO,User.class);
-//        // 新增
-//        userService.save(user);
-//    }
-//
-//    @Operation(summary = "删除用户接口")
-//    @DeleteMapping("{id}")
-//    public void deleteUserById(@Parameter(name = "用户id") @PathVariable("id") Long id){
-//        userService.removeById(id);
-//    }
+    @Operation(summary = "新增")
+    @PostMapping
+    public void saveUser(@RequestBody User user){
+        // checkRole("admin")
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("admin");
 
-//    @Operation(summary = "根据id查询用户")
-//    @GetMapping("{id}")
-//    public User queryUserById(@Parameter(name = "用户id") @PathVariable("id") String id){
-//        User userPO = userService.getById(id);
-//        return userPO;
-//    }
+        // 新增
+        userService.save(user);
+    }
 
-//    @Operation(summary = "根据id批量查询用户接口")
-//    @GetMapping
-//    public List<UserVO> queryUserByIds(@Parameter(name ="用户id集合") @RequestParam("ids") List<Long> ids){
-//        List<User> users = userService.listByIds(ids);
-//        return BeanUtil.copyToList(users,UserVO.class);
-//    }
+    @Operation(summary = "根据email删除")
+    @DeleteMapping("/{email}")
+    public void deleteUserByEmail(@PathVariable("email") String email){
+        // checkRole("admin")
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("admin");
+        userService.removeById(email);
+    }
 
-//    @Operation(summary = "根据id修改用户")
-//    @PutMapping
-//    public void updateUser(@RequestBody User user){
-//        user.setPwd(null);
-//        userService.updateById(user);
-//    }
+    @Operation(summary = "根据email查询")
+    @GetMapping("/{email}")
+    public User queryUserByEmail(@PathVariable("email") String email){
+        // checkRole("member")
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("member");
+
+        return userService.getById(email);
+    }
+
+    @Operation(summary = "多条件查询")
+    @GetMapping("/query")
+    public List<User> queryUser(@RequestBody User user){
+        // checkRole("member")
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("member");
+
+        if(user == null){
+            // 如果 user 为 null，则直接查询整个表的数据
+            return userService.list();
+        } else {
+            // 如果 user 不为 null，则根据 user 对象构建查询条件
+            return userService.lambdaQuery(user).list();
+        }
+    }
+
+    @Operation(summary = "根据email修改")
+    @PutMapping
+    public void updateUser(@RequestBody User user){
+        // checkRole("admin")
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("admin");
+        userService.updateById(user);
+    }
 }

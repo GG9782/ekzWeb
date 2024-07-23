@@ -19,11 +19,6 @@ public class OverviewQuery {
 
     private List<String> leader;
 
-    private Integer indicatorCost;
-    private Integer indicatorSchedule;
-    private Integer indicatorResource;
-    private Integer indicatorQuality;
-
     private String currentStage;
 
 }

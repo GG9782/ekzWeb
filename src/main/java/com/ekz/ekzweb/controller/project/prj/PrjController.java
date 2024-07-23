@@ -1,6 +1,7 @@
 package com.ekz.ekzweb.controller.project.prj;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.ekz.ekzweb.domain.jsonType.StringAndStyleJsonType;
 import com.ekz.ekzweb.domain.project.prj.dto.AttributeDTO;
 import com.ekz.ekzweb.domain.project.prj.po.AttributePO;
 import com.ekz.ekzweb.domain.project.prj.po.Project;
@@ -50,6 +51,25 @@ public class PrjController {
         for (Project project : poList) {
             OverviewVO overviewVO = BeanUtil.copyProperties(project,OverviewVO.class);
             overviewVO.setCurrentStage(project.getSchedule());
+            // get4Indicator
+            if(project.getIndicatorUserDefine() != null){
+                for ( StringAndStyleJsonType jsonOne: project.getIndicatorUserDefine()){
+                    switch(jsonOne.getContent()){
+                        case "Cost" :
+                            overviewVO.setIndicatorCost(jsonOne.getStyle());
+                            break; //可选
+                        case "Quality" :
+                            overviewVO.setIndicatorQuality(jsonOne.getStyle());
+                            break; //可选
+                        case "Resource" :
+                            overviewVO.setIndicatorResource(jsonOne.getStyle());
+                            break; //可选
+                        case "Schedule" :
+                            overviewVO.setIndicatorSchedule(jsonOne.getStyle());
+                            break; //可选
+                    }
+                }
+            }
             voList.add(overviewVO);
         }
         return voList;

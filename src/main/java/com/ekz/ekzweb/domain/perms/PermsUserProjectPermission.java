@@ -7,9 +7,9 @@ import lombok.Data;
 
 @Data
 public class PermsUserProjectPermission {
-    @TableId(type = IdType.AUTO)
-    @Schema(description = "自增id，新增时不要有此参数")
-    Integer id;
+    @TableId(type = IdType.ASSIGN_UUID)
+    @Schema(description = "UUID，新增时不要有此参数")
+    String id;
     String user;
     String prjCode;
     String permission;

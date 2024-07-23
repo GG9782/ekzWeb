@@ -27,6 +27,9 @@ public class DeveloperRecordController {
     @Operation(summary = "全查")
     @GetMapping("/all")
     public List<DeveloperRecord> getAll() {
+        // checkRole("member")
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("member");
         return service.list();
     }
 
@@ -34,6 +37,9 @@ public class DeveloperRecordController {
     @Operation(summary = "依id查")
     @GetMapping("/getById/{id}")
     public DeveloperRecord getById(@PathVariable Integer id) {
+        // checkRole("member")
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("member");
         return service.getById(id);
     }
 
@@ -41,7 +47,7 @@ public class DeveloperRecordController {
     @Operation(summary = "多条件 查")
     @GetMapping("/query")
     public List<DeveloperRecord> query(DeveloperRecordQuery query ) {
-        // checkPermission(prjCode+":member")
+        // checkRole("developer")
         Subject subject = SecurityUtils.getSubject();
         subject.checkRole("developer");
 
