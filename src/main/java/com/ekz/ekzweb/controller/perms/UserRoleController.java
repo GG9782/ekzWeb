@@ -74,7 +74,7 @@ public class UserRoleController {
     /** 删 单个*/
     @Operation(summary = "删 单个")
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteById(@PathVariable Integer id){
+    public ResponseEntity<String> deleteById(@PathVariable String id){
         // checkRole(admin")
         Subject subject = SecurityUtils.getSubject();
         subject.checkRole("admin");

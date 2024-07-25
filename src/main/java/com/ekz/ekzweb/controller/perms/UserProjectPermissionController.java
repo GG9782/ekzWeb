@@ -56,7 +56,7 @@ public class UserProjectPermissionController {
         // checkPermission(prjCode+":*")
         Subject subject = SecurityUtils.getSubject();
         if (!( subject.isPermitted(prjCode+":manager") || subject.isPermitted(prjCode+":member") ) ) {
-            subject.checkPermissions(prjCode+"::manager");
+            subject.checkPermissions(prjCode+":manager");
         }
 
         return service.lambdaQuery().eq( PermsUserProjectPermission::getPrjCode, prjCode ).list();
@@ -64,7 +64,7 @@ public class UserProjectPermissionController {
 
     @Operation(summary = "删 单个")
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteById(@PathVariable Integer id){
+    public ResponseEntity<String> deleteById(@PathVariable String id){
 
         PermsUserProjectPermission userProjectPermission = service.getById(id);
         String prjCode = userProjectPermission.getPrjCode();

@@ -1,7 +1,9 @@
 package com.ekz.ekzweb.controller.user;
 
 
+import com.ekz.ekzweb.domain.perms.PermsUserRole;
 import com.ekz.ekzweb.domain.user.User;
+import com.ekz.ekzweb.service.perms.IUserRoleService;
 import com.ekz.ekzweb.service.user.IUserService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,14 +26,16 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    private IUserService userService;
+    private IUserService service;
+    @Autowired
+    private IUserRoleService userRoleService;
 
     @Operation(summary = "adLogin")
     @GetMapping("/adLogin")
     @ResponseBody
     public String adLogin(String username, String password){
         if(!username.contains("@")){
-            User user = userService.lambdaQuery().select(User::getEmail).eq(User::getUserId,username).one();
+            User user = service.lambdaQuery().select(User::getEmail).eq(User::getUserId,username).one();
             if(user == null){
                 return "id "+username+" is not recorded by ekzWeb system.";
             }
@@ -79,9 +83,13 @@ public class UserController {
         // checkRole("admin")
         Subject subject = SecurityUtils.getSubject();
         subject.checkRole("admin");
-
+        PermsUserRole permsUserRole = new PermsUserRole();
+        permsUserRole.setUser(user.getEmail());
+        permsUserRole.setRole("member");
         // 新增
-        userService.save(user);
+        service.save(user);
+        userRoleService.save(permsUserRole);
+
     }
 
     @Operation(summary = "根据email删除")
@@ -90,33 +98,37 @@ public class UserController {
         // checkRole("admin")
         Subject subject = SecurityUtils.getSubject();
         subject.checkRole("admin");
-        userService.removeById(email);
+        service.removeById(email);
     }
 
     @Operation(summary = "根据email查询")
     @GetMapping("/{email}")
-    public User queryUserByEmail(@PathVariable("email") String email){
+    public User queryUserByEmail(@PathVariable String email){
         // checkRole("member")
         Subject subject = SecurityUtils.getSubject();
         subject.checkRole("member");
 
-        return userService.getById(email);
+        return service.getById(email);
     }
 
-    @Operation(summary = "多条件查询")
-    @GetMapping("/query")
-    public List<User> queryUser(@RequestBody User user){
+//    @Operation(summary = "多条件查询")
+//    @GetMapping("/query")
+//    public List<User> queryUser(@PathVariable User user){
+//        // checkRole("member")
+//        Subject subject = SecurityUtils.getSubject();
+//        subject.checkRole("member");
+//
+//        return service.lambdaQuery(user).list();
+//    }
+
+    @Operation(summary = "get all")
+    @GetMapping("/all")
+    public List<User> getAllUser(){
         // checkRole("member")
         Subject subject = SecurityUtils.getSubject();
         subject.checkRole("member");
 
-        if(user == null){
-            // 如果 user 为 null，则直接查询整个表的数据
-            return userService.list();
-        } else {
-            // 如果 user 不为 null，则根据 user 对象构建查询条件
-            return userService.lambdaQuery(user).list();
-        }
+        return service.list();
     }
 
     @Operation(summary = "根据email修改")
@@ -125,6 +137,6 @@ public class UserController {
         // checkRole("admin")
         Subject subject = SecurityUtils.getSubject();
         subject.checkRole("admin");
-        userService.updateById(user);
+        service.updateById(user);
     }
 }

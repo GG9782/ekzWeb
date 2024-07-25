@@ -23,6 +23,6 @@ public interface PrjMapper extends BaseMapper<Project> {
     @Delete("DELETE FROM project WHERE prj_code = #{prjCode} ")
     void physicsDeleteById(String prjCode);
 
-    @Select("SELECT prj_Code, deleted, prj_Name, department, bu, customer, business_Model , core_Invest, product_Type, create_Time, creator, attribute_Update_Time, attribute_Updater  FROM project WHERE deleted = 0 ")
+    @Select("SELECT prj_Code, deleted, prj_Name, department, bu, customer, business_Model , core_Invest, product_Type, create_Time, creator, attribute_Update_Time, attribute_Updater  FROM project WHERE deleted = 1 ")
     List<AttributePO> getLogicDeleteProject();
 }

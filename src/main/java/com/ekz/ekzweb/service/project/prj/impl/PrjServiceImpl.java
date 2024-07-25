@@ -42,6 +42,7 @@ public class PrjServiceImpl extends ServiceImpl<PrjMapper, Project> implements I
                         Project::getMeMember,
                         Project::getIdMember,
                         Project::getPackingMember,
+                        Project::getIndicatorUserDefine,
                         Project::getSchedule)
                 .list();
         return list;

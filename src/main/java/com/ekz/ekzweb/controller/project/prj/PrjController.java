@@ -54,19 +54,11 @@ public class PrjController {
             // get4Indicator
             if(project.getIndicatorUserDefine() != null){
                 for ( StringAndStyleJsonType jsonOne: project.getIndicatorUserDefine()){
-                    switch(jsonOne.getContent()){
-                        case "Cost" :
-                            overviewVO.setIndicatorCost(jsonOne.getStyle());
-                            break; //可选
-                        case "Quality" :
-                            overviewVO.setIndicatorQuality(jsonOne.getStyle());
-                            break; //可选
-                        case "Resource" :
-                            overviewVO.setIndicatorResource(jsonOne.getStyle());
-                            break; //可选
-                        case "Schedule" :
-                            overviewVO.setIndicatorSchedule(jsonOne.getStyle());
-                            break; //可选
+                    switch (jsonOne.getContent()) {
+                        case "Cost" -> overviewVO.setIndicatorCost(jsonOne.getStyle());
+                        case "Quality" -> overviewVO.setIndicatorQuality(jsonOne.getStyle());
+                        case "Resource" -> overviewVO.setIndicatorResource(jsonOne.getStyle());
+                        case "Schedule" -> overviewVO.setIndicatorSchedule(jsonOne.getStyle());
                     }
                 }
             }
@@ -77,13 +69,12 @@ public class PrjController {
 
     /** 增 单个 Project */
     @Operation(summary = "增 单个 Project")
-
     @PostMapping
     public ResponseEntity<String> save(@RequestBody AttributeDTO dto){
 
         // checkRole("projectManager")
         Subject subject = SecurityUtils.getSubject();
-        subject.checkRole("projectManager");
+        subject.checkRole("manager");
 
         // save project
         dto.setPrjCode( dto.getPrjCode().trim().toUpperCase() );
@@ -117,13 +108,11 @@ public class PrjController {
         String deleteRemark = "@"+ LocalDateTime.now().toString();
         Project project = prjService.getById(prjCode);
         String prjName= project.getPrjName();
-        System.out.println(prjName);
         prjService.lambdaUpdate()
                 .eq(Project::getPrjCode,prjCode)
                 .set(Project::getPrjCode,prjCode + deleteRemark)
                 .set(Project::getPrjName,prjName + deleteRemark)
                 .update();
-        System.out.println(prjCode + deleteRemark);
         // logicDelete
         prjService.removeById(prjCode  + deleteRemark);
 
