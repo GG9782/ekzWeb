@@ -25,5 +25,6 @@ public class User {
     private String mobile;
     private String jobTitle;
     private String department;
+    private String img;
     private LocalDate entryDate;
 }

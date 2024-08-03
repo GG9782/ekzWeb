@@ -66,9 +66,8 @@ public class UserRoleController {
     public List<PermsUserRole> getAll(){
         // checkRole(admin")
         Subject subject = SecurityUtils.getSubject();
-        subject.checkRole("admin");
-
-        return service.list();
+        if( subject.hasRole("admin") ){return service.list();}
+        return null;
     }
 
     /** 删 单个*/

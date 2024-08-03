@@ -56,7 +56,7 @@ public class UserProjectPermissionController {
         // checkPermission(prjCode+":*")
         Subject subject = SecurityUtils.getSubject();
         if (!( subject.isPermitted(prjCode+":manager") || subject.isPermitted(prjCode+":member") ) ) {
-            subject.checkPermissions(prjCode+":manager");
+            return null;
         }
 
         return service.lambdaQuery().eq( PermsUserProjectPermission::getPrjCode, prjCode ).list();
