@@ -160,9 +160,9 @@ public class UserController {
     @Operation(summary = "上传头像")
     @PostMapping("/images/{email}")
     public ResponseEntity<String> uploadImg(@RequestParam("file") MultipartFile file,@PathVariable String email) {
-        // checkRole("admin")
+        // checkRole("admin") or principals img
         Subject subject = SecurityUtils.getSubject();
-        subject.checkRole("admin");
+        if( ! email.equals( subject.getPrincipals().toString() ) ){subject.checkRole("admin");};
 
         if (file.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please select a file to upload");
@@ -178,7 +178,7 @@ public class UserController {
         String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
 
         if (!allowedExtensions.contains(fileExtension)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Only JPG, JPEG, PNG, GIF files are allowed");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Only JPG, JPEG, PNG files are allowed");
         }
 
         if (file.getSize() > MAX_FILE_SIZE) {

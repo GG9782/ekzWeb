@@ -25,12 +25,16 @@ public class UserProjectPermissionController {
 
     @Operation(summary = "getPrincipalsPerms")
     @GetMapping("/getPrincipalsPerms")
-    public List<String> getPrincipalsPerms(){
+    public List<PermsUserProjectPermission> getPrincipalsPerms(){
 
         Subject subject = SecurityUtils.getSubject();
         String principals = subject.getPrincipals().toString();
 
-        return service.getPrincipalPermissions(principals);
+//        return service.getPrincipalPermissions(principals);
+        return service.lambdaQuery()
+                .eq(PermsUserProjectPermission::getUser,principals)
+                .notLike(PermsUserProjectPermission::getPrjCode, "@")
+                .list();
     }
 
 

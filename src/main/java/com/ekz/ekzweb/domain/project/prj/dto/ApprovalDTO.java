@@ -20,7 +20,7 @@ public class ApprovalDTO {
     @Schema(description = "Json字段，需要整个一起处理")
     private List<PassRateJsonType> cpk;
     @Schema(description = "Json字段，需要整个一起处理")
-    private List<PassRateJsonType> ppap3b;
+    private PassRateJsonType ppap3b;
     @Schema(description = "Json字段，需要整个一起处理")
     private List<PassRateJsonType> partTest;
     @Schema(description = "Json字段，需要整个一起处理")

@@ -95,7 +95,7 @@ public class Project {
     private List<PassRateJsonType> fai;
     @Schema(description = "Json字段，需要整个一起处理")
     @TableField(typeHandler = JacksonTypeHandler.class)
-    private List<PassRateJsonType> ppap3b;
+    private PassRateJsonType ppap3b;
     @Schema(description = "Json字段，需要整个一起处理")
     @TableField(typeHandler = JacksonTypeHandler.class)
     private List<PassRateJsonType> cpk;

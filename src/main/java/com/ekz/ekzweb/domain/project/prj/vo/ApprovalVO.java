@@ -20,7 +20,7 @@ public class ApprovalVO {
     @TableField(typeHandler = JacksonTypeHandler.class)
     private List<PassRateJsonType> fai;
     @TableField(typeHandler = JacksonTypeHandler.class)
-    private List<PassRateJsonType> ppap3b;
+    private PassRateJsonType ppap3b;
     @TableField(typeHandler = JacksonTypeHandler.class)
     private List<PassRateJsonType> cpk;
     @TableField(typeHandler = JacksonTypeHandler.class)

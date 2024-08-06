@@ -1,0 +1,1169 @@
+@startuml
+class com.ekz.ekzweb.domain.project.prj.po.AttributePO {
+- String prjCode
+- Integer deleted
+- String prjName
+- String department
+- String bu
+- String customer
+- String businessModel
+- String coreInvest
+- String productType
+- LocalDateTime createTime
+- String creator
+- LocalDateTime attributeUpdateTime
+- String attributeUpdater
+}
+
+class com.ekz.ekzweb.service.standardValue.impl.CustomerServiceImpl {
+- CustomerMapper customerMapper
+}
+
+interface com.ekz.ekzweb.mapper.project.prj.TStageMapper {
+}
+class com.ekz.ekzweb.EkzwebApplication {
++ {static} void main(String[])
+}
+
+class com.ekz.ekzweb.service.project.prj.impl.PartQuantityServiceImpl {
+}
+class com.ekz.ekzweb.controller.project.TextIssue.IssueChartController {
+- ITextIssueService service
+- ITStageService tStageService
++ IssueChartVO getChartByPrjCode(String)
+}
+
+
+interface com.ekz.ekzweb.mapper.project.prj.PrjMapper {
+~ void cancelLogicDeleteById(String)
+~ void physicsDeleteById(String)
+~ List<AttributePO> getLogicDeleteProject()
+}
+
+class com.ekz.ekzweb.controller.standardValue.StageController {
+- IStageService service
+- IAttributeService attributeService
++ List<List<String>> getAllList()
++ List<StdStage> getAllObject()
++ List<StdStage> getByPrjCode(String)
++ ResponseEntity<String> Delete(long)
++ ResponseEntity<String> save(String,List<String>)
++ ResponseEntity<String> update(StdStage)
+}
+
+
+interface com.ekz.ekzweb.service.standardValue.IVendorService {
+}
+interface com.ekz.ekzweb.mapper.standardValue.StdIndicatorMapper {
+}
+class com.ekz.ekzweb.domain.jsonType.IssueChartJsonType {
+- String stage
+- Integer severity
+- Integer openQuantity
+- Integer CloseQuantity
+- Double passRate
+}
+
+class com.ekz.ekzweb.controller.standardValue.BuController {
+- IBuService service
++ List<String> getAllList()
++ List<StdBu> getAllObject()
++ ResponseEntity<String> Delete(String)
++ ResponseEntity<String> save(String)
++ ResponseEntity<String> update(String,String)
+}
+
+
+class com.ekz.ekzweb.domain.developer.query.DeveloperRecordQuery {
+- String layer
+- String subLayer
+- String description
+- LocalDate earliestFinishDate
+- LocalDate latestFinishDate
+}
+
+class com.ekz.ekzweb.domain.developer.po.DeveloperRecord {
+- Integer id
+- String layer
+- String subLayer
+- String description
+- LocalDate finishDate
+- String creator
+- LocalDateTime createTime
+}
+
+interface com.ekz.ekzweb.service.standardValue.IBuService {
+}
+class com.ekz.ekzweb.service.project.prj.impl.IndicatorServiceImpl {
+}
+interface com.ekz.ekzweb.service.project.prj.ITStageService {
+}
+interface com.ekz.ekzweb.service.project.prj.IIndicatorService {
+}
+interface com.ekz.ekzweb.mapper.standardValue.VendorMapper {
+}
+class com.ekz.ekzweb.service.developer.department.impl.DepartmentServiceImpl {
+- DepartmentMapper departmentMapper
+}
+
+class com.ekz.ekzweb.domain.project.prj.vo.PrjReadinessVO {
+- String prjCode
+- List<PrjReadinessJsonType> prjReadiness
+- String prjReadinessUpdater
+- LocalDateTime prjReadinessUpdateTime
+}
+
+class com.ekz.ekzweb.domain.project.prj.po.SchedulePO {
+- String prjCode
+- Integer deleted
+- List<ScheduleJsonType> schedule
+- String scheduleUpdater
+- LocalDateTime scheduleUpdateTime
+}
+
+interface com.ekz.ekzweb.mapper.developer.DeveloperRecordMapper {
+}
+class com.ekz.ekzweb.domain.project.prj.vo.IndicatorVO {
+- String prjCode
+- List<StringAndStyleJsonType> indicatorUserDefine
+- String indicatorUpdater
+- LocalDateTime indicatorUpdateTime
+}
+
+interface com.ekz.ekzweb.service.standardValue.ICustomerService {
+}
+class com.ekz.ekzweb.controller.project.prj.TStageController {
+- ITStageService tStageService
++ TStageVO tStageById(String)
++ ResponseEntity<String> updateTStage(TStageDTO)
++ Boolean isTFinalById(String)
+}
+
+
+interface com.ekz.ekzweb.service.perms.IPermissionService {
+}
+interface com.ekz.ekzweb.mapper.project.prj.AttributeMapper {
+}
+interface com.ekz.ekzweb.mapper.perms.PermissionMapper {
+}
+class com.ekz.ekzweb.controller.department.DepartmentController {
+- IDepartmentService service
++ List<Department> getAll()
++ ResponseEntity<String> save(Department)
++ ResponseEntity<String> updateById(Department)
++ ResponseEntity<String> delete(String)
+}
+
+
+interface com.ekz.ekzweb.service.standardValue.IReadinessService {
+~ List<StdReadiness> getByProject(String,AttributePO)
+}
+
+class com.ekz.ekzweb.domain.standardValue.StdProductType {
+- String productType
+- String creator
+- LocalDateTime createTime
+}
+
+interface com.ekz.ekzweb.mapper.project.prj.MemberMapper {
+}
+class com.ekz.ekzweb.controller.project.prj.PrReadinessController {
+- IPrjReadinessService prjReadinessService
++ PrjReadinessVO prjReadinessById(String)
++ ResponseEntity<String> updatePrjReadiness(PrjReadinessDTO)
+}
+
+
+interface com.ekz.ekzweb.mapper.user.UserMapper {
+}
+class com.ekz.ekzweb.domain.project.prj.po.Project {
+- String prjCode
+- String prjName
+- String department
+- Integer deleted
+- String bu
+- String customer
+- String businessModel
+- String coreInvest
+- String productType
+- LocalDateTime createTime
+- String creator
+- LocalDateTime attributeUpdateTime
+- String attributeUpdater
+- List<String> leader
+- List<String> meMember
+- List<String> idMember
+- List<String> packingMember
+- LocalDateTime memberUpdateTime
+- String memberUpdater
+- List<StringAndStyleJsonType> indicatorUserDefine
+- String indicatorUpdater
+- LocalDateTime indicatorUpdateTime
+- Map<String,Integer> metalPartQuantity
+- Map<String,Integer> plasticPartQuantity
+- Map<String,Integer> dieCastingPartQuantity
+- String partQuantityUpdater
+- LocalDateTime partQuantityUpdateTime
+- Integer tStageQuantity
+- Boolean isTFinal
+- Integer dStageQuantity
+- String tStageUpdater
+- LocalDateTime tStageUpdateTime
+- PassRateJsonType gpm
+- PassRateJsonType sa
+- List<PassRateJsonType> fai
+- List<PassRateJsonType> ppap3b
+- List<PassRateJsonType> cpk
+- List<PassRateJsonType> partTest
+- List<PassRateJsonType> readyForApprovalMetal
+- List<PassRateJsonType> readyForApprovalPlastic
+- List<IssuePerToolingJsonType> issuePerTooling
+- String approvalUpdater
+- LocalDateTime approvalUpdateTime
+- List<ScheduleJsonType> schedule
+- String scheduleUpdater
+- LocalDateTime scheduleUpdateTime
+- List<PrjReadinessJsonType> prjReadiness
+- String prjReadinessUpdater
+- LocalDateTime prjReadinessUpdateTime
+}
+
+class com.ekz.ekzweb.service.standardValue.impl.VendorServiceImpl {
+- VendorMapper vendorMapper
+}
+
+interface com.ekz.ekzweb.mapper.standardValue.ProductTypeMapper {
+}
+class com.ekz.ekzweb.controller.standardValue.CustomerController {
+- ICustomerService service
++ List<String> getAllList()
++ List<StdCustomer> getAllObject()
++ ResponseEntity<String> Delete(String)
++ ResponseEntity<String> save(String,String)
++ ResponseEntity<String> update(String,String)
++ ResponseEntity<String> delete(List<String>)
++ ResponseEntity<String> save(List<String>)
+}
+
+
+class com.ekz.ekzweb.domain.project.prj.dto.ScheduleDTO {
+- String prjCode
+- List<ScheduleJsonType> schedule
+}
+
+class com.ekz.ekzweb.domain.standardValue.StdVendor {
+- String vendor
+- String creator
+- LocalDateTime createTime
+}
+
+interface com.ekz.ekzweb.service.developer.IDeveloperRecordService {
+}
+class com.ekz.ekzweb.domain.project.prj.dto.PartQuantityDTO {
+- String prjCode
+- Map<String,Integer> metalPartQuantity
+- Map<String,Integer> plasticPartQuantity
+- Map<String,Integer> dieCastingPartQuantity
+}
+
+interface com.ekz.ekzweb.service.project.prj.IPrjService {
+~ List<Project> queryOverview()
+~ List<Project> queryPrjAttributeList(String,String,String,String,String,String,String,String,String,LocalDate,LocalDate)
+~ void updateAttribute(String,AttributeDTO)
+~ void cancelLogicDeleteById(String)
+~ void physicsDeleteById(String)
+~ List<AttributePO> getLogicDeleteProject()
+}
+
+class com.ekz.ekzweb.controller.perms.PermissionController {
+- IPermissionService service
+}
+
+class com.ekz.ekzweb.controller.standardValue.VendorController {
+- IVendorService service
++ List<String> getAllList()
++ List<StdVendor> getAllObject()
++ ResponseEntity<String> Delete(String)
++ ResponseEntity<String> save(String)
++ ResponseEntity<String> delete(List<String>)
++ ResponseEntity<String> save(List<String>)
++ ResponseEntity<String> update(String,String)
+}
+
+
+class com.ekz.ekzweb.service.project.prj.impl.PrjServiceImpl {
+- PrjMapper prjMapper
++ List<Project> queryOverview()
++ List<Project> queryPrjAttributeList(String,String,String,String,String,String,String,String,String,LocalDate,LocalDate)
++ void updateAttribute(String,AttributeDTO)
++ void cancelLogicDeleteById(String)
++ void physicsDeleteById(String)
++ List<AttributePO> getLogicDeleteProject()
+}
+
+
+interface com.ekz.ekzweb.service.perms.IRoleService {
+}
+class com.ekz.ekzweb.domain.project.textHighLowLight.TextHighLowLight {
+- Integer id
+- String prjCode
+- String description
+- String action
+- String status
+- String remark
+- String creator
+- LocalDateTime createTime
+}
+
+class com.ekz.ekzweb.controller.FileController {
++ ResponseEntity<Resource> getImage(Path)
++ ResponseEntity<Resource> downloadFile(String)
+}
+
+interface com.ekz.ekzweb.mapper.perms.UserRoleMapper {
+}
+class com.ekz.ekzweb.domain.jsonType.PrjReadinessJsonType {
+- String dueDate
+- Double finishRate
+- String remark
+- Integer item
+}
+
+class com.ekz.ekzweb.service.standardValue.impl.BuServiceImpl {
+- BuMapper buMapper
+}
+
+interface com.ekz.ekzweb.service.project.prj.IPartQuantityService {
+}
+class com.ekz.ekzweb.domain.project.prj.vo.AttributeVO {
+- String prjCode
+- String prjName
+- String department
+- String bu
+- String customer
+- String businessModel
+- String coreInvest
+- String productType
+- LocalDateTime createTime
+- String creator
+- LocalDateTime attributeUpdateTime
+- String attributeUpdater
+}
+
+class com.ekz.ekzweb.controller.developer.DeveloperRecordController {
+- IDeveloperRecordService service
++ List<DeveloperRecord> getAll()
++ DeveloperRecord getById(Integer)
++ List<DeveloperRecord> query(DeveloperRecordQuery)
++ ResponseEntity<String> save(DeveloperRecord)
++ ResponseEntity<String> updateById(DeveloperRecord)
++ ResponseEntity<String> delete(String)
+}
+
+
+class com.ekz.ekzweb.domain.project.prj.po.TStagePO {
+- String prjCode
+- Integer deleted
+- Integer tStageQuantity
+- Integer dStageQuantity
+- Boolean isTFinal
+- String tStageUpdater
+- LocalDateTime tStageUpdateTime
+}
+
+class com.ekz.ekzweb.domain.project.prj.vo.OverviewVO {
+- String prjCode
+- String prjName
+- String department
+- String bu
+- String customer
+- String businessModel
+- String coreInvest
+- String productType
+- List<String> leader
+- List<String> meMember
+- List<String> idMember
+- List<String> packingMember
+- String indicatorCost
+- String indicatorSchedule
+- String indicatorResource
+- String indicatorQuality
+- String currentStage
++ void setCurrentStage(List<ScheduleJsonType>)
+}
+
+
+class com.ekz.ekzweb.service.perms.impl.RoleServiceImpl {
+- RoleMapper mapper
+}
+
+interface com.ekz.ekzweb.service.perms.IUserProjectPermissionService {
+~ List<String> getPrincipalPermissions(String)
+~ ResponseEntity<String> saveList(List<String>,String,String)
+~ ResponseEntity<String> saveOne(String,String,String)
+}
+
+interface com.ekz.ekzweb.mapper.perms.RolePermissionMapper {
+}
+class com.ekz.ekzweb.controller.project.prj.PrjController {
+- IPrjService prjService
+- IUserProjectPermissionService userProjectPermissionService
++ List<OverviewVO> queryOverview()
++ ResponseEntity<String> save(AttributeDTO)
++ ResponseEntity<String> logicDeleteById(String)
++ ResponseEntity<String> undoLogicDeleteById(String)
++ ResponseEntity<String> physicsDeleteById(String)
++ List<AttributePO> getLogicDelete()
+}
+
+
+class com.ekz.ekzweb.controller.perms.UserProjectPermissionController {
+- IUserProjectPermissionService service
++ List<String> getPrincipalsPerms()
++ List<String> principalsPermsByPrjCode(String)
++ List<PermsUserProjectPermission> getPrjPermsByProject(String)
++ ResponseEntity<String> deleteById(String)
++ ResponseEntity<String> save(PermsUserProjectPermission)
+}
+
+
+interface com.ekz.ekzweb.mapper.project.prj.ApprovalMapper {
+}
+class com.ekz.ekzweb.controller.perms.UserRoleController {
+- IUserRoleService service
+- IRolePermissionService rolePermissionService
++ List<String> getPrincipalsRoles()
++ List<String> getPrincipalsPermissions()
++ List<PermsUserRole> getRolesByUser(String)
++ List<PermsUserRole> getUserByRole(String)
++ List<PermsUserRole> getAll()
++ ResponseEntity<String> deleteById(String)
++ ResponseEntity<String> save(PermsUserRole)
+}
+
+
+class com.ekz.ekzweb.controller.project.prj.IndicatorController {
+- IIndicatorService indicatorService
++ IndicatorVO getIndicatorById(String)
++ ResponseEntity<String> updateIndicator(IndicatorDTO)
+}
+
+
+interface com.ekz.ekzweb.mapper.perms.RoleMapper {
+}
+class com.ekz.ekzweb.service.project.prj.impl.PrjReadinessServiceImpl {
+}
+interface com.ekz.ekzweb.mapper.project.hignLowLight.HighLowLightMapper {
+}
+class com.ekz.ekzweb.controller.project.prj.PartQuantityController {
+- IPartQuantityService partQuantityService
++ PartQuantityVO partQuantityById(String)
++ ResponseEntity<String> updatePartQuantity(PartQuantityDTO)
+}
+
+
+class com.ekz.ekzweb.domain.project.prj.dto.PrjReadinessDTO {
+- String prjCode
+- List<PrjReadinessJsonType> prjReadiness
+}
+
+class com.ekz.ekzweb.service.standardValue.impl.ReadinessServiceImpl {
+- ReadinessMapper readinessMapper
++ List<StdReadiness> getByProject(String,AttributePO)
+}
+
+
+interface com.ekz.ekzweb.mapper.standardValue.ReadinessMapper {
+}
+class com.ekz.ekzweb.service.perms.impl.UserRoleServiceImpl {
+- UserRoleMapper mapper
++ List<String> getPrincipalRoles(String)
+}
+
+
+interface com.ekz.ekzweb.mapper.standardValue.CustomerMapper {
+}
+class com.ekz.ekzweb.domain.project.prj.po.ApprovalPO {
+- String prjCode
+- Integer deleted
+- PassRateJsonType gpm
+- PassRateJsonType sa
+- List<PassRateJsonType> fai
+- List<PassRateJsonType> cpk
+- List<PassRateJsonType> ppap3b
+- List<PassRateJsonType> partTest
+- List<PassRateJsonType> readyForApprovalMetal
+- List<PassRateJsonType> readyForApprovalPlastic
+- List<IssuePerToolingJsonType> issuePerTooling
+- String approvalUpdater
+- LocalDateTime approvalUpdateTime
+}
+
+class com.ekz.ekzweb.domain.project.prj.dto.IndicatorDTO {
+- String prjCode
+- List<StringAndStyleJsonType> indicatorUserDefine
+}
+
+interface com.ekz.ekzweb.service.standardValue.IStdIndicatorService {
+}
+interface com.ekz.ekzweb.mapper.project.prj.PrjReadinessMapper {
+}
+class com.ekz.ekzweb.domain.standardValue.StdReadiness {
+- Integer id
+- String bu
+- String customer
+- String productType
+- Integer item
+- String deliverables
+- String reviewFocus
+- LocalDateTime createTime
+- String creator
+}
+
+interface com.ekz.ekzweb.service.project.prj.IPrjReadinessService {
+}
+class com.ekz.ekzweb.domain.user.User {
+- String email
+- String userId
+- String cnName
+- String name
+- Integer phone
+- String gender
+- String mobile
+- String jobTitle
+- String department
+- LocalDate entryDate
+}
+
+class com.ekz.ekzweb.controller.standardValue.ReadinessController {
+- IReadinessService service
+- IAttributeService attributeService
++ List<StdReadiness> getByProject(String)
++ List<StdReadiness> getAllObject()
++ ResponseEntity<String> Delete(String)
++ ResponseEntity<String> save(StdReadiness)
++ ResponseEntity<String> updateById(StdReadiness)
++ ResponseEntity<String> save(List<StdReadiness>)
+}
+
+
+class com.ekz.ekzweb.domain.perms.PermsUserRole {
+~ String id
+~ String user
+~ String role
+}
+
+class com.ekz.ekzweb.domain.project.prj.vo.ApprovalVO {
+- String prjCode
+- PassRateJsonType gpm
+- PassRateJsonType sa
+- List<PassRateJsonType> fai
+- List<PassRateJsonType> ppap3b
+- List<PassRateJsonType> cpk
+- List<PassRateJsonType> partTest
+- List<PassRateJsonType> readyForApprovalMetal
+- List<PassRateJsonType> readyForApprovalPlastic
+- List<IssuePerToolingJsonType> issuePerTooling
+- String saUpdater
+- LocalDateTime gpmSaUpdateTime
+}
+
+class com.ekz.ekzweb.domain.perms.PermsPermission {
+~ String permission
+~ String description
+}
+
+class com.ekz.ekzweb.service.project.prj.impl.MemberServiceImpl {
+}
+interface com.ekz.ekzweb.service.standardValue.IProductTypeService {
+}
+class com.ekz.ekzweb.domain.project.prj.po.IndicatorPO {
+- String prjCode
+- Integer deleted
+- List<StringAndStyleJsonType> indicatorUserDefine
+- String indicatorUpdater
+- LocalDateTime indicatorUpdateTime
+}
+
+class com.ekz.ekzweb.domain.project.textIssue.TextIssue {
+- Integer id
+- Integer deleted
+- String prjCode
+- Boolean isTop
+- Integer ranking
+- String stage
+- Integer severity
+- String description
+- String picture
+- String action
+- String solution
+- String pic
+- String status
+- LocalDate dueDate
+- String report
+- LocalDateTime createTime
+- String creator
+}
+
+class com.ekz.ekzweb.domain.standardValue.StdStage {
+- Integer id
+- List<String> stage
+- String customer
+- String creator
+- LocalDateTime createTime
+}
+
+class com.ekz.ekzweb.domain.standardValue.StdCustomer {
+- String customer
+- String bu
+- String creator
+- LocalDateTime createTime
+}
+
+interface com.ekz.ekzweb.service.developer.department.IDepartmentService {
+}
+class com.ekz.ekzweb.domain.perms.PermsUserProjectPermission {
+~ String id
+~ String user
+~ String prjCode
+~ String permission
+}
+
+class com.ekz.ekzweb.domain.project.prj.vo.ScheduleVO {
+- String prjCode
+- List<ScheduleJsonType> schedule
+- String scheduleUpdater
+- LocalDateTime scheduleUpdateTime
+}
+
+class com.ekz.ekzweb.controller.project.prj.MemberController {
+- IMemberService memberService
++ MemberVO getMemberById(String)
++ ResponseEntity<String> updateMember(MemberDTO)
+}
+
+
+class com.ekz.ekzweb.domain.jsonType.ScheduleJsonType {
+- String name
+- String color
+- String startDate
+- String endDate
+- List<EventAndDay> events
+- List<EventAndDay> subEvents
+}
+
+class com.ekz.ekzweb.controller.perms.RoleController {
+}
+class com.ekz.ekzweb.domain.project.prj.vo.PartQuantityVO {
+- String prjCode
+- Map<String,Integer> metalPartQuantity
+- Map<String,Integer> plasticPartQuantity
+- Map<String,Integer> dieCastingPartQuantity
+- String partQuantityUpdater
+- LocalDateTime partQuantityUpdateTime
+}
+
+interface com.ekz.ekzweb.mapper.standardValue.BusinessModelMapper {
+}
+class com.ekz.ekzweb.service.user.impl.UserServiceImpl {
+- UserMapper userMapper
+}
+
+class com.ekz.ekzweb.domain.perms.PermsRole {
+~ String role
+~ String description
+}
+
+class com.ekz.ekzweb.domain.project.prj.dto.AttributeDTO {
+- String prjCode
+- String prjName
+- String department
+- String bu
+- String customer
+- String businessModel
+- String coreInvest
+- String productType
+}
+
+class com.ekz.ekzweb.domain.jsonType.EventAndDay {
+- String eventName
+- Map<String,String> fontStyle
+- String eventDay
+}
+
+interface com.ekz.ekzweb.service.project.highLowLight.IHighLowLightService {
+}
+class com.ekz.ekzweb.domain.project.prj.vo.MemberVO {
+- String prjCode
+- List<String> leader
+- List<String> meMember
+- List<String> idMember
+- List<String> packingMember
+- LocalDateTime memberUpdateTime
+- String memberUpdater
+}
+
+class com.ekz.ekzweb.service.standardValue.impl.BusinessModelServiceImpl {
+- BusinessModelMapper businessModelMapper
+}
+
+interface com.ekz.ekzweb.service.project.textIssue.ITextIssueService {
+}
+class com.ekz.ekzweb.service.project.textIssue.impl.TextIssueServiceImpl {
+}
+class com.ekz.ekzweb.domain.project.prj.vo.TStageVO {
+- String prjCode
+- Integer tStageQuantity
+- Integer dStageQuantity
+- Boolean isTFinal
+- String tStageUpdater
+- LocalDateTime tStageUpdateTime
+}
+
+class com.ekz.ekzweb.controller.user.UserController {
+- IUserService service
+- IUserRoleService userRoleService
++ String adLogin(String,String)
++ ResponseEntity<String> userLogout()
++ ResponseEntity<String> getPrincipals()
++ void saveUser(User)
++ void deleteUserByEmail(String)
++ User queryUserByEmail(String)
++ List<User> getAllUser()
++ void updateUser(User)
+}
+
+
+class com.ekz.ekzweb.controller.standardValue.StdIndicatorController {
+- IStdIndicatorService service
+- IAttributeService attributeService
++ List<String> getByCustomer(String)
++ List<String> getByPrjCode(String)
++ List<StdIndicator> getAllObject()
++ ResponseEntity<String> Delete(Integer)
++ ResponseEntity<String> save(StdIndicator)
++ ResponseEntity<String> update(StdIndicator)
+}
+
+
+class com.ekz.ekzweb.domain.jsonType.StringAndStyleJsonType {
+- String content
+- String Style
+}
+
+class com.ekz.ekzweb.domain.project.prj.po.MemberPO {
+- String prjCode
+- Integer deleted
+- List<String> leader
+- List<String> meMember
+- List<String> idMember
+- List<String> packingMember
+- LocalDateTime memberUpdateTime
+- String memberUpdater
+}
+
+class com.ekz.ekzweb.domain.perms.PermsRolePermission {
+~ Integer id
+~ String role
+~ String permission
+}
+
+class com.ekz.ekzweb.shiro.UserRealm {
+- IUserService userService
+- IUserRoleService userRoleService
+- IRolePermissionService rolePermissionService
+- IUserProjectPermissionService userProjectPermissionService
+# AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection)
+# AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken)
+}
+
+
+class com.ekz.ekzweb.controller.project.prj.ApprovalController {
+- IApprovalService approvalService
++ ApprovalVO approvalById(String)
++ ResponseEntity<String> updateApproval(ApprovalDTO)
+}
+
+
+class com.ekz.ekzweb.domain.project.prj.dto.MemberDTO {
+- String prjCode
+- List<String> leader
+- List<String> meMember
+- List<String> idMember
+- List<String> packingMember
+}
+
+interface com.ekz.ekzweb.service.project.prj.IScheduleService {
+}
+class com.ekz.ekzweb.service.perms.impl.UserProjectPermissionServiceImpl {
+- UserProjectPermissionMapper mapper
++ List<String> getPrincipalPermissions(String)
++ ResponseEntity<String> saveList(List<String>,String,String)
++ ResponseEntity<String> saveOne(String,String,String)
+}
+
+
+class com.ekz.ekzweb.service.standardValue.impl.StdIndicatorServiceImpl {
+- StdIndicatorMapper stdIndicatorMapper
+}
+
+class com.ekz.ekzweb.service.perms.impl.PermissionServiceImpl {
+- PermissionMapper mapper
+}
+
+class com.ekz.ekzweb.service.project.prj.impl.TStageServiceImpl {
+}
+class com.ekz.ekzweb.service.standardValue.impl.ProductTypeServiceImpl {
+- ProductTypeMapper productTypeMapper
+}
+
+interface com.ekz.ekzweb.mapper.department.DepartmentMapper {
+}
+interface com.ekz.ekzweb.mapper.project.prj.ScheduleMapper {
+}
+interface com.ekz.ekzweb.service.perms.IUserRoleService {
+~ List<String> getPrincipalRoles(String)
+}
+
+class com.ekz.ekzweb.domain.jsonType.IssuePerToolingJsonType {
+- String name
+- Integer toolingQuantity
+- Integer issueTotal
+- Integer issueOpen
+- Integer issueClose
+- Double issueToolingRate
+}
+
+class com.ekz.ekzweb.domain.project.prj.dto.TStageDTO {
+- String prjCode
+- Boolean isTFinal
+- Integer tStageQuantity
+- Integer dStageQuantity
+}
+
+class com.ekz.ekzweb.domain.project.prj.query.AttributeQuery {
+- String prjCode
+- String prjName
+- String department
+- String bu
+- String customer
+- String businessModel
+- String coreInvest
+- String productType
+- String creator
+- LocalDate earliestCreateDate
+- LocalDate latestCreateDate
+}
+
+class com.ekz.ekzweb.service.project.prj.impl.ApprovalServiceImpl {
+}
+class com.ekz.ekzweb.domain.project.prj.query.OverviewQuery {
+- String prjCode
+- String prjName
+- Integer bu
+- String customer
+- String businessModel
+- String coreInvest
+- String productType
+- List<String> leader
+- String currentStage
+}
+
+interface com.ekz.ekzweb.service.perms.IRolePermissionService {
+~ List<String> getPermissionsByRoles(List<String>)
+}
+
+interface com.ekz.ekzweb.service.user.IUserService {
+}
+class com.ekz.ekzweb.domain.project.prj.po.PartQuantityPO {
+- String prjCode
+- Integer deleted
+- Map<String,Integer> metalPartQuantity
+- Map<String,Integer> plasticPartQuantity
+- Map<String,Integer> dieCastingPartQuantity
+- String partQuantityUpdater
+- LocalDateTime partQuantityUpdateTime
+}
+
+interface com.ekz.ekzweb.mapper.project.textIssue.TextIssueMapper {
+}
+interface com.ekz.ekzweb.mapper.project.prj.IndicatorMapper {
+}
+class com.ekz.ekzweb.domain.project.prj.dto.ApprovalDTO {
+- String prjCode
+- PassRateJsonType gpm
+- PassRateJsonType sa
+- List<PassRateJsonType> fai
+- List<PassRateJsonType> cpk
+- List<PassRateJsonType> ppap3b
+- List<PassRateJsonType> partTest
+- List<PassRateJsonType> readyForApprovalMetal
+- List<PassRateJsonType> readyForApprovalPlastic
+- List<IssuePerToolingJsonType> issuePerTooling
+}
+
+interface com.ekz.ekzweb.service.project.prj.IApprovalService {
+}
+class com.ekz.ekzweb.service.project.prj.impl.AttributeServiceImpl {
+}
+class com.ekz.ekzweb.controller.standardValue.ProductTypeController {
+- IProductTypeService service
++ List<String> getAllList()
++ List<StdProductType> getAllObject()
++ ResponseEntity<String> Delete(String)
++ ResponseEntity<String> save(String)
++ ResponseEntity<String> update(String,String)
+}
+
+
+class com.ekz.ekzweb.service.project.highLowLight.impl.HighLowLightServiceImpl {
+}
+class com.ekz.ekzweb.controller.standardValue.BusinessModelController {
+- IBusinessModelService service
++ List<String> getAllList()
++ List<StdBusinessModel> getAllObject()
++ ResponseEntity<String> Delete(String)
++ ResponseEntity<String> save(String)
++ ResponseEntity<String> update(String,String)
+}
+
+
+class com.ekz.ekzweb.shiro.ShiroConfig {
+- UserRealm userRealm
++ ShiroFilterFactoryBean getShiroFilterFactoryBean(DefaultWebSecurityManager)
++ DefaultWebSecurityManager defaultWebSecurityManager()
+}
+
+
+class com.ekz.ekzweb.domain.standardValue.StdIndicator {
+- Integer id
+- String name
+- String customer
+- String creator
+- LocalDateTime createTime
+}
+
+class com.ekz.ekzweb.controller.project.prj.ScheduleController {
+- IScheduleService scheduleService
++ ScheduleVO getScheduleById(String)
++ ResponseEntity<String> updateSchedule(ScheduleDTO)
+}
+
+
+interface com.ekz.ekzweb.mapper.perms.UserProjectPermissionMapper {
+}
+class com.ekz.ekzweb.domain.standardValue.StdBusinessModel {
+- String businessModel
+- String creator
+- LocalDateTime createTime
+}
+
+class com.ekz.ekzweb.domain.department.Department {
+- String id
+- String name
+- String parentId
+- String leader
+}
+
+interface com.ekz.ekzweb.service.project.prj.IMemberService {
+}
+class com.ekz.ekzweb.service.perms.impl.RolePermissionServiceImpl {
+- RolePermissionMapper mapper
++ List<String> getPermissionsByRoles(List<String>)
+}
+
+
+class com.ekz.ekzweb.domain.project.prj.po.PrjReadinessPO {
+- String prjCode
+- List<PrjReadinessJsonType> prjReadiness
+- String prjReadinessUpdater
+- LocalDateTime prjReadinessUpdateTime
+}
+
+class com.ekz.ekzweb.controller.project.prj.AttributeController {
+- IAttributeService attributeService
++ AttributeVO getAttributeById(String)
++ List<AttributeVO> queryPrjAttributeList(AttributeQuery)
++ ResponseEntity<String> updateAttribute(String,AttributeDTO)
+}
+
+
+class com.ekz.ekzweb.controller.project.highLowLight.HighLowLightController {
+- IHighLowLightService service
++ List<TextHighLowLight> getByPrjCode(String)
++ ResponseEntity<String> Delete(String)
++ ResponseEntity<String> save(TextHighLowLight)
++ ResponseEntity<String> updateById(TextHighLowLight)
++ ResponseEntity<String> save(List<TextHighLowLight>)
+}
+
+
+interface com.ekz.ekzweb.service.standardValue.IStageService {
+}
+class com.ekz.ekzweb.domain.standardValue.StdBu {
+- String bu
+- String creator
+- LocalDateTime createTime
+}
+
+class com.ekz.ekzweb.service.developer.impl.DeveloperRecordServiceImp {
+- DeveloperRecordMapper developerRecordMapper
+}
+
+class com.ekz.ekzweb.controller.perms.RolePermissionController {
+- IRolePermissionService service
+}
+
+interface com.ekz.ekzweb.service.project.prj.IAttributeService {
+}
+class com.ekz.ekzweb.domain.project.prj.vo.IssueChartVO {
+- String prjCode
+- List<IssueChartJsonType> issueChart
+}
+
+interface com.ekz.ekzweb.service.standardValue.IBusinessModelService {
+}
+class com.ekz.ekzweb.service.project.prj.impl.ScheduleServiceImpl {
+}
+class com.ekz.ekzweb.domain.jsonType.PassRateJsonType {
+- String name
+- Integer total
+- Integer pass
+- Integer fail
+- Double passRate
+}
+
+class com.ekz.ekzweb.service.standardValue.impl.StageServiceImpl {
+- StageMapper stageMapper
+}
+
+interface com.ekz.ekzweb.mapper.standardValue.BuMapper {
+}
+class com.ekz.ekzweb.controller.project.TextIssue.TextIssueController {
+- ITextIssueService service
++ List<TextIssue> getByPrjCode(String)
++ List<TextIssue> getTop5ByPrjCode(String)
++ ResponseEntity<String> Delete(String)
++ ResponseEntity<String> save(TextIssue)
++ ResponseEntity<String> updateById(TextIssue)
++ ResponseEntity<String> save(List<TextIssue>)
++ ResponseEntity<String> uploadFile(MultipartFile,String)
+}
+
+
+interface com.ekz.ekzweb.mapper.standardValue.StageMapper {
+}
+interface com.ekz.ekzweb.mapper.project.prj.PartQuantityMapper {
+}
+
+
+com.ekz.ekzweb.service.standardValue.ICustomerService <|.. com.ekz.ekzweb.service.standardValue.impl.CustomerServiceImpl
+com.baomidou.mybatisplus.extension.service.impl.ServiceImpl <|-- com.ekz.ekzweb.service.standardValue.impl.CustomerServiceImpl
+com.baomidou.mybatisplus.core.mapper.BaseMapper <|-- com.ekz.ekzweb.mapper.project.prj.TStageMapper
+com.ekz.ekzweb.service.project.prj.IPartQuantityService <|.. com.ekz.ekzweb.service.project.prj.impl.PartQuantityServiceImpl
+com.baomidou.mybatisplus.extension.service.impl.ServiceImpl <|-- com.ekz.ekzweb.service.project.prj.impl.PartQuantityServiceImpl
+com.baomidou.mybatisplus.core.mapper.BaseMapper <|-- com.ekz.ekzweb.mapper.project.prj.PrjMapper
+com.baomidou.mybatisplus.extension.service.IService <|-- com.ekz.ekzweb.service.standardValue.IVendorService
+com.baomidou.mybatisplus.core.mapper.BaseMapper <|-- com.ekz.ekzweb.mapper.standardValue.StdIndicatorMapper
+com.baomidou.mybatisplus.extension.service.IService <|-- com.ekz.ekzweb.service.standardValue.IBuService
+com.ekz.ekzweb.service.project.prj.IIndicatorService <|.. com.ekz.ekzweb.service.project.prj.impl.IndicatorServiceImpl
+com.baomidou.mybatisplus.extension.service.impl.ServiceImpl <|-- com.ekz.ekzweb.service.project.prj.impl.IndicatorServiceImpl
+com.baomidou.mybatisplus.extension.service.IService <|-- com.ekz.ekzweb.service.project.prj.ITStageService
+com.baomidou.mybatisplus.extension.service.IService <|-- com.ekz.ekzweb.service.project.prj.IIndicatorService
+com.baomidou.mybatisplus.core.mapper.BaseMapper <|-- com.ekz.ekzweb.mapper.standardValue.VendorMapper
+com.ekz.ekzweb.service.developer.department.IDepartmentService <|.. com.ekz.ekzweb.service.developer.department.impl.DepartmentServiceImpl
+com.baomidou.mybatisplus.extension.service.impl.ServiceImpl <|-- com.ekz.ekzweb.service.developer.department.impl.DepartmentServiceImpl
+com.baomidou.mybatisplus.core.mapper.BaseMapper <|-- com.ekz.ekzweb.mapper.developer.DeveloperRecordMapper
+com.baomidou.mybatisplus.extension.service.IService <|-- com.ekz.ekzweb.service.standardValue.ICustomerService
+com.baomidou.mybatisplus.extension.service.IService <|-- com.ekz.ekzweb.service.perms.IPermissionService
+com.baomidou.mybatisplus.core.mapper.BaseMapper <|-- com.ekz.ekzweb.mapper.project.prj.AttributeMapper
+com.baomidou.mybatisplus.core.mapper.BaseMapper <|-- com.ekz.ekzweb.mapper.perms.PermissionMapper
+com.baomidou.mybatisplus.extension.service.IService <|-- com.ekz.ekzweb.service.standardValue.IReadinessService
+com.baomidou.mybatisplus.core.mapper.BaseMapper <|-- com.ekz.ekzweb.mapper.project.prj.MemberMapper
+com.baomidou.mybatisplus.core.mapper.BaseMapper <|-- com.ekz.ekzweb.mapper.user.UserMapper
+com.ekz.ekzweb.service.standardValue.IVendorService <|.. com.ekz.ekzweb.service.standardValue.impl.VendorServiceImpl
+com.baomidou.mybatisplus.extension.service.impl.ServiceImpl <|-- com.ekz.ekzweb.service.standardValue.impl.VendorServiceImpl
+com.baomidou.mybatisplus.core.mapper.BaseMapper <|-- com.ekz.ekzweb.mapper.standardValue.ProductTypeMapper
+com.baomidou.mybatisplus.extension.service.IService <|-- com.ekz.ekzweb.service.developer.IDeveloperRecordService
+com.baomidou.mybatisplus.extension.service.IService <|-- com.ekz.ekzweb.service.project.prj.IPrjService
+com.ekz.ekzweb.service.project.prj.IPrjService <|.. com.ekz.ekzweb.service.project.prj.impl.PrjServiceImpl
+com.baomidou.mybatisplus.extension.service.impl.ServiceImpl <|-- com.ekz.ekzweb.service.project.prj.impl.PrjServiceImpl
+com.baomidou.mybatisplus.extension.service.IService <|-- com.ekz.ekzweb.service.perms.IRoleService
+com.baomidou.mybatisplus.core.mapper.BaseMapper <|-- com.ekz.ekzweb.mapper.perms.UserRoleMapper
+com.ekz.ekzweb.service.standardValue.IBuService <|.. com.ekz.ekzweb.service.standardValue.impl.BuServiceImpl
+com.baomidou.mybatisplus.extension.service.impl.ServiceImpl <|-- com.ekz.ekzweb.service.standardValue.impl.BuServiceImpl
+com.baomidou.mybatisplus.extension.service.IService <|-- com.ekz.ekzweb.service.project.prj.IPartQuantityService
+com.ekz.ekzweb.service.perms.IRoleService <|.. com.ekz.ekzweb.service.perms.impl.RoleServiceImpl
+com.baomidou.mybatisplus.extension.service.impl.ServiceImpl <|-- com.ekz.ekzweb.service.perms.impl.RoleServiceImpl
+com.baomidou.mybatisplus.extension.service.IService <|-- com.ekz.ekzweb.service.perms.IUserProjectPermissionService
+com.baomidou.mybatisplus.core.mapper.BaseMapper <|-- com.ekz.ekzweb.mapper.perms.RolePermissionMapper
+com.baomidou.mybatisplus.core.mapper.BaseMapper <|-- com.ekz.ekzweb.mapper.project.prj.ApprovalMapper
+com.baomidou.mybatisplus.core.mapper.BaseMapper <|-- com.ekz.ekzweb.mapper.perms.RoleMapper
+com.ekz.ekzweb.service.project.prj.IPrjReadinessService <|.. com.ekz.ekzweb.service.project.prj.impl.PrjReadinessServiceImpl
+com.baomidou.mybatisplus.extension.service.impl.ServiceImpl <|-- com.ekz.ekzweb.service.project.prj.impl.PrjReadinessServiceImpl
+com.baomidou.mybatisplus.core.mapper.BaseMapper <|-- com.ekz.ekzweb.mapper.project.hignLowLight.HighLowLightMapper
+com.ekz.ekzweb.service.standardValue.IReadinessService <|.. com.ekz.ekzweb.service.standardValue.impl.ReadinessServiceImpl
+com.baomidou.mybatisplus.extension.service.impl.ServiceImpl <|-- com.ekz.ekzweb.service.standardValue.impl.ReadinessServiceImpl
+com.baomidou.mybatisplus.core.mapper.BaseMapper <|-- com.ekz.ekzweb.mapper.standardValue.ReadinessMapper
+com.ekz.ekzweb.service.perms.IUserRoleService <|.. com.ekz.ekzweb.service.perms.impl.UserRoleServiceImpl
+com.baomidou.mybatisplus.extension.service.impl.ServiceImpl <|-- com.ekz.ekzweb.service.perms.impl.UserRoleServiceImpl
+com.baomidou.mybatisplus.core.mapper.BaseMapper <|-- com.ekz.ekzweb.mapper.standardValue.CustomerMapper
+com.baomidou.mybatisplus.extension.service.IService <|-- com.ekz.ekzweb.service.standardValue.IStdIndicatorService
+com.baomidou.mybatisplus.core.mapper.BaseMapper <|-- com.ekz.ekzweb.mapper.project.prj.PrjReadinessMapper
+com.baomidou.mybatisplus.extension.service.IService <|-- com.ekz.ekzweb.service.project.prj.IPrjReadinessService
+com.ekz.ekzweb.service.project.prj.IMemberService <|.. com.ekz.ekzweb.service.project.prj.impl.MemberServiceImpl
+com.baomidou.mybatisplus.extension.service.impl.ServiceImpl <|-- com.ekz.ekzweb.service.project.prj.impl.MemberServiceImpl
+com.baomidou.mybatisplus.extension.service.IService <|-- com.ekz.ekzweb.service.standardValue.IProductTypeService
+com.baomidou.mybatisplus.extension.service.IService <|-- com.ekz.ekzweb.service.developer.department.IDepartmentService
+com.baomidou.mybatisplus.core.mapper.BaseMapper <|-- com.ekz.ekzweb.mapper.standardValue.BusinessModelMapper
+com.ekz.ekzweb.service.user.IUserService <|.. com.ekz.ekzweb.service.user.impl.UserServiceImpl
+com.baomidou.mybatisplus.extension.service.impl.ServiceImpl <|-- com.ekz.ekzweb.service.user.impl.UserServiceImpl
+com.baomidou.mybatisplus.extension.service.IService <|-- com.ekz.ekzweb.service.project.highLowLight.IHighLowLightService
+com.ekz.ekzweb.service.standardValue.IBusinessModelService <|.. com.ekz.ekzweb.service.standardValue.impl.BusinessModelServiceImpl
+com.baomidou.mybatisplus.extension.service.impl.ServiceImpl <|-- com.ekz.ekzweb.service.standardValue.impl.BusinessModelServiceImpl
+com.baomidou.mybatisplus.extension.service.IService <|-- com.ekz.ekzweb.service.project.textIssue.ITextIssueService
+com.ekz.ekzweb.service.project.textIssue.ITextIssueService <|.. com.ekz.ekzweb.service.project.textIssue.impl.TextIssueServiceImpl
+com.baomidou.mybatisplus.extension.service.impl.ServiceImpl <|-- com.ekz.ekzweb.service.project.textIssue.impl.TextIssueServiceImpl
+org.apache.shiro.realm.AuthorizingRealm <|-- com.ekz.ekzweb.shiro.UserRealm
+com.baomidou.mybatisplus.extension.service.IService <|-- com.ekz.ekzweb.service.project.prj.IScheduleService
+com.ekz.ekzweb.service.perms.IUserProjectPermissionService <|.. com.ekz.ekzweb.service.perms.impl.UserProjectPermissionServiceImpl
+com.baomidou.mybatisplus.extension.service.impl.ServiceImpl <|-- com.ekz.ekzweb.service.perms.impl.UserProjectPermissionServiceImpl
+com.ekz.ekzweb.service.standardValue.IStdIndicatorService <|.. com.ekz.ekzweb.service.standardValue.impl.StdIndicatorServiceImpl
+com.baomidou.mybatisplus.extension.service.impl.ServiceImpl <|-- com.ekz.ekzweb.service.standardValue.impl.StdIndicatorServiceImpl
+com.ekz.ekzweb.service.perms.IPermissionService <|.. com.ekz.ekzweb.service.perms.impl.PermissionServiceImpl
+com.baomidou.mybatisplus.extension.service.impl.ServiceImpl <|-- com.ekz.ekzweb.service.perms.impl.PermissionServiceImpl
+com.ekz.ekzweb.service.project.prj.ITStageService <|.. com.ekz.ekzweb.service.project.prj.impl.TStageServiceImpl
+com.baomidou.mybatisplus.extension.service.impl.ServiceImpl <|-- com.ekz.ekzweb.service.project.prj.impl.TStageServiceImpl
+com.ekz.ekzweb.service.standardValue.IProductTypeService <|.. com.ekz.ekzweb.service.standardValue.impl.ProductTypeServiceImpl
+com.baomidou.mybatisplus.extension.service.impl.ServiceImpl <|-- com.ekz.ekzweb.service.standardValue.impl.ProductTypeServiceImpl
+com.baomidou.mybatisplus.core.mapper.BaseMapper <|-- com.ekz.ekzweb.mapper.department.DepartmentMapper
+com.baomidou.mybatisplus.core.mapper.BaseMapper <|-- com.ekz.ekzweb.mapper.project.prj.ScheduleMapper
+com.baomidou.mybatisplus.extension.service.IService <|-- com.ekz.ekzweb.service.perms.IUserRoleService
+com.ekz.ekzweb.service.project.prj.IApprovalService <|.. com.ekz.ekzweb.service.project.prj.impl.ApprovalServiceImpl
+com.baomidou.mybatisplus.extension.service.impl.ServiceImpl <|-- com.ekz.ekzweb.service.project.prj.impl.ApprovalServiceImpl
+com.baomidou.mybatisplus.extension.service.IService <|-- com.ekz.ekzweb.service.perms.IRolePermissionService
+com.baomidou.mybatisplus.extension.service.IService <|-- com.ekz.ekzweb.service.user.IUserService
+com.baomidou.mybatisplus.core.mapper.BaseMapper <|-- com.ekz.ekzweb.mapper.project.textIssue.TextIssueMapper
+com.baomidou.mybatisplus.core.mapper.BaseMapper <|-- com.ekz.ekzweb.mapper.project.prj.IndicatorMapper
+com.baomidou.mybatisplus.extension.service.IService <|-- com.ekz.ekzweb.service.project.prj.IApprovalService
+com.ekz.ekzweb.service.project.prj.IAttributeService <|.. com.ekz.ekzweb.service.project.prj.impl.AttributeServiceImpl
+com.baomidou.mybatisplus.extension.service.impl.ServiceImpl <|-- com.ekz.ekzweb.service.project.prj.impl.AttributeServiceImpl
+com.ekz.ekzweb.service.project.highLowLight.IHighLowLightService <|.. com.ekz.ekzweb.service.project.highLowLight.impl.HighLowLightServiceImpl
+com.baomidou.mybatisplus.extension.service.impl.ServiceImpl <|-- com.ekz.ekzweb.service.project.highLowLight.impl.HighLowLightServiceImpl
+com.baomidou.mybatisplus.core.mapper.BaseMapper <|-- com.ekz.ekzweb.mapper.perms.UserProjectPermissionMapper
+com.baomidou.mybatisplus.extension.service.IService <|-- com.ekz.ekzweb.service.project.prj.IMemberService
+com.ekz.ekzweb.service.perms.IRolePermissionService <|.. com.ekz.ekzweb.service.perms.impl.RolePermissionServiceImpl
+com.baomidou.mybatisplus.extension.service.impl.ServiceImpl <|-- com.ekz.ekzweb.service.perms.impl.RolePermissionServiceImpl
+com.baomidou.mybatisplus.extension.service.IService <|-- com.ekz.ekzweb.service.standardValue.IStageService
+com.ekz.ekzweb.service.developer.IDeveloperRecordService <|.. com.ekz.ekzweb.service.developer.impl.DeveloperRecordServiceImp
+com.baomidou.mybatisplus.extension.service.impl.ServiceImpl <|-- com.ekz.ekzweb.service.developer.impl.DeveloperRecordServiceImp
+com.baomidou.mybatisplus.extension.service.IService <|-- com.ekz.ekzweb.service.project.prj.IAttributeService
+com.baomidou.mybatisplus.extension.service.IService <|-- com.ekz.ekzweb.service.standardValue.IBusinessModelService
+com.ekz.ekzweb.service.project.prj.IScheduleService <|.. com.ekz.ekzweb.service.project.prj.impl.ScheduleServiceImpl
+com.baomidou.mybatisplus.extension.service.impl.ServiceImpl <|-- com.ekz.ekzweb.service.project.prj.impl.ScheduleServiceImpl
+com.ekz.ekzweb.service.standardValue.IStageService <|.. com.ekz.ekzweb.service.standardValue.impl.StageServiceImpl
+com.baomidou.mybatisplus.extension.service.impl.ServiceImpl <|-- com.ekz.ekzweb.service.standardValue.impl.StageServiceImpl
+com.baomidou.mybatisplus.core.mapper.BaseMapper <|-- com.ekz.ekzweb.mapper.standardValue.BuMapper
+com.baomidou.mybatisplus.core.mapper.BaseMapper <|-- com.ekz.ekzweb.mapper.standardValue.StageMapper
+com.baomidou.mybatisplus.core.mapper.BaseMapper <|-- com.ekz.ekzweb.mapper.project.prj.PartQuantityMapper
+@enduml
