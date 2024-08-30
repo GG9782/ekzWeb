@@ -8,19 +8,22 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 import java.nio.file.Path;
 
@@ -33,6 +36,11 @@ public class TextIssueController {
     private ITextIssueService service;
 
 /** Project TextIssue */
+
+    private static final Path PATH = Paths.get("\\\\10.41.34.24\\e\\img\\textIssue");
+    private static final List<String> ALLOWED_EXTENSIONS = Arrays.asList("jpg", "jpeg", "png");
+    private static final long MAX_FILE_SIZE = 3 * 1024 * 1024;
+
 
     /** 查 单个*/
     @Operation(summary = "依 prjCode 查")
@@ -67,7 +75,7 @@ public class TextIssueController {
     /** 删 单个*/
     @Operation(summary = "删 单个")
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> Delete(@PathVariable("id") String id){
+    public ResponseEntity<String> Delete(@PathVariable("id") String id) throws IOException {
         // checkPermission(prjCode+":member")
         TextIssue textIssue = service.getById(id);
         String prjCode = textIssue.getPrjCode();
@@ -75,6 +83,13 @@ public class TextIssueController {
         subject.checkPermission(prjCode+":member");
 
         service.removeById(id);
+
+        String img = service.getById(id).getImg();
+        Path pathToDelete = Paths.get(PATH.toString(),id + "."+ img);
+        if(Files.exists(pathToDelete)){
+            Files.delete(pathToDelete);
+        }
+
         return ResponseEntity.status(HttpStatus.OK).body("OK");
     }
 
@@ -139,39 +154,78 @@ public class TextIssueController {
         service.saveBatch(textIssueList);
         return ResponseEntity.status(HttpStatus.OK).body("OK");
     }
+
+
     @Operation(summary = "上传图片")
     @PostMapping("/uploadPicture/{id}")
-    public ResponseEntity<String> uploadFile(@RequestParam("uploadFile") MultipartFile multipartFile, @PathVariable("id") String id) throws IOException {
-        Path path = Paths.get("D:/0710");
+    public ResponseEntity<String> uploadFile(@RequestParam("uploadFile") MultipartFile file, @PathVariable("id") String id) throws IOException {
+        // checkPermission(prjCode+":member")
+        String prjCode = service.getById(id).getPrjCode();
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkPermission(prjCode+":member");
 
-        // 首先判断上传的文件是否为空
-        if (!multipartFile.isEmpty()) {
-            String suffix = ".unknown"; // 初始文件后缀为不知道
-            String name = multipartFile.getOriginalFilename(); // 获取上传的文件名
-
-            // 获取文件的后缀
-            if (name != null && name.contains(".")) {
-                suffix = name.substring(name.lastIndexOf("."));
-            } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid file name!");
-            }
-
-            String dest = UUID.randomUUID() + suffix; // 生成保存的文件名
-
-            // 保存文件到指定位置
-            try (InputStream inputStream = multipartFile.getInputStream()) {
-                Files.copy(inputStream, path.resolve(dest), StandardCopyOption.REPLACE_EXISTING);
-            } catch (IOException e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving file!");
-            }
-
-            // 更新数据库中的图片路径
-            service.lambdaUpdate().set(TextIssue::getPicture, path.resolve(dest).toString()).eq(TextIssue::getId, id).update();
-
-            return ResponseEntity.status(HttpStatus.OK).body("OK");
+        if (file.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please select a file to upload");
         }
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("File is empty!");
+        String originalFileName = file.getOriginalFilename();
+        if (originalFileName == null || originalFileName.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid file name");
+        }
+
+        String fileName = StringUtils.cleanPath(originalFileName);
+
+        String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
+
+        if (!ALLOWED_EXTENSIONS.contains(fileExtension)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Only JPG, JPEG, PNG files are allowed");
+        }
+
+        if (file.getSize() > MAX_FILE_SIZE) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("File size exceeds the limit of 3MB");
+        }
+
+        try {
+            // 使用`Paths.get()`方法创建一个`Path`对象，表示要保存上传文件的路径。
+            Path path = Paths.get(PATH.toString(), id + "." + fileExtension);
+
+            // Check if file already exists
+            String img = service.getById(id).getImg();
+            Path pathToDelete = Paths.get(PATH.toString(),id + "."+ img);
+            if(Files.exists(pathToDelete)){
+                Files.delete(pathToDelete);
+            }
+
+
+            // 使用`Files.copy()`方法将用户上传文件的输入流复制到指定的目标路径。
+            // `file.getInputStream()`获取用户上传文件的输入流，
+            // `path`则是目标文件保存的路径。
+            Files.copy(file.getInputStream(), path);
+            service.lambdaUpdate().eq(TextIssue::getId,id).set(TextIssue::getImg,fileExtension).update();
+            return ResponseEntity.ok("File uploaded successfully");
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload file: " + e);
+        }
+    }
+
+    @Operation(summary = "依id 显示图片")
+    @GetMapping("/getPictureById/{id}")
+    public ResponseEntity<Resource> getPrincipalsImage( @PathVariable String id ) {
+
+        // checkRole("member")
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("member");
+
+        try {
+            Path path = Paths.get(PATH.toString(),id + ".jpg");
+            Resource resource = new UrlResource(path.toUri());
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_TYPE, "image/png") // 设置图片格式
+                    .body(resource);
+        } catch (MalformedURLException e) {
+            // 处理 MalformedURLException 异常
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }

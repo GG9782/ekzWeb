@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Data
 public class TextHighLowLight {
 
-    @TableId(type = IdType.AUTO)
+    @TableId(type = IdType.ASSIGN_UUID)
     private Integer id;
 
     private String prjCode;

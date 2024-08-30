@@ -126,4 +126,9 @@ public class Project {
     private List<PrjReadinessJsonType> prjReadiness;
     private String prjReadinessUpdater;
     private LocalDateTime prjReadinessUpdateTime;
+
+    private String noteText;
+    private String noteUpdater;
+    private LocalDateTime noteUpdateTime;
+
 }
