@@ -1,9 +1,6 @@
 package com.ekz.ekzweb.controller.project.approvalPart;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.ekz.ekzweb.domain.jsonType.PassRateJsonType;
 import com.ekz.ekzweb.domain.project.approvalPart.ApprovalPart;
-import com.ekz.ekzweb.domain.project.approvalPart.ApprovalPartVO;
 import com.ekz.ekzweb.service.project.approvalPart.IApprovalPartService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,7 +24,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Tag(name = "Project ApprovalPart 接口")
 @RestController
@@ -39,7 +35,7 @@ public class ApprovalPartController {
 
     private static final Path PATH = Paths.get("\\\\10.41.34.24\\e\\files\\approvalPart");
     private static final List<String> ALLOWED_EXTENSIONS = Arrays.asList("xls","xlsx", "xlsm");
-    private static final long MAX_FILE_SIZE = 20* 1024 * 1024; // 20MB
+    private static final long MAX_FILE_SIZE = 50* 1024 * 1024; // 20MB
 
     /** 依 prjCode 查*/
     @Operation(summary = "依 prjCode 查")
@@ -168,9 +164,11 @@ public class ApprovalPartController {
                                        String partName,
                                        String partType,
                                        Integer toolingStage,
-                                       @RequestParam(required = false) Integer faiTotal,
+                                       @RequestParam(required = false) Integer faiAccept,
+                                       @RequestParam(required = false) Integer faiAlert,
                                        @RequestParam(required = false) Integer faiReject,
-                                       @RequestParam(required = false) Integer cpkTotal,
+                                       @RequestParam(required = false) Integer cpkAccept,
+                                       @RequestParam(required = false) Integer cpkAlert,
                                        @RequestParam(required = false) Integer cpkReject,
                                        @RequestParam("file") MultipartFile file){
         // checkPermission(prjCode+":member")
@@ -196,7 +194,7 @@ public class ApprovalPartController {
         }
 
         if (file.getSize() > MAX_FILE_SIZE) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("File size exceeds the limit of 20MB");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("File size exceeds the limit of 50MB, current file size is: "+ file.getSize() );
         }
 
         //PO处理
@@ -212,10 +210,12 @@ public class ApprovalPartController {
         po.setPartType(partType);
         po.setToolingStage(toolingStage);
 
-        po.setFaiTotal(faiTotal);
+        po.setFaiAccept(faiAccept);
+        po.setFaiAlert(faiAlert);
         po.setFaiReject(faiReject);
 
-        po.setCpkTotal(cpkTotal);
+        po.setCpkAccept(cpkAccept);
+        po.setCpkAlert(cpkAlert);
         po.setCpkReject(cpkReject);
 
         String principals = subject.getPrincipals().toString();
@@ -227,14 +227,16 @@ public class ApprovalPartController {
             case "fai":
                 newFileName = StringUtils.cleanPath( newFileName + "_fai." + fileExtension);
                 po.setFaiFileName(newFileName);
-                po.setCpkTotal(null);
+                po.setCpkAccept(null);
+                po.setCpkAlert(null);
                 po.setCpkReject(null);
                 po.setCpkFileName(null);
                 break;
             case "cpk":
                 newFileName = StringUtils.cleanPath( newFileName + "_cpk." + fileExtension);
                 po.setCpkFileName(newFileName);
-                po.setFaiTotal(null);
+                po.setFaiAccept(null);
+                po.setFaiAlert(null);
                 po.setFaiReject(null);
                 po.setFaiFileName(null);
                 break;

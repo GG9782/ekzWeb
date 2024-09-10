@@ -53,7 +53,7 @@ public class VendorController {
     public ResponseEntity<String> Delete(@PathVariable("vendor") String vendor){
         // checkPermission(projectManager"))
         Subject subject = SecurityUtils.getSubject();
-        subject.checkRole("projectManager");
+        subject.checkRole("departmentHead");
 
         service.removeById(vendor);
         return ResponseEntity.status(HttpStatus.OK).body("OK");
@@ -66,7 +66,7 @@ public class VendorController {
     public ResponseEntity<String> save(@PathVariable("vendor") String vendor){
         // checkPermission(projectManager"))
         Subject subject = SecurityUtils.getSubject();
-        subject.checkRole("projectManager");
+        subject.checkRole("departmentHead");
 
 
         StdVendor dto = new StdVendor();
@@ -86,7 +86,7 @@ public class VendorController {
     public ResponseEntity<String> delete(@RequestBody List<String> vendors) {
         // checkPermission(projectManager"))
         Subject subject = SecurityUtils.getSubject();
-        subject.checkRole("projectManager");
+        subject.checkRole("departmentHead");
 
         service.removeByIds(vendors);
         return ResponseEntity.status(HttpStatus.OK).body("OK");
@@ -98,7 +98,7 @@ public class VendorController {
     public ResponseEntity<String> save(@RequestBody List<String> vendors) {
         // checkPermission(projectManager"))
         Subject subject = SecurityUtils.getSubject();
-        subject.checkRole("projectManager");
+        subject.checkRole("departmentHead");
 
         List<StdVendor> dtos = new ArrayList<>();
         String principals = subject.getPrincipals().toString();
@@ -122,7 +122,7 @@ public class VendorController {
     public ResponseEntity<String> update(@PathVariable("currentVendor") String currentVendor, @PathVariable("newVendor") String newVendor){
         // checkPermission(projectManager"))
         Subject subject = SecurityUtils.getSubject();
-        subject.checkRole("projectManager");
+        subject.checkRole("departmentHead");
 
         StdVendor dto = new StdVendor();
         dto.setVendor(newVendor);

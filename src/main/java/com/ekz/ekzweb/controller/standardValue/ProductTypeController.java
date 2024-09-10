@@ -53,7 +53,7 @@ public class ProductTypeController {
     public ResponseEntity<String> Delete(@PathVariable("productType") String productType){
         // checkPermission(projectManager"))
         Subject subject = SecurityUtils.getSubject();
-        subject.checkRole("projectManager");
+        subject.checkRole("departmentHead");
 
         service.removeById(productType);
         return ResponseEntity.status(HttpStatus.OK).body("OK");
@@ -65,7 +65,7 @@ public class ProductTypeController {
     public ResponseEntity<String> save(@PathVariable("productType") String productType){
         // checkPermission(projectManager"))
         Subject subject = SecurityUtils.getSubject();
-        subject.checkRole("projectManager");
+        subject.checkRole("departmentHead");
 
         StdProductType dto = new StdProductType();
         productType = productType.trim().substring(0, 1).toUpperCase() + productType.trim().substring(1).toLowerCase();
@@ -82,7 +82,7 @@ public class ProductTypeController {
     public ResponseEntity<String> update(@PathVariable("currentProductType") String currentProductType, @PathVariable("newProductType") String newProductType){
         // checkPermission(projectManager"))
         Subject subject = SecurityUtils.getSubject();
-        subject.checkRole("projectManager");
+        subject.checkRole("departmentHead");
 
         StdProductType dto = new StdProductType();
         dto.setProductType(newProductType);

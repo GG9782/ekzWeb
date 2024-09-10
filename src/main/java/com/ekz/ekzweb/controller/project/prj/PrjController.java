@@ -74,7 +74,7 @@ public class PrjController {
 
         // checkRole("projectManager")
         Subject subject = SecurityUtils.getSubject();
-        subject.checkRole("manager");
+        subject.checkRole("departmentHead");
 
         // save project
         dto.setPrjCode( dto.getPrjCode().trim().toUpperCase() );

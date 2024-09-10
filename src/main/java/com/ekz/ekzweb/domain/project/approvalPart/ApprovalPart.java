@@ -17,10 +17,12 @@ public class ApprovalPart {
     String partName;
     String partType;
     Integer toolingStage;
-    Integer faiTotal;
+    Integer faiAccept;
+    Integer faiAlert;
     Integer faiReject;
     String faiFileName;
-    Integer cpkTotal;
+    Integer cpkAccept;
+    Integer cpkAlert;
     Integer cpkReject;
     String cpkFileName;
     String Creator;

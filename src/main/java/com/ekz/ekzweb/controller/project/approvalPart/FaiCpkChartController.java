@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Tag(name = "Project ApprovalPart 图接口")
 @RestController
@@ -22,17 +23,32 @@ import java.util.List;
 public class FaiCpkChartController {
     @Autowired
     private IApprovalPartService service;
-    @Autowired
-    private ITStageService tStageService;
+//    @Autowired
+//    private ITStageService tStageService;
+
+    @Operation(summary = "依 prjCode 查fai")
+    @GetMapping("/fai/{prjCode}")
+    public List<Map<String,Object>> getFaiChartByPrjCode(@PathVariable String prjCode) {
+        return service.getFaiChartByPrjCode(prjCode);
+    }
+
+    @Operation(summary = "依 prjCode 查cpk")
+    @GetMapping("/cpk/{prjCode}")
+    public List<Map<String,Object>> getCpkChartByPrjCode(@PathVariable String prjCode) {
+        return service.getCpkChartByPrjCode(prjCode);
+    }
 
     /** 依 prjCode 查*/
-    @Operation(summary = "依  prjCode 查")
+        /**
+         @Operation(summary = "依  prjCode 查")
     @GetMapping("/{faiOrCpk}/{prjCode}")
     public List<PassRateJsonType> getChartByPrjCode(@PathVariable String faiOrCpk,@PathVariable String prjCode) {
 
         // 执行查询
         List<ApprovalPart> approvalParts = service.lambdaQuery()
-                .select(ApprovalPart::getFaiTotal,ApprovalPart::getFaiReject,ApprovalPart::getCpkTotal,ApprovalPart::getCpkReject,ApprovalPart::getToolingStage)
+                .select(ApprovalPart::getFaiAccept,ApprovalPart::getFaiAlert,ApprovalPart::getFaiReject,
+                        ApprovalPart::getCpkAccept,ApprovalPart::getCpkAlert,ApprovalPart::getCpkReject,
+                        ApprovalPart::getToolingStage)
                 .eq(ApprovalPart::getPrjCode, prjCode)
                 .list();
 
@@ -75,5 +91,6 @@ public class FaiCpkChartController {
         return result;
 
     }
+         */
 
 }

@@ -68,7 +68,7 @@ public class StdIndicatorController {
     public ResponseEntity<String> Delete(@PathVariable Integer id){
         // checkPermission(projectManager")
         Subject subject = SecurityUtils.getSubject();
-        subject.checkRole("projectManager");
+        subject.checkRole("departmentHead");
 
         service.removeById(id);
         return ResponseEntity.status(HttpStatus.OK).body("OK");
@@ -80,7 +80,7 @@ public class StdIndicatorController {
     public ResponseEntity<String> save(@RequestBody StdIndicator dto){
         // checkPermission(projectManager"))
         Subject subject = SecurityUtils.getSubject();
-        subject.checkRole("projectManager");
+        subject.checkRole("departmentHead");
 
         dto.setName(dto.getName().trim());
         String principals = subject.getPrincipals().toString();
@@ -96,7 +96,7 @@ public class StdIndicatorController {
     public ResponseEntity<String> update(@RequestBody StdIndicator dto){
         // checkPermission(projectManager"))
         Subject subject = SecurityUtils.getSubject();
-        subject.checkRole("projectManager");
+        subject.checkRole("departmentHead");
 
         dto.setName(dto.getName().trim());
         String principals = subject.getPrincipals().toString();

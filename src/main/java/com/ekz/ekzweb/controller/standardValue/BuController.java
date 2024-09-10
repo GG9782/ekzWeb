@@ -56,7 +56,7 @@ public class BuController {
     public ResponseEntity<String> Delete(@PathVariable("bu") String bu){
         // checkPermission(projectManager")
         Subject subject = SecurityUtils.getSubject();
-        subject.checkRole("projectManager");
+        subject.checkRole("departmentHead");
 
         service.removeById(bu);
         return ResponseEntity.status(HttpStatus.OK).body("OK");
@@ -68,7 +68,7 @@ public class BuController {
     public ResponseEntity<String> save(@PathVariable("bu") String bu){
         // checkPermission(projectManager"))
         Subject subject = SecurityUtils.getSubject();
-        subject.checkRole("projectManager");
+        subject.checkRole("departmentHead");
 
         StdBu dto = new StdBu();
         dto.setBu(bu.trim().toUpperCase());
@@ -86,7 +86,7 @@ public class BuController {
     public ResponseEntity<String> update(@PathVariable("currentBu") String currentBu, @PathVariable("newBu") String newBu){
         // checkPermission(projectManager"))
         Subject subject = SecurityUtils.getSubject();
-        subject.checkRole("projectManager");
+        subject.checkRole("departmentHead");
 
         StdBu dto = new StdBu();
         dto.setBu(newBu.trim().toUpperCase());

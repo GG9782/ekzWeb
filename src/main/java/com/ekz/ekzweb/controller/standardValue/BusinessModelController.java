@@ -52,7 +52,7 @@ public class BusinessModelController {
     public ResponseEntity<String> Delete(@PathVariable("businessModel") String businessModel){
         // checkPermission(projectManager"))
         Subject subject = SecurityUtils.getSubject();
-        subject.checkRole("projectManager");
+        subject.checkRole("departmentHead");
 
         service.removeById(businessModel);
         return ResponseEntity.status(HttpStatus.OK).body("OK");
@@ -82,7 +82,7 @@ public class BusinessModelController {
     public ResponseEntity<String> update(@PathVariable("currentBusinessModel") String currentBusinessModel, @PathVariable("newBusinessModel") String newBusinessModel){
         // checkPermission(projectManager"))
         Subject subject = SecurityUtils.getSubject();
-        subject.checkRole("projectManager");
+        subject.checkRole("departmentHead");
 
         StdBusinessModel dto = new StdBusinessModel();
         dto.setBusinessModel(newBusinessModel.trim().toUpperCase());

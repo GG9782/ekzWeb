@@ -59,7 +59,7 @@ public class ReadinessController {
     public ResponseEntity<String> Delete(@PathVariable("id") String id){
         // checkPermission(projectManager"))
         Subject subject = SecurityUtils.getSubject();
-        subject.checkRole("projectManager");
+        subject.checkRole("departmentHead");
 
         service.removeById(id);
         return ResponseEntity.status(HttpStatus.OK).body("OK");
@@ -71,7 +71,7 @@ public class ReadinessController {
     public ResponseEntity<String> save(@RequestBody StdReadiness stdReadiness){
         // checkPermission(projectManager"))
         Subject subject = SecurityUtils.getSubject();
-        subject.checkRole("projectManager");
+        subject.checkRole("departmentHead");
 
         String principals = subject.getPrincipals().toString();
         stdReadiness.setCreator(principals);
@@ -86,7 +86,7 @@ public class ReadinessController {
     public ResponseEntity<String> updateById(@RequestBody StdReadiness stdReadiness){
         // checkPermission(projectManager"))
         Subject subject = SecurityUtils.getSubject();
-        subject.checkRole("projectManager");
+        subject.checkRole("departmentHead");
 
         String principals = subject.getPrincipals().toString();
         stdReadiness.setCreator(principals);
@@ -101,7 +101,7 @@ public class ReadinessController {
     public ResponseEntity<String> save(@RequestBody List<StdReadiness> stdReadinessList){
         // checkPermission(projectManager"))
         Subject subject = SecurityUtils.getSubject();
-        subject.checkRole("projectManager");
+        subject.checkRole("departmentHead");
 
         String principals = subject.getPrincipals().toString();
         for (StdReadiness stdReadiness : stdReadinessList) {

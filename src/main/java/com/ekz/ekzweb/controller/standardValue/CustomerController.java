@@ -54,7 +54,7 @@ public class CustomerController {
     public ResponseEntity<String> Delete(@PathVariable("customer") String customer){
         // checkPermission(projectManager"))
         Subject subject = SecurityUtils.getSubject();
-        subject.checkRole("projectManager");
+        subject.checkRole("departmentHead");
         service.removeById(customer);
         return ResponseEntity.status(HttpStatus.OK).body("OK");
     }
@@ -65,7 +65,7 @@ public class CustomerController {
     public ResponseEntity<String> save(@PathVariable("customer") String customer,@PathVariable("bu") String bu){
         // checkPermission(projectManager"))
         Subject subject = SecurityUtils.getSubject();
-        subject.checkRole("projectManager");
+        subject.checkRole("departmentHead");
 
         StdCustomer dto = new StdCustomer();
         customer = customer.trim().substring(0, 1).toUpperCase() + customer.trim().substring(1).toLowerCase();
@@ -84,7 +84,7 @@ public class CustomerController {
     public ResponseEntity<String> update(@PathVariable("currentCustomer") String currentCustomer, @PathVariable("newCustomer") String newCustomer) {
         // checkPermission(projectManager"))
         Subject subject = SecurityUtils.getSubject();
-        subject.checkRole("projectManager");
+        subject.checkRole("departmentHead");
 
         StdCustomer dto = new StdCustomer();
         dto.setCustomer(newCustomer.trim().toUpperCase());
@@ -103,7 +103,7 @@ public class CustomerController {
     public ResponseEntity<String> delete(@RequestBody List<String> customers) {
         // checkPermission(projectManager"))
         Subject subject = SecurityUtils.getSubject();
-        subject.checkRole("projectManager");
+        subject.checkRole("departmentHead");
 
         service.removeByIds(customers);
         return ResponseEntity.status(HttpStatus.OK).body("OK");

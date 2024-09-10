@@ -82,7 +82,7 @@ public class StageController {
     public ResponseEntity<String> Delete(@PathVariable("id") long id){
         // checkPermission(projectManager"))
         Subject subject = SecurityUtils.getSubject();
-        subject.checkRole("projectManager");
+        subject.checkRole("departmentHead");
 
         service.removeById(id);
         return ResponseEntity.status(HttpStatus.OK).body("OK");
@@ -94,7 +94,7 @@ public class StageController {
     public ResponseEntity<String> save(@PathVariable("customer") String customer,@RequestBody List<String> stage){
         // checkPermission(projectManager"))
         Subject subject = SecurityUtils.getSubject();
-        subject.checkRole("projectManager");
+        subject.checkRole("departmentHead");
 
 
         StdStage dto = new StdStage();
@@ -116,7 +116,7 @@ public class StageController {
     public ResponseEntity<String> update(@RequestBody StdStage dto){
         // checkPermission(projectManager"))
         Subject subject = SecurityUtils.getSubject();
-        subject.checkRole("projectManager");
+        subject.checkRole("departmentHead");
 
         String principals = subject.getPrincipals().toString();
         dto.setCreator(principals);
