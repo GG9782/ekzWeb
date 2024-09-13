@@ -9,6 +9,7 @@ import com.ekz.ekzweb.service.project.approvalPart.IApprovalPartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +34,26 @@ public class ApprovalPartServiceImpl extends ServiceImpl<ApprovalPartMapper, App
         queryWrapper.eq("prj_code", prjCode)
                 .groupBy("tooling_stage")
                 .select("tooling_stage", "SUM(cpk_accept) as sumCpkAccept", "SUM(cpk_Reject) as sumCpkReject");
+        return mapper.selectMaps(queryWrapper);
+    }
+
+    @Override
+    public List<Map<String, Object>> getFaiByGroupingRule1(String customer, String partType, LocalDate startDate, LocalDate endDate) {
+        QueryWrapper<ApprovalPart> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("customer", customer)
+                .eq("part_Type", partType)
+                .between("item_date",startDate,endDate)
+                .groupBy("tooling_stage","vendor")
+                .select("tooling_stage", "vendor","SUM(fai_accept) as sumFaiAccept", "SUM(fai_alert) as sumFaiAlert", "SUM(fai_Reject) as sumFaiReject");
+        return mapper.selectMaps(queryWrapper);
+    }
+
+    @Override
+    public List<Map<String, Object>> getFaiByGroupingRule2() {
+        QueryWrapper<ApprovalPart> queryWrapper = new QueryWrapper<>();
+        queryWrapper.groupBy("item_year", "customer", "prj_code", "vendor", "part_type", "tooling_stage","bu")
+                .select( "item_year", "customer", "prj_code", "vendor", "part_type", "tooling_stage","bu",
+                        "SUM(fai_accept) as sumFaiAccept", "SUM(fai_alert) as sumFaiAlert", "SUM(fai_Reject) as sumFaiReject");
         return mapper.selectMaps(queryWrapper);
     }
 }

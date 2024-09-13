@@ -92,7 +92,7 @@ public class CustomerController {
         dto.setCreator(principals);
         dto.setCreateTime(LocalDateTime.now());
         service.update(
-                dto,new LambdaUpdateWrapper<StdCustomer>().eq(com.ekz.ekzweb.domain.standardValue.StdCustomer::getCustomer,currentCustomer)
+                dto,new LambdaUpdateWrapper<StdCustomer>().eq(StdCustomer::getCustomer,currentCustomer)
         );
         return ResponseEntity.status(HttpStatus.OK).body("OK");
     }

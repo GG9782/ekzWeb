@@ -3,7 +3,6 @@ package com.ekz.ekzweb.controller.project.prj;
 import cn.hutool.core.bean.BeanUtil;
 import com.ekz.ekzweb.domain.project.prj.dto.AttributeDTO;
 import com.ekz.ekzweb.domain.project.prj.po.AttributePO;
-import com.ekz.ekzweb.domain.project.prj.po.Project;
 import com.ekz.ekzweb.domain.project.prj.query.AttributeQuery;
 import com.ekz.ekzweb.domain.project.prj.vo.AttributeVO;
 import com.ekz.ekzweb.service.project.prj.IAttributeService;

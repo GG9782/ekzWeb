@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -162,6 +163,9 @@ public class ApprovalPartController {
                                        String prjCode,
                                        String partNumber,
                                        String partName,
+                                       String vendor,
+                                       String customer,
+                                       String bu,
                                        String partType,
                                        Integer toolingStage,
                                        @RequestParam(required = false) Integer faiAccept,
@@ -207,6 +211,9 @@ public class ApprovalPartController {
         po.setPrjCode(prjCode);
         po.setPartNumber(partNumber);
         po.setPartName(partName);
+        po.setVendor(vendor);
+        po.setCustomer(customer);
+        po.setBu(bu);
         po.setPartType(partType);
         po.setToolingStage(toolingStage);
 
@@ -221,6 +228,9 @@ public class ApprovalPartController {
         String principals = subject.getPrincipals().toString();
         po.setCreator(principals);
         po.setCreateTime(LocalDateTime.now());
+        po.setItemDate(LocalDate.now());
+        po.setItemYear(LocalDateTime.now().getYear());
+        po.setItemMonth(LocalDateTime.now().getMonth());
 
         String newFileName = po.getPrjCode() + po.getToolingStage() +"_" + po.getPartType() + "_T" + toolingStage + "_" + po.getPartNumber();
         switch (faiOrCpkOrBoth) {

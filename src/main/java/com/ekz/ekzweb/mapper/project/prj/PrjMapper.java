@@ -1,6 +1,5 @@
 package com.ekz.ekzweb.mapper.project.prj;
 
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ekz.ekzweb.domain.project.prj.po.AttributePO;
 import com.ekz.ekzweb.domain.project.prj.po.Project;
@@ -9,7 +8,6 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Mapper

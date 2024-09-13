@@ -1,7 +1,6 @@
 package com.ekz.ekzweb.controller.project.highLowLight;
 
 import com.ekz.ekzweb.domain.project.textHighLowLight.TextHighLowLight;
-import com.ekz.ekzweb.domain.project.textIssue.TextIssue;
 import com.ekz.ekzweb.service.project.highLowLight.IHighLowLightService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

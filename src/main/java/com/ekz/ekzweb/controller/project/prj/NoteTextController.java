@@ -1,10 +1,6 @@
 package com.ekz.ekzweb.controller.project.prj;
 
-import cn.hutool.core.bean.BeanUtil;
-import com.ekz.ekzweb.domain.project.prj.dto.MemberDTO;
-import com.ekz.ekzweb.domain.project.prj.po.MemberPO;
 import com.ekz.ekzweb.domain.project.prj.po.NoteTextPO;
-import com.ekz.ekzweb.domain.project.prj.vo.MemberVO;
 import com.ekz.ekzweb.service.project.prj.INoteTextService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

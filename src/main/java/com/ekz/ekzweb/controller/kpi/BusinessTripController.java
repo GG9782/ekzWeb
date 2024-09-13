@@ -1,7 +1,6 @@
 package com.ekz.ekzweb.controller.kpi;
 
 import com.ekz.ekzweb.domain.kpi.BusinessTrip;
-import com.ekz.ekzweb.domain.kpi.MpIssue;
 import com.ekz.ekzweb.service.kpi.IBusinessTripService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

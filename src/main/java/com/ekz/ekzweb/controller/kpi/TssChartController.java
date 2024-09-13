@@ -1,7 +1,5 @@
 package com.ekz.ekzweb.controller.kpi;
 
-import com.ekz.ekzweb.domain.kpi.TssAdditionalRules;
-import com.ekz.ekzweb.service.kpi.ITssAdditionalRulesService;
 import com.ekz.ekzweb.service.kpi.ITssService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
