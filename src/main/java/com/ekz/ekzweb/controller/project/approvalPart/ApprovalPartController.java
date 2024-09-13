@@ -42,23 +42,48 @@ public class ApprovalPartController {
     @Operation(summary = "依 prjCode 查")
     @GetMapping("/getByPrjCode/{prjCode}")
     public List<ApprovalPart> getByPrjCode(@PathVariable String prjCode) {
+        // .checkRole("member");
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("member");
+
         return service.lambdaQuery()
                 .eq(ApprovalPart::getPrjCode,prjCode)
                 .list();
     }
 
     /** 依 id 查*/
+    @Operation(summary = "依prjCode partNumber toolingStage 查id")
+    @GetMapping("/getId/")
+    public String getByPrjId(String prjCode,String partNumber,int toolingStage) {
+        // .checkRole("member");
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("member");
+
+        return service.lambdaQuery()
+                .eq(ApprovalPart::getPrjCode,prjCode)
+                .eq(ApprovalPart::getPartNumber,partNumber)
+                .eq(ApprovalPart::getToolingStage,toolingStage).one().getId();
+    }
+
+    /** 依 id 查*/
     @Operation(summary = "依 id 查")
     @GetMapping("/getById/{id}")
     public ApprovalPart getByPrjId(@PathVariable String id) {
+        // .checkRole("member");
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("member");
+
         return service.getById(id);
     }
-
 
     /** 依 id 下载*/
     @Operation(summary = "依 id 下载")
     @GetMapping("/downloadById/{faiOrCpk}/{id}")
     public ResponseEntity<Resource> downloadById(@PathVariable String faiOrCpk,@PathVariable String id) {
+        // .checkRole("member");
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("member");
+
         ApprovalPart po= service.getById(id);
 
         String fileName = switch (faiOrCpk) {

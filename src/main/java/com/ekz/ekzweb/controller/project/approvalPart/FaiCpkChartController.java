@@ -4,6 +4,8 @@ import com.ekz.ekzweb.domain.project.approvalPart.FaiGroupingRule2VO;
 import com.ekz.ekzweb.service.project.approvalPart.IApprovalPartService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,23 +30,38 @@ public class FaiCpkChartController {
     @Operation(summary = "依 prjCode 查fai")
     @GetMapping("/fai/{prjCode}")
     public List<Map<String,Object>> getFaiChartByPrjCode(@PathVariable String prjCode) {
+        // .checkRole("member");
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("member");
+
         return service.getFaiChartByPrjCode(prjCode);
     }
 
     @Operation(summary = "依 prjCode 查cpk")
     @GetMapping("/cpk/{prjCode}")
     public List<Map<String,Object>> getCpkChartByPrjCode(@PathVariable String prjCode) {
+        // .checkRole("member");
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("member");
+
         return service.getCpkChartByPrjCode(prjCode);
     }
     @Operation(summary = "FaiGroupingRule1",description = "以customer、时间范围、partType 为筛选条件，以Vendor、tooling Stage为分组依据，对accept、alert、reject尺寸数量求和" )
     @GetMapping("/fai/getByGroupingRule1")
     public List<Map<String,Object>> getFaiByGroupingRule1(String customer, String partType, LocalDate startDate,LocalDate endDate) {
+        // .checkRole("member");
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("member");
         return service.getFaiByGroupingRule1(customer,partType,startDate,endDate);
     }
 
     @Operation(summary = "FaiGroupingRule2",description = "以 year customer projectCode vendor type toolingStage 为分组依据，对accept、alert、reject尺寸数量求和。对查询结果重新组织，使其以item_year, customer, prj_code, vendor, part_type, tooling_stage,bu作为分组的依据，并且在每个分组中包含不同tooling_Stage的sumFaiAccept、 sumFaiAlert、sumFaiReject" )
     @GetMapping("/fai/getByGroupingRule2")
     public List<FaiGroupingRule2VO> getFaiByGroupingRule2() {
+        // .checkRole("member");
+        Subject subject = SecurityUtils.getSubject();
+        subject.checkRole("member");
+
 //        return service.getFaiByGroupingRule2();
         List<Map<String, Object>> originalResults = service.getFaiByGroupingRule2();
         List<FaiGroupingRule2VO> groupedResults = originalResults.stream().map(result -> {
