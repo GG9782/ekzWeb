@@ -7,10 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -48,7 +45,7 @@ public class FaiCpkChartController {
     }
     @Operation(summary = "FaiGroupingRule1",description = "以customer、时间范围、partType 为筛选条件，以Vendor、tooling Stage为分组依据，对accept、alert、reject尺寸数量求和" )
     @GetMapping("/fai/getByGroupingRule1")
-    public List<Map<String,Object>> getFaiByGroupingRule1(String customer, String partType, LocalDate startDate,LocalDate endDate) {
+    public List<Map<String,Object>> getFaiByGroupingRule1(@RequestParam(required = false)String customer, @RequestParam(required = false)String partType, LocalDate startDate, LocalDate endDate) {
         // .checkRole("member");
         Subject subject = SecurityUtils.getSubject();
         subject.checkRole("member");

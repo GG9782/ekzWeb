@@ -40,8 +40,8 @@ public class ApprovalPartServiceImpl extends ServiceImpl<ApprovalPartMapper, App
     @Override
     public List<Map<String, Object>> getFaiByGroupingRule1(String customer, String partType, LocalDate startDate, LocalDate endDate) {
         QueryWrapper<ApprovalPart> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("customer", customer)
-                .eq("part_Type", partType)
+        queryWrapper.eq(customer != null,"customer", customer)
+                .eq(partType != null,"part_Type", partType)
                 .between("item_date",startDate,endDate)
                 .groupBy("tooling_stage","vendor")
                 .select("tooling_stage", "vendor","SUM(fai_accept) as sumFaiAccept", "SUM(fai_alert) as sumFaiAlert", "SUM(fai_Reject) as sumFaiReject");

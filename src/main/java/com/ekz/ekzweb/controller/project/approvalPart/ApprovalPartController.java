@@ -58,11 +58,12 @@ public class ApprovalPartController {
         // .checkRole("member");
         Subject subject = SecurityUtils.getSubject();
         subject.checkRole("member");
-
-        return service.lambdaQuery()
+        try { String id = service.lambdaQuery()
                 .eq(ApprovalPart::getPrjCode,prjCode)
                 .eq(ApprovalPart::getPartNumber,partNumber)
                 .eq(ApprovalPart::getToolingStage,toolingStage).one().getId();
+            return id;
+        }catch (Exception e) {return null;}
     }
 
     /** 依 id 查*/
