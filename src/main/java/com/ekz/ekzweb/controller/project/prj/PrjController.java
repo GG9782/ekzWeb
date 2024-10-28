@@ -2,6 +2,7 @@ package com.ekz.ekzweb.controller.project.prj;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.ekz.ekzweb.domain.jsonType.StringAndStyleJsonType;
+import com.ekz.ekzweb.domain.perms.PermsUserProjectPermission;
 import com.ekz.ekzweb.domain.project.prj.dto.AttributeDTO;
 import com.ekz.ekzweb.domain.project.prj.po.AttributePO;
 import com.ekz.ekzweb.domain.project.prj.po.Project;
@@ -84,9 +85,13 @@ public class PrjController {
         prjService.save(po);
 
         // save userProjectPermission manager
-        userProjectPermissionService.saveOne(po.getCreator(), po.getPrjCode(), "manager");
-        userProjectPermissionService.saveOne(po.getCreator(), po.getPrjCode(), "member");
-
+        PermsUserProjectPermission pm = new PermsUserProjectPermission();
+        pm.setPrjCode(po.getPrjCode());
+        pm.setUser(po.getCreator());
+        pm.setJustPermission("manager");
+        userProjectPermissionService.save(pm);
+        pm.setJustPermission("member");
+        userProjectPermissionService.save(pm);
         // return
         return ResponseEntity.status(HttpStatus.OK).body("OK");
     }

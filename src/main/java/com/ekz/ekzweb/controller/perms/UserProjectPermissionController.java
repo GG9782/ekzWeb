@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @Tag(name = "UserProjectPermission 接口")
 @RestController
@@ -58,10 +59,10 @@ public class UserProjectPermissionController {
     public List<PermsUserProjectPermission> getPrjPermsByProject(@PathVariable String prjCode){
 
         // checkPermission(prjCode+":*")
-        Subject subject = SecurityUtils.getSubject();
-        if (!( subject.isPermitted(prjCode+":manager") || subject.isPermitted(prjCode+":member") ) ) {
-            return null;
-        }
+//        Subject subject = SecurityUtils.getSubject();
+//        if (!( subject.isPermitted(prjCode+":manager") || subject.isPermitted(prjCode+":member") ) ) {
+//            return null;
+//        }
 
         return service.lambdaQuery().eq( PermsUserProjectPermission::getPrjCode, prjCode ).list();
     }
@@ -91,8 +92,15 @@ public class UserProjectPermissionController {
         Subject subject = SecurityUtils.getSubject();
         subject.checkPermission(prjCode+":manager");
 
+        if(!(Objects.equals(userProjectPermission.getJustPermission(), "manager") || Objects.equals(userProjectPermission.getJustPermission(),"member")) ){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("BAD_REQUEST,'justPermission' should be 'manager' or 'member' ");
+        }
+
+        userProjectPermission.setPermission(null);
+
         service.save(userProjectPermission);
         return ResponseEntity.status(HttpStatus.OK).body("OK");
+
     }
 
 }

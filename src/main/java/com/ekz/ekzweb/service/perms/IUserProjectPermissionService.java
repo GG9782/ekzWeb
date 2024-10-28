@@ -10,7 +10,5 @@ public interface IUserProjectPermissionService extends IService<PermsUserProject
 
     List<String> getPrincipalPermissions(String principal);
 
-    ResponseEntity<String> saveList (List<String> users, String prjCode, String permission);
 
-    ResponseEntity<String> saveOne (String user,String prjCode,String permission);
 }

@@ -12,5 +12,8 @@ public class PermsUserProjectPermission {
     String id;
     String user;
     String prjCode;
+    String justPermission;
+    @Schema(description = "虚拟列，新增和修改时不要有此参数")
     String permission;
+
 }
